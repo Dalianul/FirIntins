@@ -15,6 +15,20 @@ Faza 1.1 a livrat infrastructura completă: Medusa v2 backend cu Stripe/SendGrid
 
 ## Secțiunea 1 — Scaffold & Structura proiect
 
+### Prerequisit: Backend file-local provider
+
+Prima acțiune în Faza 1.2 este adăugarea `@medusajs/file-local` în `apps/backend/medusa-config.ts` (backend din Faza 1.1) pentru a permite upload imagini prin Admin UI în development:
+
+```ts
+// apps/backend/medusa-config.ts — adăugat în modules array
+{
+  resolve: "@medusajs/file-local",
+  options: { upload_dir: "uploads" },
+}
+```
+
+După modificare: `pnpm backend:dev` (restartează cu noul provider).
+
 ### Monorepo setup
 
 - `apps/storefront/` creat via `create-next-app` cu TypeScript strict, Tailwind, App Router
@@ -162,13 +176,57 @@ Folosite direct în Server Components. Operațiile de cart și auth merg prin **
 
 ```
 NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9000
-NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=<din Medusa Admin UI după seed>
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=<vezi mai jos>
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 ```
 
-### Backend — file-local
+### Publishable API Key Setup
 
-`@medusajs/file-local` adăugat în `medusa-config.ts` la începutul Fazei 1.2 pentru a permite upload imagini prin Admin UI în development.
+Cheia publishable se creează manual în Admin UI (`http://localhost:9000/app`) după ce backend-ul rulează:
+
+1. Settings → API Keys → Create new Publishable API Key
+2. Denumire: "Storefront Dev"
+3. Asociază sales channel-ul "Magazin Online" (creat de seed în Faza 1.1)
+4. Copiază cheia generată în `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`
+
+O singură cheie per dev environment; nu se commit în git.
+
+### Auth — flux complet
+
+Autentificarea folosește **httpOnly cookie** gestionat manual în Server Actions:
+
+```ts
+// actions/auth.ts
+import { cookies } from "next/headers"
+import { medusa } from "@/lib/medusa/client"
+
+export async function loginAction(email: string, password: string) {
+  const { token } = await medusa.auth.login("customer", "emailpass", { email, password })
+  cookies().set("_medusa_jwt", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 7, // 7 zile
+    path: "/",
+  })
+}
+
+export async function logoutAction() {
+  cookies().delete("_medusa_jwt")
+  // șterge și cart ID din context (via revalidatePath sau redirect)
+}
+```
+
+SDK singleton în `lib/medusa/client.ts` **nu** primește `auth.type` — token-ul este extras din cookie și injectat manual în request headers de Server Actions și Server Components care necesită autentificare:
+
+```ts
+// În Server Components protejate (cont/*)
+const cookieStore = cookies()
+const token = cookieStore.get("_medusa_jwt")?.value
+const customer = await medusa.customer.retrieve({}, { Authorization: `Bearer ${token}` })
+```
+
+`middleware.ts` citește cookie-ul `_medusa_jwt` și redirectează la `/login` dacă lipsește.
 
 ---
 
@@ -199,14 +257,22 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 ### CartContext
 
 - Învelește app în RootLayout
-- Cart ID persistat în `localStorage`
-- La mount: validează cart ID existent cu Medusa API, recreează dacă expirat
+- Cart ID persistat în `localStorage` cu cheia `"firintins_cart_id"`
+- **Flux la mount:**
+  1. `localStorage.getItem("firintins_cart_id")` → dacă există, `medusa.cart.retrieve(id)`
+  2. Dacă 404 (cart expirat în Medusa) → `medusa.cart.create()` → salvează noul ID
+  3. Dacă nu există în localStorage → `medusa.cart.create()` → salvează ID-ul
+- **La logout** (`logoutAction`): `localStorage.removeItem("firintins_cart_id")` — cart-ul guest nu se merge cu contul (YAGNI Faza 1)
 - Expune: `addItem`, `removeItem`, `updateQuantity`, `clearCart`, `cart`, `itemCount`
 
 ### Breadcrumb
 
 - shadcn `Breadcrumb` pe listing + PDP + cont
-- Dublat ca `BreadcrumbList` JSON-LD
+- JSON-LD `BreadcrumbList` injectat manual ca `<script type="application/ld+json">` în aceleași pagini
+- Trail-uri:
+  - Listing: `Acasă > Produse`
+  - Categorie: `Acasă > Produse > [Categorie]`
+  - PDP: `Acasă > Produse > [Categorie] > [Produs]`
 
 ---
 
@@ -236,22 +302,44 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 ### PDP `/produse/[handle]` (SSG + ISR 30min)
 
 - Stânga: galerie imagini (thumbnail strip + imagine principală, `priority` pe prima)
-- Dreapta: titlu Cormorant, preț, variant selector, buton add-to-cart → CartContext, descriere
+- Dreapta: titlu Cormorant, preț variantă selectată (`--color-mud`), variant selector, buton add-to-cart → CartContext, descriere
+- **VariantSelector:** butoane pentru fiecare variantă (ex: "2.5 lbs / 3 lbs / 3.5 lbs" sau "5000 / 6000"); prețul se actualizează la selecție; varianta selectată implicit = prima disponibilă
+- Stock-aware: dacă `variant.inventory_quantity === 0`, butonul "Adaugă în coș" devine disabled cu label "Stoc epuizat"
 - Schema.org `Product` + `Offer` JSON-LD (cu `lowPrice` pentru Directiva Omnibus)
 - `generateMetadata` dinamic
 
 ### Auth `/login` + `/register`
 
-- Server Actions cu validare Zod
-- Login → JWT în httpOnly cookie via Medusa
-- Register → creare client → auto-login
-- Redirect la `?redirect=` (doar rute interne)
+- Server Actions cu validare Zod; erori inline sub câmpuri + toast pentru erori generale
+- **Login schema:** `z.object({ email: z.string().email(), password: z.string().min(8) })`
+- **Register schema:** `z.object({ email: z.string().email(), password: z.string().min(8), firstName: z.string().min(1), lastName: z.string().min(1) })`
+- Login → `medusa.auth.login()` → token → httpOnly cookie `_medusa_jwt` (detalii în Secțiunea 3)
+- Register → `medusa.auth.register()` → `medusa.customer.create()` → auto-login (același flux ca Login)
+- Redirect la `?redirect=` (validat: acceptat doar dacă startsWith `/`, altfel redirect la `/cont`)
+- `generateMetadata` returnează `{ robots: { index: false } }` pe ambele pagini
 
 ### Checkout `/checkout` (CSR)
 
-- 3 pași: adresă livrare (Zod + RHF) → metodă livrare → Stripe Elements
-- Guest checkout permis
-- La success → webhook Medusa confirmă → redirect `/checkout/confirmare/[orderId]`
+Pagina unică CSR cu 3 pași vizuali (state local `step: "address" | "shipping" | "payment"`):
+
+**Pas 1 — Adresă livrare** (Zod + RHF):
+- Câmpuri: firstName, lastName, address1, city, postalCode, countryCode (fix "ro"), phone
+- Submit → `medusa.cart.update(cartId, { shipping_address: ... })` via Server Action
+- Avansează la Pasul 2
+
+**Pas 2 — Metodă livrare:**
+- Fetch `medusa.cart.listShippingOptions(cartId)` → afișează "Livrare Standard" + "Livrare Express" din seed
+- Selecție → `medusa.cart.selectShippingMethod(cartId, optionId)` via Server Action
+- Avansează la Pasul 3
+
+**Pas 3 — Plată Stripe Elements:**
+- Server Action creează PaymentSession: `medusa.cart.initiatePaymentSession(cartId, { provider_id: "pp_stripe_stripe" })`
+- Returnează `client_secret` din PaymentSession
+- Stripe `<Elements>` cu `client_secret` → `<PaymentElement>`
+- La submit Stripe (`stripe.confirmPayment`) → on success: `medusa.cart.complete(cartId)` via Server Action
+- Redirect la `/checkout/confirmare/[orderId]` cu `orderId` din răspuns
+
+Guest checkout permis — adresa se colectează la Pasul 1 fără autentificare. Webhookul Stripe → Medusa confirmă plata pe backend independent (nu blochează redirect-ul).
 
 ### Confirmare comandă
 
@@ -280,7 +368,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 - Homepage: static
 - Listing/categorie: `${category.name} | FirIntins`
 - PDP: `${product.title} | FirIntins`, description, OG image
-- Auth + cont: `noindex`
+- Auth + cont: `{ robots: { index: false } }` via `generateMetadata`
 
 ### Schema.org
 
