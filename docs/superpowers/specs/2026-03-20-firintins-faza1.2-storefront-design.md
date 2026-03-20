@@ -262,13 +262,16 @@ const customer = await medusa.customer.retrieve({}, { Authorization: `Bearer ${t
   1. `localStorage.getItem("firintins_cart_id")` → dacă există, `medusa.cart.retrieve(id)`
   2. Dacă 404 (cart expirat în Medusa) → `medusa.cart.create()` → salvează noul ID
   3. Dacă nu există în localStorage → `medusa.cart.create()` → salvează ID-ul
-- **La logout** (`logoutAction`): `localStorage.removeItem("firintins_cart_id")` — cart-ul guest nu se merge cu contul (YAGNI Faza 1)
+- **La logout** (`logoutAction`): `cookies().delete("_medusa_jwt")` + `localStorage.removeItem("firintins_cart_id")` (apelat din Server Action, efectul localStorage se aplică client-side la redirect post-logout) + redirect la `/`
+- **Cart guest → utilizator autentificat:** cart-ul guest continuă unchanged (nu se merge cu un cart de cont existent) — YAGNI Faza 1
+- **Recovery mid-session:** CartContext rulează validarea `O singură dată la mount`. Dacă un API call (`addItem` etc.) returnează 404 pe cartId, se recreează cartul și se reîncearcă operația
+- `localStorage` este nativ domain-scoped (ex. `localhost:3000` vs `localhost:3001` sunt izolate)
 - Expune: `addItem`, `removeItem`, `updateQuantity`, `clearCart`, `cart`, `itemCount`
 
 ### Breadcrumb
 
 - shadcn `Breadcrumb` pe listing + PDP + cont
-- JSON-LD `BreadcrumbList` injectat manual ca `<script type="application/ld+json">` în aceleași pagini
+- JSON-LD `BreadcrumbList` injectat în Server Component la nivel de pagină ca `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />` — `JSON.stringify` scapă automat caracterele speciale
 - Trail-uri:
   - Listing: `Acasă > Produse`
   - Categorie: `Acasă > Produse > [Categorie]`
@@ -285,7 +288,7 @@ const customer = await medusa.customer.retrieve({}, { Authorization: `Bearer ${t
 2. **Categorii** — grid asimetric 6 carduri → `/categorii/[slug]`. Scale + border glow pe hover.
 3. **Noutăți** — row orizontal scroll, primele 4 produse din seed, `ProductCard`.
 4. **De ce FirIntins** — 3 coloane: "Calitate premium" / "Livrare rapidă în România" / "Suport expert". Icon + heading + 2 rânduri copy.
-5. **Newsletter** — email input + submit → `/api/newsletter` (no-op). Toast confirmare.
+5. **Newsletter** — email input + submit `POST /api/newsletter` cu body `{ email: string }`, returnează `{ success: true }` (HTTP 200). Validare email client-side. Toast confirmare. Email-ul nu e stocat (YAGNI — wired în Faza 3).
 
 ### Listing produse `/produse` + `/categorii/[slug]` (SSR)
 
@@ -304,7 +307,7 @@ const customer = await medusa.customer.retrieve({}, { Authorization: `Bearer ${t
 - Stânga: galerie imagini (thumbnail strip + imagine principală, `priority` pe prima)
 - Dreapta: titlu Cormorant, preț variantă selectată (`--color-mud`), variant selector, buton add-to-cart → CartContext, descriere
 - **VariantSelector:** butoane pentru fiecare variantă (ex: "2.5 lbs / 3 lbs / 3.5 lbs" sau "5000 / 6000"); prețul se actualizează la selecție; varianta selectată implicit = prima disponibilă
-- Stock-aware: dacă `variant.inventory_quantity === 0`, butonul "Adaugă în coș" devine disabled cu label "Stoc epuizat"
+- Stock-aware: dacă `variant.inventory_quantity === 0`, butonul "Adaugă în coș" devine disabled cu label "Stoc epuizat". PDP are ISR 30min — stale stock max 30 min este acceptat în Faza 1.2; verificare stock real-time la add-to-cart via CartContext (Medusa returnează eroare dacă stoc insuficient)
 - Schema.org `Product` + `Offer` JSON-LD (cu `lowPrice` pentru Directiva Omnibus)
 - `generateMetadata` dinamic
 
@@ -312,7 +315,7 @@ const customer = await medusa.customer.retrieve({}, { Authorization: `Bearer ${t
 
 - Server Actions cu validare Zod; erori inline sub câmpuri + toast pentru erori generale
 - **Login schema:** `z.object({ email: z.string().email(), password: z.string().min(8) })`
-- **Register schema:** `z.object({ email: z.string().email(), password: z.string().min(8), firstName: z.string().min(1), lastName: z.string().min(1) })`
+- **Register schema:** `z.object({ email: z.string().email(), password: z.string().min(8), confirmPassword: z.string() }).refine(d => d.password === d.confirmPassword, { message: "Parolele nu coincid", path: ["confirmPassword"] }).and(z.object({ firstName: z.string().min(1), lastName: z.string().min(1) }))`
 - Login → `medusa.auth.login()` → token → httpOnly cookie `_medusa_jwt` (detalii în Secțiunea 3)
 - Register → `medusa.auth.register()` → `medusa.customer.create()` → auto-login (același flux ca Login)
 - Redirect la `?redirect=` (validat: acceptat doar dacă startsWith `/`, altfel redirect la `/cont`)
@@ -323,7 +326,7 @@ const customer = await medusa.customer.retrieve({}, { Authorization: `Bearer ${t
 Pagina unică CSR cu 3 pași vizuali (state local `step: "address" | "shipping" | "payment"`):
 
 **Pas 1 — Adresă livrare** (Zod + RHF):
-- Câmpuri: firstName, lastName, address1, city, postalCode, countryCode (fix "ro"), phone
+- Câmpuri: firstName, lastName, address1, city, postalCode, countryCode (fix "ro"), phone (opțional, orice string non-gol dacă completat)
 - Submit → `medusa.cart.update(cartId, { shipping_address: ... })` via Server Action
 - Avansează la Pasul 2
 
@@ -333,7 +336,7 @@ Pagina unică CSR cu 3 pași vizuali (state local `step: "address" | "shipping" 
 - Avansează la Pasul 3
 
 **Pas 3 — Plată Stripe Elements:**
-- Server Action creează PaymentSession: `medusa.cart.initiatePaymentSession(cartId, { provider_id: "pp_stripe_stripe" })`
+- Server Action creează PaymentSession: `medusa.cart.initiatePaymentSession(cartId, { provider_id: "pp_stripe_stripe" })` — provider_id-ul `pp_stripe_stripe` este formatul Medusa v2 pentru Stripe; se verifică în backend `medusa-config.ts` că plugin-ul Stripe este configurat (Faza 1.1)
 - Returnează `client_secret` din PaymentSession
 - Stripe `<Elements>` cu `client_secret` → `<PaymentElement>`
 - La submit Stripe (`stripe.confirmPayment`) → on success: `medusa.cart.complete(cartId)` via Server Action
