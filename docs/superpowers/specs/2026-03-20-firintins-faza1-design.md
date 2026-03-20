@@ -85,11 +85,12 @@ pnpm dev               # Medusa + Next.js rulează nativ
 ```
 
 **Varianta B — Fără Docker (PC, Windows):**
-- PostgreSQL 15: instalat nativ ca Windows service
-- Redis: instalat via `winget install Redis.Redis` sau Memurai (Redis-compatible pentru Windows)
+- PostgreSQL 15: instalat nativ ca Windows service (`winget install PostgreSQL.PostgreSQL`)
+- Redis: Memurai (Redis-compatible pentru Windows, fără WSL2) — `winget install Memurai.Memurai`
+- **Nu necesită WSL2** — servicii native Windows, pornesc automat la boot
 - `pnpm dev` identic
 
-Singura diferență între variante: `DATABASE_URL` și `REDIS_URL` în `.env` pointează la `localhost` (nativ) vs container Docker. Documentat în `README.md` cu instrucțiuni pentru ambele scenarii.
+Singura diferență între variante: `DATABASE_URL` și `REDIS_URL` în `.env` pointează la `localhost` (nativ) vs container Docker. Documentat în `README.md` cu instrucțiuni pas-cu-pas pentru ambele scenarii.
 
 ---
 
@@ -217,6 +218,10 @@ Toate sunt **Store API routes native Medusa** — nu se scriu API routes custom 
 
 **Notă terminologie:** TC = Test de Curbură (echivalentul românesc pentru "test curve"), măsurat în lbs.
 
+### Configurare variante produs
+
+Opțiunile de variantă (lungime, TC, mărime etc.) sunt configurate **exclusiv via Medusa Admin UI** sau seed data — nu necesită cod custom în Faza 1. Medusa `@medusajs/product` suportă nativ opțiuni arbitrare de variantă (key-value pairs). La setup inițial, seed script-ul creează categoriile + opțiunile; produsele noi se adaugă din Admin UI.
+
 ### Seed data pentru development
 
 - 3 categorii: Lansete, Mulinete, Fire
@@ -291,6 +296,11 @@ apps/storefront/
 - **React Context** (fără Zustand/Jotai — suficient pentru Faza 1)
 - Cart ID persistat în `localStorage`
 - La fiecare încărcare: cart ID verificat cu Medusa API, recreat dacă expirat
+
+**Flow guest → client autentificat:**
+- La login din pagina de checkout: Medusa `transferCart` API apelat automat — coșul guest este transferat pe contul clientului
+- Cart ID-ul din `localStorage` rămâne același, contexte React nu se resetează
+- Dacă clientul era deja logat: coșul nou creat este asociat direct cu `customer_id`
 
 ### Medusa JS SDK
 
@@ -391,6 +401,60 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_...
 - Protejează `/cont/*`
 - Redirect la `/login?redirect=/cont/...` dacă neautentificat
 - Revenire automată la pagina originală după login
+- **Open redirect prevention:** parametrul `redirect` validat — acceptate doar rute interne (startsWith `/`), niciodată URL-uri externe
+
+### Gestionare erori plată Stripe
+
+- Card declined / fonduri insuficiente: eroare afișată inline în Stripe Elements (componentă nativă Stripe) + toast shadcn cu mesaj explicit
+- Timeout Stripe: retry automat o dată, apoi mesaj "Încearcă din nou"
+- Webhook failure: Medusa retry automat (3 încercări), order rămâne în stare `pending` până la confirmare
+
+---
+
+## Secțiunea 7 — Decizii de implementare suplimentare
+
+### TypeScript
+
+- `strict: true` în ambele `tsconfig.json` (backend + storefront)
+- `noImplicitAny: true`, `strictNullChecks: true`
+- `noUncheckedIndexedAccess: true` în storefront (previne acces nesigur pe array-uri din API)
+
+### Validare formulare
+
+- **Server Actions (auth, checkout):** Zod schema pentru validare server-side
+- **Client forms (adrese, date personale):** React Hook Form + Zod resolver pentru feedback instant
+- Erori Zod serializate și returnate din Server Actions ca `{ errors: ZodError }` — afișate inline lângă câmpuri
+
+### Medusa Admin (Faza 1)
+
+- Admin UI disponibil la `https://api.firintins.ro/app` (generat automat de Medusa)
+- Admin user creat via CLI: `npx medusa user -e admin@firintins.ro -p <parola>`
+- Pe VPS: acces direct la URL-ul public, protejat de autentificarea Medusa admin (JWT separat de customer JWT)
+- Recomandare producție: IP whitelisting în Nginx pentru `/app` — acces doar din IP-ul administratorului
+
+### CI/CD — Injectare secrets
+
+Variabilele de mediu ajung pe VPS astfel:
+1. **GitHub Secrets** stochează: `VPS_SSH_KEY`, `VPS_HOST`, `REGISTRY_TOKEN`, toate cheile de producție
+2. **GitHub Actions** generează `.env` pe VPS la fiecare deploy via SSH:
+   ```bash
+   ssh $VPS_HOST "echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' > /opt/firintins/apps/backend/.env"
+   ```
+3. Alternativ: fișier `.env` configurat manual o singură dată pe VPS, CI/CD nu îl suprascrie
+
+### Imagini produs
+
+- **Număr imagini per produs:** 1 thumbnail + max 5 imagini galerie (configurat în Admin UI)
+- **Stocare dev:** `@medusajs/file-local` — salvate în `apps/backend/uploads/`
+- **Stocare producție:** `@medusajs/file-s3` — bucket S3 (sau compatibil S3: Cloudflare R2, Hetzner Object Storage)
+- **Optimizare storefront:** `next/image` cu `sizes` responsiv, format WebP automat, `srcset` generat de Next.js
+- `priority` prop pe prima imagine din galerie (LCP)
+
+### Pagini de eroare Next.js
+
+- `app/not-found.tsx` — pagina 404 cu design consistent, link înapoi la homepage
+- `app/error.tsx` — pagina 500 cu mesaj generic, fără stack trace în producție
+- `app/global-error.tsx` — fallback pentru erori la nivel de layout
 
 ---
 
