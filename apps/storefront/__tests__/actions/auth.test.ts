@@ -36,28 +36,24 @@ describe("loginAction", () => {
   })
 
   it("returns validation error for invalid email", async () => {
-    const result = await loginAction("invalid-email", "password123")
-    expect(result).toHaveProperty("errors")
-    expect(result.errors).toBeDefined()
+    const result = await loginAction({ email: "invalid-email", password: "password123" })
+    expect(result.success).toBe(false)
+    expect(result.error).toBeDefined()
   })
 
   it("returns validation error for short password", async () => {
-    const result = await loginAction("test@test.com", "short")
-    expect(result).toHaveProperty("errors")
-    expect(result.errors).toBeDefined()
+    const result = await loginAction({ email: "test@test.com", password: "short" })
+    expect(result.success).toBe(false)
+    expect(result.error).toBeDefined()
   })
 
   it("successfully logs in user and sets cookie", async () => {
     const mockMedusa = medusa as jest.Mocked<typeof medusa>
     mockMedusa.auth.login.mockResolvedValue("jwt-token-123")
 
-    try {
-      await loginAction("test@test.com", "password123")
-    } catch (error) {
-      // redirect throws an error with the URL
-      expect((error as Error).message).toMatch(/REDIRECT:/)
-    }
+    const result = await loginAction({ email: "test@test.com", password: "password123" })
 
+    expect(result.success).toBe(true)
     expect(mockMedusa.auth.login).toHaveBeenCalledWith("customer", "emailpass", {
       email: "test@test.com",
       password: "password123",
@@ -76,14 +72,14 @@ describe("loginAction", () => {
     )
   })
 
-  it("handles third-party auth response", async () => {
+  it("handles login error", async () => {
     const mockMedusa = medusa as jest.Mocked<typeof medusa>
-    mockMedusa.auth.login.mockResolvedValue({ url: "https://oauth.provider.com" })
+    mockMedusa.auth.login.mockRejectedValue(new Error("Invalid credentials"))
 
-    const result = await loginAction("test@test.com", "password123")
+    const result = await loginAction({ email: "test@test.com", password: "password123" })
 
-    expect(result).toHaveProperty("errors")
-    expect(result.errors).toBeDefined()
+    expect(result.success).toBe(false)
+    expect(result.error).toBeDefined()
   })
 })
 
@@ -95,39 +91,54 @@ describe("registerAction", () => {
   })
 
   it("returns validation error for missing firstName", async () => {
-    const result = await registerAction("", "Doe", "test@test.com", "password123", "password123")
-    expect(result).toHaveProperty("errors")
-    expect(result.errors).toBeDefined()
+    const result = await registerAction({
+      firstName: "",
+      lastName: "Doe",
+      email: "test@test.com",
+      password: "password123",
+      confirmPassword: "password123",
+    })
+    expect(result.success).toBe(false)
+    expect(result.error).toBeDefined()
   })
 
   it("returns validation error for mismatched passwords", async () => {
-    const result = await registerAction(
-      "John",
-      "Doe",
-      "test@test.com",
-      "password123",
-      "differentpassword"
-    )
-    expect(result).toHaveProperty("errors")
-    expect(result.errors).toBeDefined()
+    const result = await registerAction({
+      firstName: "John",
+      lastName: "Doe",
+      email: "test@test.com",
+      password: "password123",
+      confirmPassword: "differentpassword",
+    })
+    expect(result.success).toBe(false)
+    expect(result.error).toBeDefined()
   })
 
   it("returns validation error for invalid email", async () => {
-    const result = await registerAction("John", "Doe", "invalid-email", "password123", "password123")
-    expect(result).toHaveProperty("errors")
-    expect(result.errors).toBeDefined()
+    const result = await registerAction({
+      firstName: "John",
+      lastName: "Doe",
+      email: "invalid-email",
+      password: "password123",
+      confirmPassword: "password123",
+    })
+    expect(result.success).toBe(false)
+    expect(result.error).toBeDefined()
   })
 
   it("successfully registers user", async () => {
     const mockMedusa = medusa as jest.Mocked<typeof medusa>
     mockMedusa.auth.register.mockResolvedValue("jwt-token-456")
 
-    try {
-      await registerAction("John", "Doe", "test@test.com", "password123", "password123")
-    } catch (error) {
-      expect((error as Error).message).toMatch(/REDIRECT:/)
-    }
+    const result = await registerAction({
+      firstName: "John",
+      lastName: "Doe",
+      email: "test@test.com",
+      password: "password123",
+      confirmPassword: "password123",
+    })
 
+    expect(result.success).toBe(true)
     expect(mockMedusa.auth.register).toHaveBeenCalledWith("customer", "emailpass", {
       email: "test@test.com",
       password: "password123",
