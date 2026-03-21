@@ -34,6 +34,8 @@ export interface CartContextValue {
   updateQuantity: (lineItemId: string, quantity: number) => Promise<void>
   clearCart: () => Promise<void>
   loading: boolean
+  error: string | null
+  clearError: () => void
 }
 
 export const CartContext = createContext<CartContextValue | undefined>(undefined)
@@ -41,6 +43,7 @@ export const CartContext = createContext<CartContextValue | undefined>(undefined
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<Cart | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   // Mount: restore cart from localStorage or create new
   useEffect(() => {
@@ -51,7 +54,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         if (storedCartId) {
           const existingCart = await retrieveCart(storedCartId)
           if (existingCart) {
-            setCart(existingCart as unknown as Cart)
+            setCart(existingCart as Cart)
             setLoading(false)
             return
           }
@@ -61,9 +64,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const newCart = await createCart()
         const cartId = newCart.id
         localStorage.setItem("firintins_cart_id", cartId)
-        setCart(newCart as unknown as Cart)
+        setCart(newCart as Cart)
       } catch (error) {
         console.error("initCart error:", error)
+        setError("Nu am putut încărca coșul. Vă rugăm reîncărcați pagina.")
       } finally {
         setLoading(false)
       }
@@ -75,9 +79,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = async (variantId: string, quantity: number) => {
     if (!cart) return
     try {
+      setError(null)
       const result = await addItemToCart(cart.id, variantId, quantity)
       if (result.success) {
-        setCart(result.cart as unknown as Cart)
+        setCart(result.cart as Cart)
       }
     } catch (error) {
       console.error("addItem error:", error)
@@ -85,8 +90,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (error instanceof Error && error.message.includes("404")) {
         const newCart = await createCart()
         localStorage.setItem("firintins_cart_id", newCart.id)
-        setCart(newCart as unknown as Cart)
+        setCart(newCart as Cart)
         await addItemToCart(newCart.id, variantId, quantity)
+      } else {
+        setError("Nu am putut adăuga articolul în coș.")
       }
     }
   }
@@ -94,36 +101,46 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const removeItem = async (lineItemId: string) => {
     if (!cart) return
     try {
+      setError(null)
       const result = await removeItemFromCart(cart.id, lineItemId)
       if (result.success) {
-        setCart(result.cart as unknown as Cart)
+        setCart(result.cart as Cart)
       }
     } catch (error) {
       console.error("removeItem error:", error)
+      setError("Nu am putut șterge articolul din coș.")
     }
   }
 
   const updateQuantity = async (lineItemId: string, quantity: number) => {
     if (!cart) return
     try {
+      setError(null)
       const result = await updateCartQuantity(cart.id, lineItemId, quantity)
       if (result.success) {
-        setCart(result.cart as unknown as Cart)
+        setCart(result.cart as Cart)
       }
     } catch (error) {
       console.error("updateQuantity error:", error)
+      setError("Nu am putut actualiza cantitatea.")
     }
   }
 
   const clearCart = async () => {
     if (!cart) return
     try {
+      setError(null)
       const newCart = await createCart()
       localStorage.setItem("firintins_cart_id", newCart.id)
-      setCart(newCart as unknown as Cart)
+      setCart(newCart as Cart)
     } catch (error) {
       console.error("clearCart error:", error)
+      setError("Nu am putut goli coșul.")
     }
+  }
+
+  const clearError = () => {
+    setError(null)
   }
 
   const itemCount = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0
@@ -138,6 +155,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         updateQuantity,
         clearCart,
         loading,
+        error,
+        clearError,
       }}
     >
       {children}

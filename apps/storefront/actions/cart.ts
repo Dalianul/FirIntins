@@ -22,8 +22,8 @@ export async function addItemToCart(
 export async function removeItemFromCart(cartId: string, lineItemId: string) {
   try {
     const response = await medusa.store.cart.deleteLineItem(cartId, lineItemId)
-    // deleteLineItem returns { deleted, parent: cart }
-    const cart = response.parent || response.cart
+    // deleteLineItem returns StoreLineItemDeleteResponse with parent as the cart
+    const cart = response.parent
     return { success: true, cart }
   } catch (error) {
     console.error("removeItemFromCart error:", error)

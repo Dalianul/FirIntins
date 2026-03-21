@@ -6,6 +6,7 @@
 
 :root {
   --color-bg: #0f0e0b;
+  --color-bg-light: #1a1814;
   --color-surface: #1a1814;
   --color-surface-2: #242019;
   --color-border: #2e2a22;
@@ -51,6 +52,7 @@
 
 @theme inline {
   --color-bg: #0f0e0b;
+  --color-bg-light: #1a1814;
   --color-surface: #1a1814;
   --color-surface-2: #242019;
   --color-border: #2e2a22;
