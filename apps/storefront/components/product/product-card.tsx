@@ -4,8 +4,22 @@ import { m } from "motion/react"
 import { Badge } from "@/components/ui/badge"
 import { formatPrice } from "@/lib/utils"
 
+interface MedusaProduct {
+  id: string
+  handle: string
+  title: string
+  variants?: Array<{
+    prices?: Array<{
+      amount?: number
+    }>
+  }>
+  categories?: Array<{
+    name?: string
+  }>
+}
+
 interface ProductCardProps {
-  product: any
+  product: MedusaProduct
 }
 
 export function ProductCard({ product }: ProductCardProps) {
