@@ -26,5 +26,6 @@
       "msgpackr-extract",
       "protobufjs"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.32.1"
 }
