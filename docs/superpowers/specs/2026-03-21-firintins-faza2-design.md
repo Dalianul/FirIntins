@@ -132,7 +132,7 @@ Optimistic updates — UI se actualizează imediat, API call în background. Dac
 ### `/cont/wishlist`
 
 - Grid de produse salvate — fiecare `WishlistItem` = un card
-- Dacă `variant_id = ''`: `ProductCard` cu dropdown variantă + "Adaugă în coș" (varianta selectată)
+- Dacă `variant_id = ''`: `ProductCard` cu dropdown variantă — pre-selectată prima variantă disponibilă (in-stock) sau prima variantă dacă toate sunt out-of-stock + "Adaugă în coș" (varianta selectată)
 - Dacă `variant_id` specificat: `ProductCard` cu varianta fixată afișată explicit + "Adaugă în coș"
 - Buton "Elimină" per card — optimistic remove + toast
 - Empty state: text "Nu ai produse salvate" + link "Explorează produsele"
@@ -260,7 +260,7 @@ Tab-uri: **"Descriere"** (existent) | **"Recenzii (N)"** — N = count reviews a
    - Buton submit: disabled în timp ce loading (spinner), re-enable la eroare
    - La succes: formular se golește, toast "Recenzia ta a fost trimisă și va fi publicată după aprobare" (5s), formularul se ascunde (replaced cu mesaj "Mulțumim pentru recenzie!")
    - Client-side validation Zod înainte de submit (nu se face request cu câmpuri goale)
-   - Un customer poate trimite o singură recenzie per produs — dacă există deja o recenzie pending/approved, formularul se înlocuiește cu "Ai deja o recenzie pentru acest produs"
+   - Un customer poate trimite o singură recenzie per produs — verificarea se face în `submitReviewAction` (server-side): dacă există deja un review cu același `customer_id + product_id`, returnează eroare "Ai deja o recenzie pentru acest produs". Suplimentar, `getProductReviews` returnează și review-ul propriu (pending/approved/rejected) al clientului autentificat pentru a putea ascunde formularul la render
 4. **Banner neautentificat:** "Autentifică-te pentru a lăsa o recenzie" + link `/login?redirect=/produse/[handle]#recenzii`
 
 ### Data Layer
@@ -365,10 +365,10 @@ Formular schimbare parolă: `currentPassword`, `newPassword` (min 8), `confirmNe
 Zod: `.refine(d => d.newPassword === d.confirmNewPassword, { message: "Parolele nu coincid", path: ["confirmNewPassword"] })`.
 
 **Flow schimbare parolă (two-step):**
-1. Server Action `changePasswordAction(currentPassword, newPassword)`:
-   - Pasul 1: re-autentificare cu parola curentă — `medusa.auth.login("customer", "emailpass", { email, password: currentPassword })` — verifică că parola curentă este corectă
+1. Server Action `changePasswordAction(currentPassword: string, newPassword: string)`:
+   - Pasul 1: re-autentificare cu parola curentă — `const { token: freshToken } = await medusa.auth.login("customer", "emailpass", { email, password: currentPassword })` — verifică că parola curentă este corectă
    - Dacă login eșuează (401): returnează eroare `"Parola actuală este incorectă"`
-   - Pasul 2: update parolă — `medusa.store.customer.update({ password: newPassword }, { Authorization: \`Bearer ${token}\` })`
+   - Pasul 2: update parolă — `medusa.store.customer.update({ password: newPassword }, { Authorization: \`Bearer ${freshToken}\` })` — se folosește `freshToken` din Pasul 1, nu token-ul din sesiunea curentă
    - La succes: toast "Parola a fost schimbată", sesiunea rămâne activă (cookie-ul JWT nu se schimbă în Faza 2)
 
 **Notă implementare:** Dacă Medusa v2 nu expune `customer.update({ password })` via store SDK, fallback: custom API route `POST /store/customers/me/change-password` pe backend cu aceeași logică two-step. De verificat în planning cu MCP docs.
