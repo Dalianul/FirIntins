@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "jest"
+    "test": "jest --testPathIgnorePatterns=smoke",
+    "test:watch": "jest --watch --testPathIgnorePatterns=smoke",
+    "test:smoke": "jest --testPathPattern=smoke"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
