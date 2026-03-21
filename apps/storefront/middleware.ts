@@ -10,7 +10,10 @@ export function middleware(request: NextRequest) {
     if (!token) {
       // Redirect to login with return URL
       const redirectUrl = new URL("/login", request.url)
-      redirectUrl.searchParams.set("redirect", pathname)
+      redirectUrl.searchParams.set(
+        "redirect",
+        request.nextUrl.pathname + request.nextUrl.search
+      )
       return NextResponse.redirect(redirectUrl)
     }
   }
