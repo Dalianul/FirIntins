@@ -107,7 +107,8 @@
 
 @layer base {
   body {
-    @apply font-outfit bg-background text-foreground;
+    @apply bg-background text-foreground;
+    font-family: var(--font-family-outfit);
   }
 
   h1,
@@ -116,10 +117,12 @@
   h4,
   h5,
   h6 {
-    @apply font-cormorant font-semibold;
+    @apply font-semibold;
+    font-family: var(--font-family-cormorant);
   }
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+    outline-color: rgb(var(--color-ring) / 0.5);
   }
   html {
     @apply font-sans;
