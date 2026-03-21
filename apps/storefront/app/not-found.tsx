@@ -16,7 +16,7 @@ export default function NotFound() {
           href="/"
           className="inline-block px-8 py-3 bg-[--color-moss] text-[--color-cream] font-outfit font-medium rounded-lg hover:bg-[--color-moss-light] transition-colors duration-200"
         >
-          Înapoi la início
+          Înapoi la acasă
         </Link>
       </div>
     </div>
