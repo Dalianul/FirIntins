@@ -21,13 +21,13 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
     const { order } = await medusa.store.order.retrieve(orderId)
 
     return (
-      <main className="min-h-screen py-12" style={{ backgroundColor: "var(--color-bg)" }}>
+      <main className="min-h-screen py-12 bg-bg">
         <div className="max-w-2xl mx-auto px-4">
           <ConfirmationDisplay order={order} />
 
           <div className="mt-12 flex justify-center">
             <Link href="/produse">
-              <Button style={{ backgroundColor: "var(--color-moss)" }} className="hover:opacity-90 text-white">
+              <Button className="bg-moss hover:opacity-90 text-white">
                 Înapoi la magazin
               </Button>
             </Link>
