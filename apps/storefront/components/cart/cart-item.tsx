@@ -4,24 +4,19 @@ import { m } from "motion/react"
 import { itemVariants } from "@/variants/drawer"
 import { useCart } from "@/hooks/use-cart"
 import { Button } from "@/components/ui/button"
-import { CartItem } from "@/context/cart-context"
+import { CartItem as CartItemData } from "@/context/cart-context"
+import { formatPrice } from "@/lib/utils"
 
-interface CartItemComponentProps {
-  item: CartItem
+interface CartItemProps {
+  item: CartItemData
   index: number
 }
 
-export function CartItemComponent({
+export function CartItem({
   item,
   index,
-}: CartItemComponentProps) {
+}: CartItemProps) {
   const { removeItem, updateQuantity } = useCart()
-
-  const formatPrice = (price: number) => {
-    return (price / 100).toLocaleString("ro-RO", {
-      minimumFractionDigits: 2,
-    }) + " lei"
-  }
 
   const handleIncreaseQuantity = () => {
     updateQuantity(item.id, item.quantity + 1)

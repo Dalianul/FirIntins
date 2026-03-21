@@ -8,7 +8,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { drawerVariants } from "@/variants/drawer"
-import { CartItemComponent } from "./cart-item"
+import { CartItem } from "./cart-item"
 import { CartSummary } from "./cart-summary"
 import { useCart } from "@/hooks/use-cart"
 
@@ -48,7 +48,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   animate="visible"
                 >
                   {cart.items.map((item, index) => (
-                    <CartItemComponent
+                    <CartItem
                       key={item.id}
                       item={item}
                       index={index}

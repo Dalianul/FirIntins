@@ -3,18 +3,13 @@
 import Link from "next/link"
 import { useCart } from "@/hooks/use-cart"
 import { Button } from "@/components/ui/button"
+import { formatPrice } from "@/lib/utils"
 
 export function CartSummary() {
   const { cart, itemCount, loading } = useCart()
 
   if (!cart || itemCount === 0) {
     return null
-  }
-
-  const formatPrice = (price: number) => {
-    return (price / 100).toLocaleString("ro-RO", {
-      minimumFractionDigits: 2,
-    }) + " lei"
   }
 
   return (

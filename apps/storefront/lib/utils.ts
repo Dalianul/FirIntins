@@ -5,10 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatPrice(amountInCents: number): string {
-  const amountInRON = amountInCents / 100
-  return new Intl.NumberFormat("ro-RO", {
-    style: "currency",
-    currency: "RON",
-  }).format(amountInRON)
+export function formatPrice(price: number): string {
+  return (price / 100).toLocaleString("ro-RO", {
+    minimumFractionDigits: 2,
+  }) + " lei"
 }
