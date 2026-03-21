@@ -5,10 +5,8 @@ export async function getCustomer() {
   const token = (await cookies()).get("_medusa_jwt")?.value
   if (!token) return null
   try {
-    const { customer } = await medusa.store.customer.retrieve(
-      {},
-      { Authorization: `Bearer ${token}` }
-    )
+    medusa.client.setToken(token)
+    const { customer } = await medusa.store.customer.retrieve()
     return customer
   } catch {
     return null
