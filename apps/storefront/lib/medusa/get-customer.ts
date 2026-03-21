@@ -12,7 +12,15 @@ export async function getCustomer() {
       }
     )
     return customer
-  } catch {
-    return null
+  } catch (error) {
+    // Only suppress authentication errors (token expired, invalid)
+    if (
+      error instanceof Error &&
+      (error.message.includes("401") || error.message.includes("Unauthorized"))
+    ) {
+      return null
+    }
+    // Re-throw unexpected errors
+    throw error
   }
 }
