@@ -6,9 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatPrice(amountInCents: number): string {
-  const amountInEuros = amountInCents / 100
+  const amountInRON = amountInCents / 100
   return new Intl.NumberFormat("ro-RO", {
     style: "currency",
     currency: "RON",
-  }).format(amountInEuros)
+  }).format(amountInRON)
 }

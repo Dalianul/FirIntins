@@ -60,6 +60,8 @@
   --color-fog: #c4bfb0;
   --color-cream: #f0ebe0;
   --color-white: #faf8f3;
+  --font-family-cormorant: var(--font-cormorant), serif;
+  --font-family-outfit: var(--font-outfit), sans-serif;
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
