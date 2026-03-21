@@ -3,10 +3,11 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useCart } from "@/hooks/use-cart"
+import { CartDrawer } from "@/components/cart/cart-drawer"
 
 export default function Header() {
   const { itemCount } = useCart()
-  const [isOpen, setIsOpen] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-40 bg-[--color-bg] border-b border-[--color-border] transition-all duration-300">
@@ -51,7 +52,7 @@ export default function Header() {
           </Link>
           <div className="relative">
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => setIsCartOpen(!isCartOpen)}
               className="relative text-[--color-cream] hover:text-[--color-moss] transition-colors"
             >
               🛒
@@ -64,6 +65,8 @@ export default function Header() {
           </div>
         </div>
       </nav>
+
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </header>
   )
 }
