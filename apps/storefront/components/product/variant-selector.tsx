@@ -27,7 +27,7 @@ export function VariantSelector({ variants, onSelect }: VariantSelectorProps) {
 
   return (
     <div className="space-y-4">
-      <h3 className="font-outfit font-500 text-cream">Variante</h3>
+      <h3 className="font-outfit font-medium text-cream">Variante</h3>
       <div className="flex flex-wrap gap-2">
         {variants.map((variant) => {
           const title = variant.title || "Standard"
