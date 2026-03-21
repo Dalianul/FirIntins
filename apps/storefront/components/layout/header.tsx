@@ -3,7 +3,6 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useCart } from "@/hooks/use-cart"
-import { cn } from "@/lib/utils"
 
 export default function Header() {
   const { itemCount } = useCart()
