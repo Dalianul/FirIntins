@@ -41,7 +41,14 @@ export function ShippingStep({ cartId, onNext, onBack }: ShippingStepProps) {
   }, [cartId])
 
   const handleNext = async () => {
-    if (!selected) return
+    if (!selected) {
+      toast({
+        title: "Atenție",
+        description: "Selectează o metodă de livrare",
+        variant: "destructive",
+      })
+      return
+    }
     setLoading(true)
     try {
       const result = await selectShippingAction(cartId, selected)

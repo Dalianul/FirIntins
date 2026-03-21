@@ -1,3 +1,10 @@
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Checkout | Fir Intins",
+  robots: { index: false },
+}
+
 export default function CheckoutLayout({
   children,
 }: {

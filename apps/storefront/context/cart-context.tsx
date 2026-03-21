@@ -23,6 +23,7 @@ export interface Cart {
   id: string
   items: CartItem[]
   subtotal: number
+  shipping_total?: number
   total: number
 }
 

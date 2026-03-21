@@ -12,6 +12,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
   if (!cart) return null
   const items = cart.items ?? []
   const subtotal = cart.subtotal ?? 0
+  const shippingTotal = cart.shipping_total ?? 0
   const total = cart.total ?? 0
 
   return (
@@ -40,6 +41,10 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
         <div className="flex justify-between">
           <span className="text-fog">Subtotal</span>
           <span className="text-cream">{formatPrice(subtotal)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-fog">Livrare</span>
+          <span className="text-cream">{formatPrice(shippingTotal)}</span>
         </div>
       </div>
       <div className="border-t border-border pt-4 flex justify-between text-lg">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useCart } from "@/hooks/use-cart"
 import { useToast } from "@/hooks/use-toast"
@@ -22,6 +22,20 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<CheckoutStep>("address")
   const [clientSecret, setClientSecret] = useState<string>("")
   const [loadingPayment, setLoadingPayment] = useState(false)
+
+  useEffect(() => {
+    if (!cartId) {
+      router.push("/cos")
+    }
+  }, [cartId, router])
+
+  if (!cartId) {
+    return (
+      <main className="bg-bg min-h-screen flex items-center justify-center">
+        <p className="text-fog">Coșul este gol...</p>
+      </main>
+    )
+  }
 
   const handleShippingNext = async () => {
     setStep("payment")
