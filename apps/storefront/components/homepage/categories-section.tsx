@@ -4,10 +4,10 @@ import { getCategories } from "@/lib/medusa/queries"
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, scale: 0.9 },
-  visible: (i: number | unknown) => ({
+  visible: (i: number) => ({
     opacity: 1,
     scale: 1,
-    transition: { delay: typeof i === "number" ? i * 0.1 : 0, type: "spring", stiffness: 100 },
+    transition: { delay: i * 0.1, type: "spring", stiffness: 100 },
   }),
 }
 

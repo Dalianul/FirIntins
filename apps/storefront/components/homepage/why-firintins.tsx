@@ -17,10 +17,10 @@ const features = [
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
-  visible: (i: number | unknown) => ({
+  visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: typeof i === "number" ? i * 0.1 : 0, type: "spring" },
+    transition: { delay: i * 0.1, type: "spring", stiffness: 100 },
   }),
 }
 
