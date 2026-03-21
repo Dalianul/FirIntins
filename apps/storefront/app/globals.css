@@ -15,8 +15,6 @@
   --color-fog: #c4bfb0;
   --color-cream: #f0ebe0;
   --color-white: #faf8f3;
-  --font-cormorant: var(--font-cormorant-garamond);
-  --font-outfit: var(--font-outfit-sans);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -62,8 +60,6 @@
   --color-fog: #c4bfb0;
   --color-cream: #f0ebe0;
   --color-white: #faf8f3;
-  --font-cormorant: var(--font-cormorant-garamond);
-  --font-outfit: var(--font-outfit-sans);
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);

@@ -1,21 +1,19 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Outfit, Geist } from "next/font/google";
+import { Cormorant_Garamond, Outfit } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700"],
-  variable: "--font-cormorant-garamond",
+  variable: "--font-cormorant",
   display: "swap",
 });
 
 const outfit = Outfit({
   subsets: ["latin"],
   weight: ["300", "400", "500"],
-  variable: "--font-outfit-sans",
+  variable: "--font-outfit",
   display: "swap",
 });
 
@@ -32,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="ro"
-      className={cn("h-full", "antialiased", cormorant.variable, outfit.variable, "font-sans", geist.variable)}
+      className={cn("h-full", "antialiased", cormorant.variable, outfit.variable)}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
