@@ -3,6 +3,9 @@ import ProductModule from "@medusajs/medusa/product"
 import WishlistModule from "../modules/wishlist"
 
 export default defineLink(
-  WishlistModule.linkable.wishlistItem,
-  ProductModule.linkable.product
+  ProductModule.linkable.product,
+  {
+    linkable: WishlistModule.linkable.wishlistItem,
+    deleteCascade: true,
+  }
 )
