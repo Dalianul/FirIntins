@@ -1,9 +1,13 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { cookies } from "next/headers"
 import { getProduct, getProducts } from "@/lib/medusa/queries"
 import { ProductGallery } from "@/components/product/product-gallery"
 import { VariantSelector } from "@/components/product/variant-selector"
 import { AddToCartButton } from "@/components/product/add-to-cart-button"
+import { ProductTabs } from "@/components/product/product-tabs"
+import { ReviewList } from "@/components/reviews/review-list"
+import { ReviewForm } from "@/components/reviews/review-form"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -74,6 +78,9 @@ interface ProductResponse {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  const cookieStore = await cookies()
+  const isAuthenticated = !!cookieStore.get("_medusa_jwt")?.value
+
   let product: ProductResponse | null = null
 
   try {
@@ -183,6 +190,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 pb-16">
+        <ProductTabs
+          description={product.description}
+          reviewsSection={
+            <div className="space-y-6">
+              <ReviewList productId={product.id} />
+              <ReviewForm productId={product.id} isAuthenticated={isAuthenticated} />
+            </div>
+          }
+        />
       </div>
     </main>
   )
