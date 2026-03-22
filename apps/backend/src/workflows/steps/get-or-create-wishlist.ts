@@ -19,7 +19,7 @@ export const getOrCreateWishlistStep = createStep<
 
     const [existing] = await wishlistService.listWishlists({ customer_id })
     if (existing) {
-      return new StepResponse(existing, existing.id)
+      return new StepResponse(existing)
     }
 
     const wishlist = await wishlistService.createWishlists({ customer_id })
