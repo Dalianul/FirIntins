@@ -1,16 +1,6 @@
 import type { CollectionConfig } from "payload"
 import { lexicalEditor } from "@payloadcms/richtext-lexical"
-
-function getRevalidateTag(): ((tag: string) => void) | null {
-  try {
-    // Try to load next/cache dynamically at runtime only
-    const module = eval('require')("next/cache")
-    return module.revalidateTag
-  } catch {
-    // Module not available (e.g., during generate:importmap)
-    return null
-  }
-}
+import { revalidateTag } from "next/cache"
 
 export const Pages: CollectionConfig = {
   slug: "pages",
@@ -50,10 +40,7 @@ export const Pages: CollectionConfig = {
     afterChange: [
       () => {
         try {
-          const revalidate = getRevalidateTag()
-          if (revalidate) {
-            revalidate("cms-pages")
-          }
+          revalidateTag("cms-pages")
         } catch (e) {
           console.warn("cms-pages revalidation skipped:", e)
         }
