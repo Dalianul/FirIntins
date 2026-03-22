@@ -3,6 +3,7 @@ import Image from "next/image"
 import { m } from "motion/react"
 import { Badge } from "@/components/ui/badge"
 import { formatPrice } from "@/lib/utils"
+import { HeartButton } from "@/components/wishlist/heart-button"
 
 interface ProductCardProps {
   product: unknown
@@ -23,31 +24,37 @@ export function ProductCard({ product }: ProductCardProps) {
   const title = prod.title as string
 
   return (
-    <Link href={`/produse/${handle}`}>
-      <m.div
-        whileHover={{ scale: 1.05 }}
-        className="group rounded border border-border hover:border-moss transition-colors overflow-hidden bg-surface"
-      >
-        <div className="relative h-48 overflow-hidden bg-surface-2">
-          <Image
-            src={`https://picsum.photos/300/200?random=${id}`}
-            alt={title}
-            fill
-            className="object-cover group-hover:scale-110 transition-transform"
-          />
-        </div>
-        <div className="p-4">
-          <Badge variant="outline" className="mb-2 text-xs">
-            {category}
-          </Badge>
-          <h3 className="font-outfit font-medium text-cream text-sm line-clamp-2">
-            {title}
-          </h3>
-          <p className="text-mud font-cormorant text-lg mt-2">
-            {formatPrice(price)}
-          </p>
-        </div>
-      </m.div>
-    </Link>
+    <div className="relative group">
+      <Link href={`/produse/${handle}`}>
+        <m.div
+          whileHover={{ scale: 1.05 }}
+          className="group rounded border border-border hover:border-moss transition-colors overflow-hidden bg-surface"
+        >
+          <div className="relative h-48 overflow-hidden bg-surface-2">
+            <Image
+              src={`https://picsum.photos/300/200?random=${id}`}
+              alt={title}
+              fill
+              className="object-cover group-hover:scale-110 transition-transform"
+            />
+          </div>
+          <div className="p-4">
+            <Badge variant="outline" className="mb-2 text-xs">
+              {category}
+            </Badge>
+            <h3 className="font-outfit font-medium text-cream text-sm line-clamp-2">
+              {title}
+            </h3>
+            <p className="text-mud font-cormorant text-lg mt-2">
+              {formatPrice(price)}
+            </p>
+          </div>
+        </m.div>
+      </Link>
+      <HeartButton
+        productId={id}
+        className="absolute top-2 right-2 z-10"
+      />
+    </div>
   )
 }

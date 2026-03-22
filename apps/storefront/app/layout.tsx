@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { LazyMotion, domAnimation } from "motion/react"
 import { CartProvider } from "@/context/cart-context"
+import { WishlistProvider } from "@/context/wishlist-context"
 import { Cormorant_Garamond, Outfit } from "next/font/google"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
@@ -41,9 +42,11 @@ export default function RootLayout({
       <body className="bg-[--color-bg] text-[--color-cream]">
         <LazyMotion features={domAnimation}>
           <CartProvider>
-            <Header />
-            <main className="min-h-screen">{children}</main>
-            <Footer />
+            <WishlistProvider>
+              <Header />
+              <main className="min-h-screen">{children}</main>
+              <Footer />
+            </WishlistProvider>
           </CartProvider>
         </LazyMotion>
       </body>
