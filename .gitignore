@@ -152,3 +152,4 @@ apps/*/.medusa
 # Monorepo workspace secrets
 apps/**/.env
 apps/**/.env.local
+.superpowers/
