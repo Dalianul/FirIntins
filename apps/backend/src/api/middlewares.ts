@@ -6,6 +6,18 @@ const AddWishlistItemSchema = z.object({
   variant_id: z.string().optional(),
 })
 
+const CreateProductReviewSchema = z.object({
+  rating: z.number().int().min(1).max(5),
+  title: z.string().min(1).max(255),
+  body: z.string().min(1).max(2000),
+  order_id: z.string().optional().nullable(),
+})
+
+const UpdateProductReviewStatusSchema = z.object({
+  status: z.enum(["approved", "rejected"]),
+  admin_reply: z.string().optional().nullable(),
+})
+
 export default defineMiddlewares({
   routes: [
     {
@@ -16,6 +28,23 @@ export default defineMiddlewares({
       matcher: "/store/wishlists/items",
       method: "POST",
       middlewares: [validateAndTransformBody(AddWishlistItemSchema)],
+    },
+    {
+      matcher: "/store/products/*/reviews",
+      method: "POST",
+      middlewares: [
+        authenticate("customer", ["session", "bearer"]),
+        validateAndTransformBody(CreateProductReviewSchema),
+      ],
+    },
+    {
+      matcher: "/admin/product-reviews*",
+      middlewares: [authenticate("user", ["session", "bearer"])],
+    },
+    {
+      matcher: "/admin/product-reviews/:id",
+      method: "POST",
+      middlewares: [validateAndTransformBody(UpdateProductReviewStatusSchema)],
     },
   ],
 })
