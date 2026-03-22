@@ -3,43 +3,32 @@ import { WISHLIST_MODULE } from "../../modules/wishlist"
 import WishlistModuleService from "../../modules/wishlist/service"
 
 type RemoveWishlistItemInput = {
-  wishlist_id: string
-  product_id: string
-  variant_id?: string
+  item_id: string
+  customer_id: string
 }
 
-type RemoveWishlistItemCompensate = string | undefined
-
-export const removeWishlistItemStep = createStep<
-  RemoveWishlistItemInput,
-  string | null,
-  RemoveWishlistItemCompensate
->(
+export const removeWishlistItemStep = createStep(
   "remove-wishlist-item",
-  async ({ wishlist_id, product_id, variant_id = "" }: RemoveWishlistItemInput, { container }) => {
-    const wishlistService: WishlistModuleService = container.resolve(WISHLIST_MODULE)
+  async (input: RemoveWishlistItemInput, { container }) => {
+    const wishlistService = container.resolve<WishlistModuleService>(WISHLIST_MODULE)
 
-    const [item] = await wishlistService.listWishlistItems({
-      wishlist_id,
-      product_id,
-      variant_id,
+    const [item] = await wishlistService.listWishlistItems({ id: input.item_id })
+    if (!item) throw new Error(`Wishlist item ${input.item_id} not found`)
+
+    // Verify ownership
+    const [wishlist] = await wishlistService.listWishlists({
+      id: item.wishlist_id,
+      customer_id: input.customer_id,
     })
+    if (!wishlist) throw new Error("Unauthorized")
 
-    if (!item) {
-      return new StepResponse(null)
-    }
+    await wishlistService.deleteWishlistItems([input.item_id])
 
-    await wishlistService.deleteWishlistItems(item.id)
-
-    return new StepResponse(item.id, item.id)
+    return new StepResponse({ id: input.item_id }, { item })
   },
-  async (itemId: RemoveWishlistItemCompensate, { container }) => {
-    if (!itemId) return
-    const wishlistService: WishlistModuleService = container.resolve(WISHLIST_MODULE)
-    // Re-create the item by querying the deleted item from the database
-    // Since the item is deleted, we need to use the ID to restore it
-    // For compensation, we would need the full item data, but since we only have the ID,
-    // we cannot fully restore it. This is acceptable as a remove operation is generally
-    // not critical to compensate for in most cases.
+  async (compensation: { item: any } | undefined, { container }) => {
+    if (!compensation) return
+    const wishlistService = container.resolve<WishlistModuleService>(WISHLIST_MODULE)
+    await wishlistService.createWishlistItems(compensation.item)
   }
 )
