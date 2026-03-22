@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 const navItems = [
   { label: "Tablou de bord", href: "/cont" },
   { label: "Comenzile mele", href: "/cont/comenzi" },
+  { label: "Lista de dorinte", href: "/cont/wishlist" },
 ]
 
 export function AccountNav() {
