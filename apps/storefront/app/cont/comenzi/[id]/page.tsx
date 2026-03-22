@@ -10,8 +10,6 @@ interface OrderDetailPageProps {
   params: Promise<{ id: string }>
 }
 
-export const revalidate = 0
-
 export default async function OrderDetailPage({ params }: OrderDetailPageProps) {
   const { id } = await params
   const cookieStore = await cookies()

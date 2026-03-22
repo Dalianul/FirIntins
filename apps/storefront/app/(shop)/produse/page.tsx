@@ -21,8 +21,6 @@ export const metadata: Metadata = {
   description: "Toate produsele noastre de pescuit la crap",
 }
 
-export const revalidate = 0
-
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const page = parseInt(searchParams.page || "1", 10)
   const offset = (page - 1) * 12

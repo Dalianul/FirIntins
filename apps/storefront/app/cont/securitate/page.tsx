@@ -2,8 +2,6 @@ import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
 import { PasswordForm } from "./password-form"
 
-export const revalidate = 0
-
 export default async function SecurityPage() {
   const cookieStore = await cookies()
   const token = cookieStore.get("_medusa_jwt")?.value

@@ -4,8 +4,6 @@ import { medusa } from "@/lib/medusa/client"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
 
-export const revalidate = 0
-
 export default async function AccountPage() {
   const cookieStore = await cookies()
   const token = cookieStore.get("_medusa_jwt")?.value

@@ -16,8 +16,6 @@ interface CategoryPageProps {
   searchParams: { page?: string }
 }
 
-export const revalidate = 0
-
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   try {
     const category = await getCategory(params.slug)

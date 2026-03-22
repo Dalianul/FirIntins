@@ -3,8 +3,6 @@ import { medusa } from "@/lib/medusa/client"
 import { AccountNav } from "@/components/account/account-nav"
 import { OrderCard } from "@/components/account/order-card"
 
-export const revalidate = 0
-
 export default async function OrdersPage() {
   const cookieStore = await cookies()
   const token = cookieStore.get("_medusa_jwt")?.value

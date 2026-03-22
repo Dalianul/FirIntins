@@ -15,8 +15,6 @@ export const metadata: Metadata = {
   },
 }
 
-export const revalidate = 3600 // 1 hour
-
 export default function HomePage() {
   return (
     <main className="bg-bg">

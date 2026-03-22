@@ -4,8 +4,6 @@ import { medusa } from "@/lib/medusa/client"
 import { AddAddressSheet, EditAddressSheet } from "./address-sheet"
 import { deleteAddressAction, setDefaultAddressAction } from "@/actions/account"
 
-export const revalidate = 0
-
 export default async function AddressesPage() {
   const cookieStore = await cookies()
   const token = cookieStore.get("_medusa_jwt")?.value

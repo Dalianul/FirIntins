@@ -17,8 +17,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-export const revalidate = 1800 // 30 minutes ISR
-
 interface ProductPageProps {
   params: { handle: string }
 }

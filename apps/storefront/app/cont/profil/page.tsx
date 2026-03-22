@@ -3,8 +3,6 @@ import { cookies } from "next/headers"
 import { medusa } from "@/lib/medusa/client"
 import { ProfileForm } from "./profile-form"
 
-export const revalidate = 0
-
 export default async function ProfilePage() {
   const cookieStore = await cookies()
   const token = cookieStore.get("_medusa_jwt")?.value
