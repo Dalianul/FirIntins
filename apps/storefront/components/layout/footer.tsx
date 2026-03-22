@@ -1,13 +1,15 @@
 import Link from "next/link"
+import { getCachedFooterPages } from "@/lib/cms/client"
 
-export default function Footer() {
+export default async function Footer() {
   const currentYear = new Date().getFullYear()
+  const footerPages = await getCachedFooterPages()
 
   return (
     <footer className="bg-[--color-surface] border-t border-[--color-border] mt-16">
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
             <h3 className="text-lg font-semibold font-cormorant text-[--color-white] mb-4">
@@ -43,12 +45,38 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/blog" className="text-[--color-fog] hover:text-[--color-moss]">
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link href="/cont" className="text-[--color-fog] hover:text-[--color-moss]">
                   Contul Meu
                 </Link>
               </li>
             </ul>
           </div>
+
+          {/* Informații (legal pages from CMS) */}
+          {footerPages.length > 0 && (
+            <div>
+              <h4 className="text-sm font-semibold text-[--color-white] mb-4 uppercase">
+                Informații
+              </h4>
+              <ul className="space-y-2 text-sm">
+                {footerPages.map((page) => (
+                  <li key={page.id}>
+                    <Link
+                      href={`/pagini/${page.slug}`}
+                      className="text-[--color-fog] hover:text-[--color-moss]"
+                    >
+                      {page.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Contact */}
           <div>
@@ -76,10 +104,10 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[--color-fog]">
           <p>&copy; {currentYear} FirIntins. Toate drepturile rezervate.</p>
           <div className="flex gap-4">
-            <Link href="#" className="hover:text-[--color-moss]">
+            <Link href="/pagini/gdpr" className="hover:text-[--color-moss]">
               Politica de Confidențialitate
             </Link>
-            <Link href="#" className="hover:text-[--color-moss]">
+            <Link href="/pagini/termeni-si-conditii" className="hover:text-[--color-moss]">
               Termeni și Condiții
             </Link>
           </div>

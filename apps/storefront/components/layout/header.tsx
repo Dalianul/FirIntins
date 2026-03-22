@@ -35,6 +35,12 @@ export default function Header() {
             Categorii
           </Link>
           <Link
+            href="/blog"
+            className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
+          >
+            Blog
+          </Link>
+          <Link
             href="/"
             className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
           >
