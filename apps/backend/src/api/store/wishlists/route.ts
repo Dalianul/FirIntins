@@ -26,19 +26,10 @@ export async function GET(
     )
 
     if (wishlists.length === 0) {
-      return res.json({ wishlist: { items: [] } })
+      return res.json({ wishlist: null })
     }
 
-    const wishlist = wishlists[0]
-
-    return res.json({
-      wishlist: {
-        id: wishlist.id,
-        customer_id: wishlist.customer_id,
-        items: wishlist.items || [],
-        created_at: wishlist.created_at,
-      },
-    })
+    return res.json({ wishlist: wishlists[0] })
   } catch (error) {
     console.error("Error fetching wishlist:", error)
     return res.status(500).json({ message: "Internal server error" })

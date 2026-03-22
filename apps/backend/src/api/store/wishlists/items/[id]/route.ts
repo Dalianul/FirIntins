@@ -20,17 +20,14 @@ export async function DELETE(
   }
 
   try {
-    // Run the workflow to remove item from wishlist
-    await removeFromWishlistWorkflow.run({
+    await removeFromWishlistWorkflow(req.scope).run({
       input: {
         item_id: itemId,
         customer_id: customerId,
       },
     })
 
-    return res.json({
-      deleted: true,
-    })
+    return res.status(200).json({ deleted: true })
   } catch (error) {
     console.error("Error removing from wishlist:", error)
     return res.status(500).json({ message: "Internal server error" })

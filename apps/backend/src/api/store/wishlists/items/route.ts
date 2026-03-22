@@ -4,14 +4,17 @@ import type {
 } from "@medusajs/framework/http"
 import { addToWishlistWorkflow } from "../../../../workflows/add-to-wishlist"
 
-type AddToWishlistBody = {
-  product_id: string
-  variant_id?: string
-  quantity?: number
-}
+import { z } from "zod"
+
+const AddItemSchema = z.object({
+  product_id: z.string().min(1),
+  variant_id: z.string().optional(),
+})
+
+type AddItemBody = z.infer<typeof AddItemSchema>
 
 export async function POST(
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AddItemBody>,
   res: MedusaResponse
 ) {
   const customerId = req.auth_context?.actor_id
@@ -20,28 +23,15 @@ export async function POST(
     return res.status(401).json({ message: "Unauthorized" })
   }
 
-  try {
-    const { product_id, variant_id } = req.body as AddToWishlistBody
+  const { product_id, variant_id } = req.validatedBody
 
-    // Basic validation
-    if (!product_id) {
-      return res.status(400).json({ message: "product_id is required" })
-    }
+  const { result } = await addToWishlistWorkflow(req.scope).run({
+    input: {
+      customer_id: customerId,
+      product_id,
+      variant_id,
+    },
+  })
 
-    // Run the workflow
-    const { result } = await addToWishlistWorkflow.run({
-      input: {
-        customer_id: customerId,
-        product_id,
-        variant_id: variant_id || "",
-      },
-    })
-
-    return res.status(201).json({
-      item: result,
-    })
-  } catch (error) {
-    console.error("Error adding to wishlist:", error)
-    return res.status(500).json({ message: "Internal server error" })
-  }
+  return res.status(201).json({ item: result })
 }
