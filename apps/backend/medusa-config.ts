@@ -22,6 +22,9 @@ module.exports = defineConfig({
       resolve: "./src/modules/wishlist",
     },
     {
+      resolve: "./src/modules/product-review",
+    },
+    {
       resolve: "@medusajs/medusa/file",
       options: {
         providers: [
