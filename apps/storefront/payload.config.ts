@@ -2,18 +2,15 @@ import { buildConfig } from "payload"
 import { postgresAdapter } from "@payloadcms/db-postgres"
 import { lexicalEditor } from "@payloadcms/richtext-lexical"
 import path from "path"
-import { fileURLToPath } from "url"
 
 // Import collections
-import { Users } from "./collections/Users.ts"
-import { Posts } from "./collections/Posts.ts"
-import { Pages } from "./collections/Pages.ts"
-import { Categories } from "./collections/Categories.ts"
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import { Users } from "./collections/Users"
+import { Posts } from "./collections/Posts"
+import { Pages } from "./collections/Pages"
+import { Categories } from "./collections/Categories"
 
 export default buildConfig({
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000",
   secret: process.env.PAYLOAD_SECRET ?? "",
   db: postgresAdapter({
     pool: {
@@ -33,7 +30,7 @@ export default buildConfig({
     },
   ],
   typescript: {
-    outputFile: path.resolve(__dirname, "payload-types.ts"),
+    outputFile: path.resolve(process.cwd(), "payload-types.ts"),
   },
   admin: {
     user: "users",

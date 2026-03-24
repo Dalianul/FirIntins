@@ -2,7 +2,6 @@ import type { NextConfig } from "next"
 import withPayload from "@payloadcms/next/withPayload"
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
   images: {
     remotePatterns: [
       {
@@ -13,6 +12,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.medusa.app",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
       },
     ],
   },

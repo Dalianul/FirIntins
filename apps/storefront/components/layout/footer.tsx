@@ -1,9 +1,11 @@
 import Link from "next/link"
+import { connection } from "next/server"
 import { getCachedFooterPages } from "@/lib/cms/client"
 
 export default async function Footer() {
-  const currentYear = new Date().getFullYear()
+  await connection()
   const footerPages = await getCachedFooterPages()
+  const currentYear = new Date().getFullYear()
 
   return (
     <footer className="bg-[--color-surface] border-t border-[--color-border] mt-16">

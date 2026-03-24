@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/breadcrumb"
 
 interface ProductsPageProps {
-  searchParams: { page?: string; category?: string | string[]; price_min?: string; price_max?: string }
+  searchParams: Promise<{ page?: string; category?: string | string[]; price_min?: string; price_max?: string }>
 }
 
 export const metadata: Metadata = {
@@ -22,7 +22,8 @@ export const metadata: Metadata = {
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const page = parseInt(searchParams.page || "1", 10)
+  const { page: pageParam } = await searchParams
+  const page = parseInt(pageParam || "1", 10)
   const offset = (page - 1) * 12
 
   const { products, count } = await getProducts({ limit: 12, offset })

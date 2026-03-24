@@ -43,6 +43,8 @@ export async function getCart(cartId: string) {
 }
 
 export async function createCart() {
-  const res = await medusa.store.cart.create({})
+  const { regions } = await medusa.store.region.list()
+  const region_id = regions[0]?.id
+  const res = await medusa.store.cart.create({ region_id })
   return res.cart
 }

@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
+import { Cormorant_Garamond, Outfit } from "next/font/google"
+import { Suspense } from "react"
 import { LazyMotion, domAnimation } from "motion/react"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
-import { Cormorant_Garamond, Outfit } from "next/font/google"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import { CookieConsent } from "@/components/cookie-consent/cookie-consent"
-import "./globals.css"
+import "../globals.css"
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default function StorefrontLayout({
   children,
 }: {
   children: React.ReactNode
@@ -46,11 +47,13 @@ export default function RootLayout({
             <WishlistProvider>
               <Header />
               <main className="min-h-screen">{children}</main>
-              <Footer />
+              <Suspense fallback={null}>
+                <Footer />
+              </Suspense>
+              <CookieConsent />
             </WishlistProvider>
           </CartProvider>
         </LazyMotion>
-        <CookieConsent />
       </body>
     </html>
   )

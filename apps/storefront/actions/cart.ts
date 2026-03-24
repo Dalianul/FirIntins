@@ -49,7 +49,9 @@ export async function updateCartQuantity(
 
 export async function createCart() {
   try {
-    const { cart } = await medusa.store.cart.create({})
+    const { regions } = await medusa.store.region.list()
+    const region_id = regions[0]?.id
+    const { cart } = await medusa.store.cart.create({ region_id })
     return cart
   } catch (error) {
     console.error("createCart error:", error)

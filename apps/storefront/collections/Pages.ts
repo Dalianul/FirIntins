@@ -1,6 +1,5 @@
 import type { CollectionConfig } from "payload"
 import { lexicalEditor } from "@payloadcms/richtext-lexical"
-import { revalidateTag } from "next/cache"
 
 export const Pages: CollectionConfig = {
   slug: "pages",
@@ -38,8 +37,9 @@ export const Pages: CollectionConfig = {
   ],
   hooks: {
     afterChange: [
-      () => {
+      async () => {
         try {
+          const { revalidateTag } = await import("next/cache")
           revalidateTag("cms-pages")
         } catch (e) {
           console.warn("cms-pages revalidation skipped:", e)

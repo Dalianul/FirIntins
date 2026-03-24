@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import { m } from "motion/react"
@@ -35,6 +37,7 @@ export function ProductCard({ product }: ProductCardProps) {
               src={`https://picsum.photos/300/200?random=${id}`}
               alt={title}
               fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover group-hover:scale-110 transition-transform"
             />
           </div>

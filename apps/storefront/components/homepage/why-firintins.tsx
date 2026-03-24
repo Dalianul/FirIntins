@@ -1,3 +1,5 @@
+"use client"
+
 import { m, Variants } from "motion/react"
 
 const features = [

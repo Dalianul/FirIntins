@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { Metadata } from "next"
 import { Hero } from "@/components/homepage/hero"
 import { CategoriesSection } from "@/components/homepage/categories-section"
@@ -19,8 +20,8 @@ export default function HomePage() {
   return (
     <main className="bg-bg">
       <Hero />
-      <CategoriesSection />
-      <NewsSection />
+      <Suspense fallback={null}><CategoriesSection /></Suspense>
+      <Suspense fallback={null}><NewsSection /></Suspense>
       <WhyFirIntins />
       <NewsletterSection />
     </main>
