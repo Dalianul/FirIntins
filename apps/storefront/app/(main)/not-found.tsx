@@ -2,23 +2,59 @@ import Link from "next/link"
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[--color-bg] px-6">
-      <div className="text-center">
-        <h1 className="font-cormorant text-9xl font-bold text-[--color-cream] mb-6">
-          404
-        </h1>
-
-        <p className="font-outfit text-[--color-fog] text-lg mb-12 max-w-md">
-          Pagina nu a fost găsită. Poate că s-a mutat sau nu mai există.
-        </p>
-
+    <main
+      style={{
+        minHeight: "60vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "4rem 1.5rem",
+        textAlign: "center",
+      }}
+    >
+      <h1
+        className="font-cormorant"
+        style={{ fontSize: "3.5rem", fontWeight: 600, marginBottom: "1rem" }}
+      >
+        Pagina nu a fost găsită
+      </h1>
+      <p
+        style={{
+          color: "var(--color-fog)",
+          marginBottom: "2rem",
+          maxWidth: "36rem",
+        }}
+      >
+        Ne pare rău, pagina pe care o cauți nu există sau a fost mutată.
+      </p>
+      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center" }}>
         <Link
           href="/"
-          className="inline-block px-8 py-3 bg-[--color-moss] text-[--color-cream] font-outfit font-medium rounded-lg hover:bg-[--color-moss-light] transition-colors duration-200"
+          className="btn-primary"
+          style={{
+            padding: "0.75rem 1.5rem",
+            background: "var(--color-moss)",
+            color: "var(--color-white)",
+            textDecoration: "none",
+            borderRadius: "0.375rem",
+          }}
         >
-          Înapoi la acasă
+          Înapoi la homepage
+        </Link>
+        <Link
+          href="/produse"
+          style={{
+            padding: "0.75rem 1.5rem",
+            border: "1px solid var(--color-border)",
+            color: "var(--color-cream)",
+            textDecoration: "none",
+            borderRadius: "0.375rem",
+          }}
+        >
+          Vezi produsele
         </Link>
       </div>
-    </div>
+    </main>
   )
 }
