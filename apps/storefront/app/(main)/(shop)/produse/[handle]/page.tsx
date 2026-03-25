@@ -1,7 +1,8 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { cookies } from "next/headers"
 import { getProduct, getProducts } from "@/lib/medusa/queries"
+import { BASE_URL } from "@/lib/constants"
 import { ProductGallery } from "@/components/product/product-gallery"
 import { VariantSelector } from "@/components/product/variant-selector"
 import { AddToCartButton } from "@/components/product/add-to-cart-button"
@@ -17,8 +18,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-interface ProductPageProps {
-  params: { handle: string }
+type ProductPageProps = {
+  params: Promise<{ handle: string }>
 }
 
 export async function generateStaticParams() {
@@ -34,30 +35,22 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  try {
-    const product = await getProduct(params.handle)
-    if (!product) {
-      return {
-        title: "Produsul nu a fost găsit | FirIntins",
-      }
-    }
-
-    const mainImageUrl = product.images?.[0]?.url || `https://picsum.photos/1200/630?random=${product.id}`
-
-    return {
-      title: `${product.title} | FirIntins`,
-      description: product.description || "Produs disponibil în magazinul FirIntins",
-      openGraph: {
-        title: product.title,
-        description: product.description || "Produs disponibil în magazinul FirIntins",
-        url: `https://firintins.ro/produse/${product.handle}`,
-      },
-    }
-  } catch (error) {
-    console.error("generateMetadata error:", error)
-    return {
-      title: "Produsul nu a fost găsit | FirIntins",
-    }
+  const { handle } = await params
+  const product = await getProduct(handle)
+  if (!product) {
+    return { title: "Produsul nu a fost găsit — FirIntins" }
+  }
+  return {
+    title: `${product.title} — FirIntins`,
+    description: product.description
+      ? product.description.slice(0, 160)
+      : "Produs disponibil în magazinul FirIntins.",
+    alternates: { canonical: `${BASE_URL}/produse/${handle}` },
+    openGraph: {
+      title: product.title,
+      description: product.description?.slice(0, 160) ?? "Produs FirIntins",
+      url: `${BASE_URL}/produse/${handle}`,
+    },
   }
 }
 
@@ -76,13 +69,14 @@ interface ProductResponse {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  const { handle } = await params
   const cookieStore = await cookies()
   const isAuthenticated = !!cookieStore.get("_medusa_jwt")?.value
 
   let product: ProductResponse | null = null
 
   try {
-    product = (await getProduct(params.handle)) as ProductResponse | null
+    product = (await getProduct(handle)) as ProductResponse | null
   } catch (error) {
     console.error("getProduct error:", error)
   }
@@ -120,9 +114,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Acasă", item: "https://firintins.ro" },
-      { "@type": "ListItem", position: 2, name: "Produse", item: "https://firintins.ro/produse" },
-      { "@type": "ListItem", position: 3, name: product.title, item: `https://firintins.ro/produse/${product.handle}` },
+      { "@type": "ListItem", position: 1, name: "Acasă", item: `${BASE_URL}` },
+      { "@type": "ListItem", position: 2, name: "Produse", item: `${BASE_URL}/produse` },
+      { "@type": "ListItem", position: 3, name: product.title, item: `${BASE_URL}/produse/${product.handle}` },
     ],
   }
 
