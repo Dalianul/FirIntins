@@ -1,10 +1,10 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import Link from "next/link"
 import { LoginForm } from "@/components/auth/login-form"
 
 export const metadata: Metadata = {
-  title: "Conectare | FirIntins",
-  robots: { index: false },
+  title: "Autentificare — FirIntins",
+  robots: { index: false, follow: false },
 }
 
 export default function LoginPage() {

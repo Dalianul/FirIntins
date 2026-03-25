@@ -1,10 +1,10 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import Link from "next/link"
 import { RegisterForm } from "@/components/auth/register-form"
 
 export const metadata: Metadata = {
-  title: "Înregistrare | FirIntins",
-  robots: { index: false },
+  title: "Înregistrare — FirIntins",
+  robots: { index: false, follow: false },
 }
 
 export default function RegisterPage() {
