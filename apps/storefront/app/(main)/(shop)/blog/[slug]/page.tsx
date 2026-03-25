@@ -5,8 +5,11 @@ import Link from "next/link"
 import { getCachedPost, getCachedPosts, calcReadTime } from "@/lib/cms/client"
 import { PostContent } from "@/components/blog/post-content"
 import { PostCard } from "@/components/blog/post-card"
+import { BASE_URL } from "@/lib/constants"
 
 type Props = { params: Promise<{ slug: string }> }
+
+const mediaUrl = (url: string) => { try { return new URL(url).pathname } catch { return url } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -15,6 +18,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${post.title} — FirIntins Blog`,
     description: post.excerpt ?? undefined,
+    alternates: { canonical: `${BASE_URL}/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt ?? undefined,
+      url: `${BASE_URL}/blog/${slug}`,
+    },
   }
 }
 
@@ -83,9 +92,10 @@ export default async function BlogPostPage({ params }: Props) {
       {post.coverImage?.url && (
         <div className="relative aspect-[16/9] rounded-lg overflow-hidden mb-8 border border-[--color-border]">
           <Image
-            src={post.coverImage.url}
+            src={mediaUrl(post.coverImage.url)}
             alt={post.coverImage.alt ?? post.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
             className="object-cover"
             priority
           />

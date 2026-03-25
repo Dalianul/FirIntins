@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getCachedPosts, getCachedCategories } from "@/lib/cms/client"
 import { PostCard } from "@/components/blog/post-card"
+import { BASE_URL } from "@/lib/constants"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -19,6 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${category.name} — FirIntins Blog`,
     description: `Articole din categoria ${category.name}.`,
+    alternates: { canonical: `${BASE_URL}/blog/categorii/${slug}` },
+    openGraph: {
+      title: `${category.name} — FirIntins Blog`,
+      url: `${BASE_URL}/blog/categorii/${slug}`,
+      images: [{ url: `${BASE_URL}/og-default.jpg` }],
+    },
   }
 }
 
