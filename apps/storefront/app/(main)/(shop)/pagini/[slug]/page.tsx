@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getCachedPage, getCachedFooterPages } from "@/lib/cms/client"
 import { PostContent } from "@/components/blog/post-content"
+import { BASE_URL } from "@/lib/constants"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -10,11 +11,32 @@ export async function generateStaticParams() {
   return pages.map((p) => ({ slug: p.slug }))
 }
 
+function extractTextFromLexical(content: unknown): string {
+  if (!content || typeof content !== "object") return ""
+  const node = content as Record<string, unknown>
+  if (node.type === "text" && typeof node.text === "string") return node.text
+  if (Array.isArray(node.children)) {
+    return (node.children as unknown[]).map(extractTextFromLexical).join(" ")
+  }
+  if (node.root) return extractTextFromLexical(node.root)
+  return ""
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const page = await getCachedPage(slug)
   if (!page) return {}
-  return { title: `${page.title} — FirIntins` }
+  const description = extractTextFromLexical(page.content).trim().slice(0, 160) || undefined
+  return {
+    title: `${page.title} — FirIntins`,
+    description,
+    alternates: { canonical: `${BASE_URL}/pagini/${slug}` },
+    openGraph: {
+      title: `${page.title} — FirIntins`,
+      url: `${BASE_URL}/pagini/${slug}`,
+      images: [{ url: `${BASE_URL}/og-default.jpg` }],
+    },
+  }
 }
 
 export default async function StaticPage({ params }: Props) {
