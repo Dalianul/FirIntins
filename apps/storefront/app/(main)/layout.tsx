@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Cormorant_Garamond, Outfit } from "next/font/google"
 import { Suspense } from "react"
 import { LazyMotion, domAnimation } from "motion/react"
+import { BASE_URL } from "@/lib/constants"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
 import Header from "@/components/layout/header"
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "FirIntins",
     description: "Echipamente pescuit premium",
-    url: "https://firintins.ro",
+    url: BASE_URL,
     type: "website",
   },
 }

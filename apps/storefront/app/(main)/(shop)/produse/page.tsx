@@ -40,8 +40,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Acasă", item: "https://firintins.ro" },
-      { "@type": "ListItem", position: 2, name: "Produse", item: "https://firintins.ro/produse" },
+      { "@type": "ListItem", position: 1, name: "Acasă", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Produse", item: `${BASE_URL}/produse` },
     ],
   }
 
