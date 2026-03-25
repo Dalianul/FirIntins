@@ -1,4 +1,5 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
+import { BASE_URL } from "@/lib/constants"
 import { getCategory, getProducts } from "@/lib/medusa/queries"
 import { ProductCard } from "@/components/product/product-card"
 import {
@@ -11,45 +12,55 @@ import {
 } from "@/components/ui/breadcrumb"
 import { notFound } from "next/navigation"
 
-interface CategoryPageProps {
-  params: { slug: string }
-  searchParams: { page?: string }
+type CategoryPageProps = {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ page?: string }>
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+  const { slug } = await params
   try {
-    const category = await getCategory(params.slug)
+    const category = await getCategory(slug)
+    if (!category) return { title: "Categorie — FirIntins" }
     return {
-      title: `${category.name} | FirIntins`,
-      description: `Produse din categoria ${category.name}`,
+      title: `${category.name} — FirIntins`,
+      description: `Produse din categoria ${category.name} disponibile în magazinul FirIntins.`,
+      alternates: { canonical: `${BASE_URL}/categorii/${slug}` },
+      openGraph: {
+        title: `${category.name} — FirIntins`,
+        url: `${BASE_URL}/categorii/${slug}`,
+        images: [{ url: `${BASE_URL}/og-default.jpg` }],
+      },
     }
   } catch {
-    return { title: "Categorie | FirIntins" }
+    return { title: "Categorie — FirIntins" }
   }
 }
 
 export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   try {
-    const category = await getCategory(params.slug)
-    const page = parseInt(searchParams.page || "1", 10)
+    const { slug } = await params
+    const { page: pageParam } = await searchParams
+    const category = await getCategory(slug)
+    const page = parseInt(pageParam || "1", 10)
     const offset = (page - 1) * 12
 
     const { products } = await getProducts({ limit: 12, offset })
     const filteredProducts = products.filter((p) =>
-      p.categories?.some((c: { handle: string }) => c.handle === params.slug)
+      p.categories?.some((c: { handle: string }) => c.handle === slug)
     )
 
     const breadcrumbSchema = {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Acasă", item: "https://firintins.ro" },
-        { "@type": "ListItem", position: 2, name: "Produse", item: "https://firintins.ro/produse" },
+        { "@type": "ListItem", position: 1, name: "Acasă", item: BASE_URL },
+        { "@type": "ListItem", position: 2, name: "Produse", item: `${BASE_URL}/produse` },
         {
           "@type": "ListItem",
           position: 3,
           name: category.name,
-          item: `https://firintins.ro/categorii/${params.slug}`,
+          item: `${BASE_URL}/categorii/${slug}`,
         },
       ],
     }
