@@ -1,5 +1,6 @@
 import { Suspense } from "react"
-import { Metadata } from "next"
+import type { Metadata } from "next"
+import { BASE_URL } from "@/lib/constants"
 import { Hero } from "@/components/homepage/hero"
 import { CategoriesSection } from "@/components/homepage/categories-section"
 import { NewsSection } from "@/components/homepage/news-section"
@@ -7,12 +8,14 @@ import { WhyFirIntins } from "@/components/homepage/why-firintins"
 import { NewsletterSection } from "@/components/homepage/newsletter-section"
 
 export const metadata: Metadata = {
-  title: "FirIntins — Echipamente premium de pescuit la crap",
-  description: "Lansete, muliete, și accesorii de pescuit la crap premium",
+  title: "FirIntins — Echipamente pescuit la crap",
+  description: "Lansete, muliete și accesorii de pescuit la crap premium",
+  alternates: { canonical: `${BASE_URL}/` },
   openGraph: {
     title: "FirIntins",
     description: "Echipamente premium de pescuit la crap",
-    url: "https://firintins.ro",
+    url: `${BASE_URL}/`,
+    images: [{ url: `${BASE_URL}/og-default.jpg` }],
   },
 }
 

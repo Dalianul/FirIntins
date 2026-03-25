@@ -1,4 +1,5 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
+import { BASE_URL } from "@/lib/constants"
 import { getProducts, getCategories } from "@/lib/medusa/queries"
 import { ProductCard } from "@/components/product/product-card"
 import { PriceFilter } from "@/components/product/price-filter"
@@ -17,8 +18,14 @@ interface ProductsPageProps {
 }
 
 export const metadata: Metadata = {
-  title: "Produse | FirIntins",
-  description: "Toate produsele noastre de pescuit la crap",
+  title: "Produse — FirIntins",
+  description: "Descoperă echipamentele premium de pescuit la crap disponibile în magazinul FirIntins.",
+  alternates: { canonical: `${BASE_URL}/produse` },
+  openGraph: {
+    title: "Produse — FirIntins",
+    url: `${BASE_URL}/produse`,
+    images: [{ url: `${BASE_URL}/og-default.jpg` }],
+  },
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {

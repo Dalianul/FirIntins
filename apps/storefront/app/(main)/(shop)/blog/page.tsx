@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { BASE_URL } from "@/lib/constants"
 import { getCachedPosts, getCachedCategories } from "@/lib/cms/client"
 import { BlogListing } from "./blog-listing"
 
@@ -7,7 +8,13 @@ type Post = Record<string, unknown>
 
 export const metadata: Metadata = {
   title: "Blog — FirIntins",
-  description: "Ghiduri, noutăți și articole despre pescuitul la crap.",
+  description: "Articole, sfaturi și noutăți despre pescuitul la crap de la echipa FirIntins.",
+  alternates: { canonical: `${BASE_URL}/blog` },
+  openGraph: {
+    title: "Blog — FirIntins",
+    url: `${BASE_URL}/blog`,
+    images: [{ url: `${BASE_URL}/og-default.jpg` }],
+  },
 }
 
 export default async function BlogPage() {
