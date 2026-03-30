@@ -66,7 +66,10 @@ export default async function orderPlacedHandler({
           city: order.shipping_address?.city,
           postal_code: order.shipping_address?.postal_code,
         },
-        total: order.summary?.original_order_total,
+        subtotal: order.summary?.raw_original_order_total?.value,
+        shipping_total: order.summary?.shipping_total,
+        tax_total: order.summary?.tax_total,
+        total: order.summary?.raw_current_order_total?.value,
         currency_code: order.currency_code,
       },
     })
