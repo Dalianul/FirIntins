@@ -97,4 +97,32 @@ describe("PromoCodeInput", () => {
       expect((input as HTMLInputElement).value).toBe("")
     })
   })
+
+  it("disables input and button when cart is not loaded", () => {
+    mockUseCart.mockReturnValue({ cart: null, refreshCart: jest.fn() })
+    render(<PromoCodeInput />)
+    expect(screen.getByPlaceholderText(/cod promo/i)).toBeDisabled()
+    expect(screen.getByRole("button", { name: /aplică/i })).toBeDisabled()
+  })
+
+  it("prevents double-click when removing promo code", async () => {
+    const refreshCart = jest.fn()
+    mockUseCart.mockReturnValue({
+      cart: { ...baseCart, promotions: [{ code: "FISH10" }] },
+      refreshCart,
+    })
+    mockRemove.mockImplementation(
+      () => new Promise((r) => setTimeout(() => r({ success: true, cart: baseCart }), 100))
+    )
+
+    render(<PromoCodeInput />)
+    const removeBtn = screen.getByRole("button", { name: /elimină codul fish10/i })
+
+    fireEvent.click(removeBtn)
+    fireEvent.click(removeBtn)
+
+    await waitFor(() => {
+      expect(mockRemove).toHaveBeenCalledTimes(1)
+    })
+  })
 })

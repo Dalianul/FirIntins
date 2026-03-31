@@ -12,9 +12,11 @@ export function PromoCodeInput() {
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [removingCodes, setRemovingCodes] = useState<Set<string>>(new Set())
 
   const cartId = cart?.id ?? ""
   const appliedCodes = cart?.promotions ?? []
+  const isReady = cart !== null
 
   const handleApply = async () => {
     if (!cartId || !code.trim()) return
@@ -31,13 +33,22 @@ export function PromoCodeInput() {
   }
 
   const handleRemove = async (promoCode: string) => {
-    if (!cartId) return
+    if (!cartId || removingCodes.has(promoCode)) return
     setError(null)
-    const result = await removePromoCodeAction(cartId, promoCode)
-    if (result.success) {
-      await refreshCart()
-    } else {
-      setError(result.error ?? "A apărut o eroare")
+    setRemovingCodes(prev => new Set(prev).add(promoCode))
+    try {
+      const result = await removePromoCodeAction(cartId, promoCode)
+      if (result.success) {
+        await refreshCart()
+      } else {
+        setError(result.error ?? "A apărut o eroare")
+      }
+    } finally {
+      setRemovingCodes(prev => {
+        const next = new Set(prev)
+        next.delete(promoCode)
+        return next
+      })
     }
   }
 
@@ -51,12 +62,12 @@ export function PromoCodeInput() {
           onChange={(e) => setCode(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleApply()}
           className="h-8 text-sm bg-[--color-bg] border-[--color-border] text-[--color-cream] placeholder:text-[--color-fog]/50"
-          disabled={loading}
+          disabled={loading || !isReady}
         />
         <Button
           type="button"
           onClick={handleApply}
-          disabled={loading || !code.trim()}
+          disabled={loading || !code.trim() || !isReady}
           className="h-8 px-3 text-xs bg-[--color-moss] hover:bg-[--color-moss-light] text-white shrink-0"
         >
           {loading ? "..." : "Aplică"}
@@ -79,7 +90,8 @@ export function PromoCodeInput() {
                 type="button"
                 onClick={() => handleRemove(promo.code)}
                 aria-label={`Elimină codul ${promo.code}`}
-                className="hover:text-red-400 transition-colors"
+                disabled={removingCodes.has(promo.code)}
+                className="hover:text-red-400 transition-colors disabled:opacity-50"
               >
                 <X size={10} />
               </button>
