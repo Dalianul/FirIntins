@@ -146,10 +146,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const refreshCart = async () => {
     if (!cart?.id) return
     try {
+      setError(null)
       const updated = await retrieveCart(cart.id)
       if (updated) setCart(updated as Cart)
     } catch (error) {
       console.error("refreshCart error:", error)
+      setError("Nu am putut actualiza coșul.")
     }
   }
 

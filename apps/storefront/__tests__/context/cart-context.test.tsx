@@ -176,6 +176,7 @@ describe("CartProvider — refreshCart", () => {
 
     expect(retrieveCart).toHaveBeenCalledWith("cart-1")
     expect(result.current.cart?.discount_total).toBe(500)
+    expect(result.current.cart?.promotions).toEqual([{ code: "FISH10" }])
   })
 
   it("refreshCart does nothing when cart is null", async () => {
