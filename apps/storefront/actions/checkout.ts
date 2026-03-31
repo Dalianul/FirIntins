@@ -80,10 +80,14 @@ export async function applyPromoCodeAction(cartId: string, code: string) {
 }
 
 export async function removePromoCodeAction(cartId: string, code: string) {
+  const parse = promoCodeSchema.safeParse({ code })
+  if (!parse.success) {
+    return { success: false, error: parse.error.errors[0]?.message ?? "Cod invalid", cart: null }
+  }
   try {
     // Medusa JS SDK types don't expose removePromotions — cast required
     const { cart } = await (medusa.store.cart as any).removePromotions(cartId, {
-      promo_codes: [code],
+      promo_codes: [parse.data.code],
     })
     return { success: true, cart }
   } catch (error: unknown) {

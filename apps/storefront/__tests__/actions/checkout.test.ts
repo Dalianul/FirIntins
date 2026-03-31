@@ -68,4 +68,11 @@ describe("removePromoCodeAction", () => {
     expect(result.success).toBe(false)
     expect(result.error).toBeDefined()
   })
+
+  it("returns error without calling API when code is empty", async () => {
+    const result = await removePromoCodeAction("cart_1", "")
+    expect(result.success).toBe(false)
+    expect(result.error).toBeDefined()
+    expect(mockRemovePromotions).not.toHaveBeenCalled()
+  })
 })
