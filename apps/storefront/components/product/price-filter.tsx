@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,6 +15,12 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
   const searchParams = useSearchParams()
   const [minPrice, setMinPrice] = useState(priceMin)
   const [maxPrice, setMaxPrice] = useState(priceMax)
+
+  // Sync state when URL-driven props change (e.g. another filter updates the URL)
+  useEffect(() => {
+    setMinPrice(priceMin)
+    setMaxPrice(priceMax)
+  }, [priceMin, priceMax])
 
   const handleApply = () => {
     const params = new URLSearchParams(searchParams.toString())
