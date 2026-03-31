@@ -14,10 +14,24 @@ export interface ProductParams {
   category_id?: string[]
   region_id?: string
   handle?: string
+  q?: string
+  order?: Record<string, string>
+}
+
+// Maps URL `sort` param → Medusa `order` object.
+// price_asc / price_desc are NOT here — they are applied post-fetch.
+// relevance is NOT here — omitting `order` uses Medusa's default ranking.
+export const SORT_ORDER_MAP: Record<string, Record<string, string>> = {
+  newest:     { created_at: 'DESC' },
+  title_asc:  { title: 'ASC' },
+  title_desc: { title: 'DESC' },
 }
 
 export async function getProducts(params?: ProductParams) {
-  const res = await medusa.store.product.list(params)
+  const res = await (medusa.store.product.list as Function)({
+    ...params,
+    fields: '+variants.inventory_quantity,+variants.calculated_price',
+  })
   return res // { products, count, offset, limit }
 }
 
