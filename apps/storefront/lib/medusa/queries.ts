@@ -28,6 +28,8 @@ export const SORT_ORDER_MAP: Record<string, Record<string, string>> = {
 }
 
 export async function getProducts(params?: ProductParams) {
+  // Medusa JS SDK TypeScript types don't expose `fields`, `q`, or `order` query params.
+  // `as Function` bypasses this SDK typing limitation — revisit when SDK types are updated.
   const res = await (medusa.store.product.list as Function)({
     ...params,
     fields: '+variants.inventory_quantity,+variants.calculated_price',
