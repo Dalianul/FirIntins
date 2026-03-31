@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import Link from "next/link"
 import { useCart } from "@/hooks/use-cart"
 import { CartDrawer } from "@/components/cart/cart-drawer"
+import SearchButton from "@/components/layout/search-button"
 
 export default function Header() {
   const { itemCount } = useCart()
@@ -50,6 +51,9 @@ export default function Header() {
 
         {/* Right Actions */}
         <div className="flex gap-4 items-center">
+          <Suspense>
+            <SearchButton />
+          </Suspense>
           <Link
             href="/cont"
             className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
