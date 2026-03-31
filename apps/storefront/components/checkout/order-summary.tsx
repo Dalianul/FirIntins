@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { formatPrice } from "@/lib/utils"
 import type { Cart, CartItem } from "@/context/cart-context"
+import { PromoCodeInput } from "@/components/checkout/promo-code-input"
 
 interface OrderSummaryProps {
   cart: Cart | null
@@ -13,6 +14,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
   const items = cart.items ?? []
   const subtotal = cart.subtotal ?? 0
   const shippingTotal = cart.shipping_total ?? 0
+  const discountTotal = cart.discount_total ?? 0
   const total = cart.total ?? 0
 
   return (
@@ -42,6 +44,12 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
           <span className="text-fog">Subtotal</span>
           <span className="text-cream">{formatPrice(subtotal)}</span>
         </div>
+        {discountTotal > 0 && (
+          <div className="flex justify-between">
+            <span className="text-moss">Reducere</span>
+            <span className="text-moss">−{formatPrice(discountTotal)}</span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="text-fog">Livrare</span>
           <span className="text-cream">{formatPrice(shippingTotal)}</span>
@@ -50,6 +58,10 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
       <div className="border-t border-border pt-4 flex justify-between text-lg">
         <span className="font-outfit font-medium text-cream">Total</span>
         <span className="text-mud">{formatPrice(total)}</span>
+      </div>
+      <div className="border-t border-border pt-4">
+        <p className="text-fog text-xs mb-2">Cod promoțional</p>
+        <PromoCodeInput />
       </div>
     </div>
   )
