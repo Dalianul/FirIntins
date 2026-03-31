@@ -1,36 +1,62 @@
-import { render, screen, fireEvent } from "@testing-library/react"
-import { CategoryFilter } from "@/components/blog/category-filter"
+import { render, screen, fireEvent } from '@testing-library/react'
+import { CategoryFilter } from '@/components/product/category-filter'
+
+const mockPush = jest.fn()
+let mockParamsStr = ''
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push: mockPush }),
+  useSearchParams: () => ({ toString: () => mockParamsStr }),
+}))
 
 const categories = [
-  { id: "1", slug: "ghiduri", name: "Ghiduri" },
-  { id: "2", slug: "noutati", name: "Noutăți" },
+  { id: 'cat_spinning', name: 'Spinning' },
+  { id: 'cat_crap', name: 'Crap' },
 ]
 
-describe("CategoryFilter", () => {
-  test("renders Toate tab plus all categories", () => {
-    render(<CategoryFilter categories={categories} onSelect={jest.fn()} selected={null} />)
-    expect(screen.getByText("Toate")).toBeInTheDocument()
-    expect(screen.getByText("Ghiduri")).toBeInTheDocument()
-    expect(screen.getByText("Noutăți")).toBeInTheDocument()
+describe('CategoryFilter', () => {
+  beforeEach(() => {
+    mockPush.mockClear()
+    mockParamsStr = ''
   })
 
-  test("calls onSelect with null when Toate is clicked", () => {
-    const onSelect = jest.fn()
-    render(<CategoryFilter categories={categories} onSelect={onSelect} selected="ghiduri" />)
-    fireEvent.click(screen.getByText("Toate"))
-    expect(onSelect).toHaveBeenCalledWith(null)
+  it('renders "Toate categoriile" as the first option', () => {
+    render(<CategoryFilter categories={categories} category="" />)
+    expect(screen.getByRole('combobox')).toBeInTheDocument()
+    expect(screen.getByText('Toate categoriile')).toBeInTheDocument()
   })
 
-  test("calls onSelect with slug when category tab is clicked", () => {
-    const onSelect = jest.fn()
-    render(<CategoryFilter categories={categories} onSelect={onSelect} selected={null} />)
-    fireEvent.click(screen.getByText("Ghiduri"))
-    expect(onSelect).toHaveBeenCalledWith("ghiduri")
+  it('renders all provided categories as options', () => {
+    render(<CategoryFilter categories={categories} category="" />)
+    expect(screen.getByText('Spinning')).toBeInTheDocument()
+    expect(screen.getByText('Crap')).toBeInTheDocument()
   })
 
-  test("marks selected tab as active", () => {
-    render(<CategoryFilter categories={categories} onSelect={jest.fn()} selected="ghiduri" />)
-    const activeTab = screen.getByText("Ghiduri").closest("button")
-    expect(activeTab).toHaveAttribute("aria-pressed", "true")
+  it('shows the current category as selected', () => {
+    render(<CategoryFilter categories={categories} category="cat_spinning" />)
+    expect(screen.getByRole('combobox')).toHaveValue('cat_spinning')
+  })
+
+  it('sets category param when a category is selected', () => {
+    render(<CategoryFilter categories={categories} category="" />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'cat_crap' } })
+    expect(mockPush).toHaveBeenCalledWith(
+      expect.stringContaining('category=cat_crap')
+    )
+  })
+
+  it('removes category param when "Toate categoriile" is selected', () => {
+    mockParamsStr = 'category=cat_spinning&sort=newest'
+    render(<CategoryFilter categories={categories} category="cat_spinning" />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: '' } })
+    const url = mockPush.mock.calls[0][0] as string
+    expect(url).not.toContain('category=')
+    expect(url).toContain('sort=newest')
+  })
+
+  it('pushes to absolute /produse path', () => {
+    render(<CategoryFilter categories={categories} category="" />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'cat_spinning' } })
+    expect(mockPush).toHaveBeenCalledWith(expect.stringMatching(/^\/produse\?/))
   })
 })
