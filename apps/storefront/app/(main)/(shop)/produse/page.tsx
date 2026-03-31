@@ -1,9 +1,14 @@
+import { Suspense } from "react"
 import type { Metadata } from "next"
+import Link from "next/link"
 import { BASE_URL } from "@/lib/constants"
-import { getProducts, getCategories } from "@/lib/medusa/queries"
-import { ProductCard } from "@/components/product/product-card"
-import { PriceFilter } from "@/components/product/price-filter"
+import { getCategories } from "@/lib/medusa/queries"
+import ProductGrid from "@/components/product/product-grid"
+import ProductGridSkeleton from "@/components/product/product-grid-skeleton"
 import { CategoryFilter } from "@/components/product/category-filter"
+import { PriceFilter } from "@/components/product/price-filter"
+import InStockToggle from "@/components/product/in-stock-toggle"
+import SortSelect from "@/components/product/sort-select"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,7 +19,15 @@ import {
 } from "@/components/ui/breadcrumb"
 
 interface ProductsPageProps {
-  searchParams: Promise<{ page?: string; category?: string | string[]; price_min?: string; price_max?: string }>
+  searchParams: Promise<{
+    q?: string
+    category?: string
+    price_min?: string
+    price_max?: string
+    in_stock?: string
+    sort?: string
+    page?: string
+  }>
 }
 
 export const metadata: Metadata = {
@@ -29,12 +42,12 @@ export const metadata: Metadata = {
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const { page: pageParam } = await searchParams
-  const page = parseInt(pageParam || "1", 10)
-  const offset = (page - 1) * 12
-
-  const { products, count } = await getProducts({ limit: 12, offset })
+  const sp = await searchParams
   const categories = await getCategories()
+
+  const hasActiveFilters = !!(
+    sp.q || sp.category || sp.price_min || sp.price_max || sp.in_stock || sp.sort
+  )
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -46,7 +59,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   return (
-    <main className="bg-bg min-h-screen">
+    <main className="bg-[--color-bg] min-h-screen">
       <div className="px-6 py-4 max-w-7xl mx-auto">
         <Breadcrumb>
           <BreadcrumbList>
@@ -66,34 +79,33 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 p-6 max-w-7xl mx-auto">
-        <aside className="md:col-span-1">
-          <PriceFilter />
-          <CategoryFilter categories={categories} />
-        </aside>
-        <div className="md:col-span-3">
-          <h1 className="font-cormorant text-4xl text-cream mb-8">Produse</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+      <div className="px-6 pb-6 max-w-7xl mx-auto">
+        <h1 className="font-cormorant text-4xl text-[--color-cream] mb-6">Produse</h1>
+
+        {/* Filter bar — wrapped in Suspense because filter components use useSearchParams() */}
+        <Suspense fallback={<div className="h-10 animate-pulse bg-[--color-surface] rounded mb-6" />}>
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <CategoryFilter categories={categories} category={sp.category ?? ""} />
+            <PriceFilter priceMin={sp.price_min ?? ""} priceMax={sp.price_max ?? ""} />
+            <InStockToggle inStock={sp.in_stock === "true"} />
+            <SortSelect sort={sp.sort ?? ""} />
           </div>
-          <div className="flex justify-center gap-2 mt-12">
-            {Array.from({ length: Math.ceil(count / 12) }, (_, i) => (
-              <a
-                key={i + 1}
-                href={`?page=${i + 1}`}
-                className={`px-3 py-1 rounded ${
-                  page === i + 1
-                    ? "bg-moss text-white"
-                    : "bg-surface border border-border text-cream"
-                }`}
-              >
-                {i + 1}
-              </a>
-            ))}
+        </Suspense>
+
+        {hasActiveFilters && (
+          <div className="mb-4">
+            <Link
+              href="/produse"
+              className="text-sm text-[--color-moss] hover:text-[--color-moss-light] transition-colors"
+            >
+              Resetează filtrele
+            </Link>
           </div>
-        </div>
+        )}
+
+        <Suspense fallback={<ProductGridSkeleton />}>
+          <ProductGrid searchParams={sp} />
+        </Suspense>
       </div>
     </main>
   )
