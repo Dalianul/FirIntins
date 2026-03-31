@@ -24,6 +24,8 @@ export interface Cart {
   items: CartItem[]
   subtotal: number
   shipping_total?: number
+  discount_total?: number
+  promotions?: Array<{ code: string }>
   total: number
 }
 
@@ -34,6 +36,7 @@ export interface CartContextValue {
   removeItem: (lineItemId: string) => Promise<void>
   updateQuantity: (lineItemId: string, quantity: number) => Promise<void>
   clearCart: () => Promise<void>
+  refreshCart: () => Promise<void>
   loading: boolean
   error: string | null
   clearError: () => void
@@ -140,6 +143,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const refreshCart = async () => {
+    if (!cart?.id) return
+    try {
+      const updated = await retrieveCart(cart.id)
+      if (updated) setCart(updated as Cart)
+    } catch (error) {
+      console.error("refreshCart error:", error)
+    }
+  }
+
   const clearError = () => {
     setError(null)
   }
@@ -155,6 +168,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeItem,
         updateQuantity,
         clearCart,
+        refreshCart,
         loading,
         error,
         clearError,

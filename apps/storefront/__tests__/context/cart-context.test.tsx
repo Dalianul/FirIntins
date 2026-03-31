@@ -140,3 +140,61 @@ describe("CartProvider", () => {
     })
   })
 })
+
+describe("CartProvider — refreshCart", () => {
+  beforeEach(() => {
+    localStorageMock.clear()
+    jest.clearAllMocks()
+  })
+
+  it("refreshCart updates cart state from server", async () => {
+    const { createCart, retrieveCart } = require("@/actions/cart")
+
+    const initialCart = { id: "cart-1", items: [], subtotal: 0, total: 0 }
+    const refreshedCart = {
+      id: "cart-1",
+      items: [],
+      subtotal: 0,
+      discount_total: 500,
+      promotions: [{ code: "FISH10" }],
+      total: 9500,
+    }
+
+    createCart.mockResolvedValue(initialCart)
+    retrieveCart.mockResolvedValue(refreshedCart)
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <CartProvider>{children}</CartProvider>
+    )
+    const { result } = renderHook(() => useCart(), { wrapper })
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    await act(async () => {
+      await result.current.refreshCart()
+    })
+
+    expect(retrieveCart).toHaveBeenCalledWith("cart-1")
+    expect(result.current.cart?.discount_total).toBe(500)
+  })
+
+  it("refreshCart does nothing when cart is null", async () => {
+    const { createCart, retrieveCart } = require("@/actions/cart")
+    createCart.mockRejectedValue(new Error("no cart"))
+    retrieveCart.mockResolvedValue(null)
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <CartProvider>{children}</CartProvider>
+    )
+    const { result } = renderHook(() => useCart(), { wrapper })
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    // Should not throw
+    await act(async () => {
+      await result.current.refreshCart()
+    })
+
+    expect(result.current.cart).toBeNull()
+  })
+})
