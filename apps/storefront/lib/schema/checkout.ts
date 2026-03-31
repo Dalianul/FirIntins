@@ -14,5 +14,10 @@ export const paymentSchema = z.object({
   cardholderName: z.string().min(1, "Numele titularului este obligatoriu"),
 })
 
+export const promoCodeSchema = z.object({
+  code: z.string().min(1, "Codul promoțional este obligatoriu").trim(),
+})
+
 export type AddressInput = z.infer<typeof addressSchema>
 export type PaymentInput = z.infer<typeof paymentSchema>
+export type PromoCodeInput = z.infer<typeof promoCodeSchema>

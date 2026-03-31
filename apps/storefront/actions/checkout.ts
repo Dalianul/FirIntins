@@ -2,6 +2,7 @@
 
 import { medusa } from "@/lib/medusa/client"
 import type { AddressInput } from "@/lib/schema/checkout"
+import { promoCodeSchema } from "@/lib/schema/checkout"
 
 export async function updateAddressAction(cartId: string, input: AddressInput) {
   try {
@@ -58,5 +59,35 @@ export async function completeCheckoutAction(cartId: string) {
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "A apărut o eroare"
     return { success: false, error: message, orderId: "" }
+  }
+}
+
+export async function applyPromoCodeAction(cartId: string, code: string) {
+  const parse = promoCodeSchema.safeParse({ code })
+  if (!parse.success) {
+    return { success: false, error: parse.error.errors[0]?.message ?? "Cod invalid", cart: null }
+  }
+  try {
+    // Medusa JS SDK types don't expose addPromotions — cast required
+    const { cart } = await (medusa.store.cart as any).addPromotions(cartId, {
+      promo_codes: [parse.data.code],
+    })
+    return { success: true, cart }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Cod promoțional invalid"
+    return { success: false, error: message, cart: null }
+  }
+}
+
+export async function removePromoCodeAction(cartId: string, code: string) {
+  try {
+    // Medusa JS SDK types don't expose removePromotions — cast required
+    const { cart } = await (medusa.store.cart as any).removePromotions(cartId, {
+      promo_codes: [code],
+    })
+    return { success: true, cart }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "A apărut o eroare"
+    return { success: false, error: message, cart: null }
   }
 }

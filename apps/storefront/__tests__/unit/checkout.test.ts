@@ -1,4 +1,4 @@
-import { addressSchema } from "@/lib/schema/checkout"
+import { addressSchema, promoCodeSchema } from "@/lib/schema/checkout"
 
 describe("Checkout Zod schemas", () => {
   test("addressSchema validates valid address", () => {
@@ -52,6 +52,24 @@ describe("Checkout Zod schemas", () => {
       countryCode: "fr",
     }
     const result = addressSchema.safeParse(invalid)
+    expect(result.success).toBe(false)
+  })
+})
+
+describe("promoCodeSchema", () => {
+  test("accepts valid promo code", () => {
+    const result = promoCodeSchema.safeParse({ code: "FISH10" })
+    expect(result.success).toBe(true)
+  })
+
+  test("trims whitespace from code", () => {
+    const result = promoCodeSchema.safeParse({ code: "  FISH10  " })
+    expect(result.success).toBe(true)
+    if (result.success) expect(result.data.code).toBe("FISH10")
+  })
+
+  test("rejects empty code", () => {
+    const result = promoCodeSchema.safeParse({ code: "" })
     expect(result.success).toBe(false)
   })
 })
