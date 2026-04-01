@@ -242,4 +242,44 @@ describe("CartProvider — analytics", () => {
 
     expect(trackAddToCart).toHaveBeenCalledWith(addedItem)
   })
+
+  it("calls trackAddToCart after 404 cart recovery retry", async () => {
+    const { createCart, addItemToCart } = require("@/actions/cart")
+    const { trackAddToCart } = require("@/lib/analytics")
+
+    const mockItem = {
+      id: "item-1",
+      variant_id: "var-1",
+      product_title: "Rod",
+      variant_title: null,
+      unit_price: 15000,
+      quantity: 1,
+      total: 15000,
+    }
+
+    const initialCart = { id: "cart-1", items: [], subtotal: 0, total: 0 }
+    const recoveredCart = { id: "cart-new", items: [mockItem], subtotal: 15000, total: 15000 }
+
+    createCart.mockResolvedValue(initialCart)
+    // First addItemToCart throws 404, then succeeds on retry
+    addItemToCart
+      .mockRejectedValueOnce(new Error("404"))
+      .mockResolvedValueOnce({ success: true, cart: recoveredCart })
+    // Second createCart call for recovery
+    createCart.mockResolvedValueOnce({ id: "cart-new", items: [], subtotal: 0, total: 0 })
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <CartProvider>{children}</CartProvider>
+    )
+    const { result } = renderHook(() => useCart(), { wrapper })
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    await act(async () => {
+      await result.current.addItem("var-1", 1)
+    })
+
+    // Verify trackAddToCart was called with the item from the recovered cart
+    expect(trackAddToCart).toHaveBeenCalledWith(mockItem)
+  })
 })

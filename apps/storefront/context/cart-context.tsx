@@ -100,7 +100,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const newCart = await createCart()
         localStorage.setItem("firintins_cart_id", newCart.id)
         setCart(newCart as Cart)
-        await addItemToCart(newCart.id, variantId, quantity)
+        const retryResult = await addItemToCart(newCart.id, variantId, quantity)
+        if (retryResult?.success) {
+          setCart(retryResult.cart as Cart)
+          const addedItem = (retryResult.cart as Cart).items?.find(
+            (i) => i.variant_id === variantId
+          )
+          if (addedItem) trackAddToCart(addedItem)
+        }
       } else {
         setError("Nu am putut adăuga articolul în coș.")
       }
