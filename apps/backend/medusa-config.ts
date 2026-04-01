@@ -65,6 +65,12 @@ module.exports = defineConfig({
               channels: ["email"],
               api_key: process.env.SENDGRID_API_KEY,
               from: process.env.SENDGRID_FROM,
+              templates: [
+                {
+                  id: "return-confirmation",
+                  subject: "Cererea ta de retur #{{order_id}} a fost înregistrată",
+                },
+              ],
             },
           },
         ],
