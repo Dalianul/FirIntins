@@ -8,6 +8,7 @@ import {
   createCart,
   retrieveCart,
 } from "@/actions/cart"
+import { trackAddToCart } from "@/lib/analytics"
 
 export interface CartItem {
   id: string
@@ -87,6 +88,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const result = await addItemToCart(cart.id, variantId, quantity)
       if (result.success) {
         setCart(result.cart as Cart)
+        const addedItem = (result.cart as Cart).items?.find(
+          (i) => i.variant_id === variantId
+        )
+        if (addedItem) trackAddToCart(addedItem)
       }
     } catch (error) {
       console.error("addItem error:", error)

@@ -11,6 +11,10 @@ jest.mock("@/actions/cart", () => ({
   updateCartQuantity: jest.fn(),
 }))
 
+jest.mock("@/lib/analytics", () => ({
+  trackAddToCart: jest.fn(),
+}))
+
 // Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {}
@@ -197,5 +201,45 @@ describe("CartProvider — refreshCart", () => {
     })
 
     expect(result.current.cart).toBeNull()
+  })
+})
+
+describe("CartProvider — analytics", () => {
+  beforeEach(() => {
+    localStorageMock.clear()
+    jest.clearAllMocks()
+  })
+
+  it("calls trackAddToCart with the added item after successful addItem", async () => {
+    const { createCart, addItemToCart } = require("@/actions/cart")
+    const { trackAddToCart } = require("@/lib/analytics")
+
+    const initialCart = { id: "cart-1", items: [], subtotal: 0, total: 0 }
+    const addedItem = {
+      id: "li_1",
+      variant_id: "var_1",
+      product_title: "Lanseta Crap",
+      variant_title: "3.6m",
+      quantity: 2,
+      unit_price: 25000,
+      total: 50000,
+    }
+    const updatedCart = { id: "cart-1", items: [addedItem], subtotal: 50000, total: 50000 }
+
+    createCart.mockResolvedValue(initialCart)
+    addItemToCart.mockResolvedValue({ success: true, cart: updatedCart })
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <CartProvider>{children}</CartProvider>
+    )
+    const { result } = renderHook(() => useCart(), { wrapper })
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    await act(async () => {
+      await result.current.addItem("var_1", 2)
+    })
+
+    expect(trackAddToCart).toHaveBeenCalledWith(addedItem)
   })
 })
