@@ -5,6 +5,7 @@ import { LazyMotion, domAnimation } from "motion/react"
 import { BASE_URL } from "@/lib/constants"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
+import { Analytics } from "@/components/analytics/analytics"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import { CookieConsent } from "@/components/cookie-consent/cookie-consent"
@@ -51,6 +52,7 @@ export default function StorefrontLayout({
               <Suspense fallback={null}>
                 <Footer />
               </Suspense>
+              <Analytics />
               <CookieConsent />
             </WishlistProvider>
           </CartProvider>
