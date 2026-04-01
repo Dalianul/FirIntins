@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useCart } from "@/hooks/use-cart"
 import { useToast } from "@/hooks/use-toast"
+import { trackBeginCheckout } from "@/lib/analytics"
 import { AddressStep } from "@/components/checkout/address-step"
 import { ShippingStep } from "@/components/checkout/shipping-step"
 import { PaymentStep } from "@/components/checkout/payment-step"
@@ -27,12 +28,20 @@ export function CheckoutClient({ isGuest }: CheckoutClientProps) {
   const [step, setStep] = useState<CheckoutStep>("address")
   const [clientSecret, setClientSecret] = useState<string>("")
   const [loadingPayment, setLoadingPayment] = useState(false)
+  const checkoutTracked = useRef(false)
 
   useEffect(() => {
     if (!cartId) {
       router.push("/cos")
     }
   }, [cartId, router])
+
+  useEffect(() => {
+    if (cart && !checkoutTracked.current) {
+      checkoutTracked.current = true
+      trackBeginCheckout(cart)
+    }
+  }, [cart])
 
   if (!cartId) {
     return (
