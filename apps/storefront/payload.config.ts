@@ -8,6 +8,7 @@ import { Users } from "./collections/Users"
 import { Posts } from "./collections/Posts"
 import { Pages } from "./collections/Pages"
 import { Categories } from "./collections/Categories"
+import { NewsletterSubscribers } from "./collections/NewsletterSubscribers"
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000",
@@ -23,9 +24,13 @@ export default buildConfig({
     Categories,
     Posts,
     Pages,
+    NewsletterSubscribers,
     {
       slug: "media",
       upload: true,
+      access: {
+        read: () => true,
+      },
       fields: [{ name: "alt", type: "text" }],
     },
   ],
