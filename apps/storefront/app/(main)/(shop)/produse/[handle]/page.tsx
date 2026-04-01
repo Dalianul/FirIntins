@@ -9,6 +9,7 @@ import { AddToCartButton } from "@/components/product/add-to-cart-button"
 import { ProductTabs } from "@/components/product/product-tabs"
 import { ReviewList } from "@/components/reviews/review-list"
 import { ReviewForm } from "@/components/reviews/review-form"
+import { ViewItemTracker } from "@/components/analytics/view-item-tracker"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -147,6 +148,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      <ViewItemTracker
+        id={product.id}
+        title={product.title}
+        price={product.variants?.[0]?.prices?.[0]?.amount}
       />
 
       <div className="max-w-7xl mx-auto px-6 py-12">
