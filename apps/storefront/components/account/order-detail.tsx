@@ -1,6 +1,8 @@
 import Image from "next/image"
+import Link from "next/link"
 import { formatPrice } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 interface OrderItem {
   id: string
@@ -19,6 +21,21 @@ interface ShippingAddress {
   country_code?: string
 }
 
+interface TrackingLink {
+  url: string
+  tracking_number: string
+}
+
+interface Fulfillment {
+  id: string
+  tracking_links?: TrackingLink[]
+}
+
+interface OrderReturn {
+  id: string
+  status: string
+}
+
 interface Order {
   id: string
   status: string
@@ -29,13 +46,17 @@ interface Order {
   tax_total?: number
   total?: number
   shipping_address?: ShippingAddress | null
+  fulfillments?: Fulfillment[]
+  returns?: OrderReturn[]
+  metadata?: Record<string, unknown> | null
 }
 
 interface OrderDetailProps {
   order: Order
+  returnSuccess?: boolean
 }
 
-export function OrderDetail({ order }: OrderDetailProps) {
+export function OrderDetail({ order, returnSuccess }: OrderDetailProps) {
   const items = (order.items ?? []).filter((item) => item !== null)
   const shippingAddress = order.shipping_address
 
@@ -51,9 +72,25 @@ export function OrderDetail({ order }: OrderDetailProps) {
     canceled: "bg-red-500/20 text-red-400",
   }
 
+  const diffDays =
+    (Date.now() - new Date(order.created_at).getTime()) / (1000 * 60 * 60 * 24)
+  const activeReturn = order.returns?.find((r) => r.status !== "canceled")
+  const canReturn =
+    order.status === "completed" && diffDays <= 14 && !activeReturn
+
+  const trackingLinks =
+    order.fulfillments?.flatMap((f) => f.tracking_links ?? []) ?? []
+
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-start">
+      {returnSuccess && (
+        <div className="bg-moss/20 border border-moss/30 rounded p-4 text-moss-light text-sm">
+          Cererea de retur a fost înregistrată. Vei primi un email cu
+          instrucțiunile.
+        </div>
+      )}
+
+      <div className="flex justify-between items-start flex-wrap gap-3">
         <div>
           <h1 className="font-cormorant text-4xl text-cream mb-2">
             #{order.id.slice(0, 8)}
@@ -62,9 +99,14 @@ export function OrderDetail({ order }: OrderDetailProps) {
             {new Date(order.created_at).toLocaleDateString("ro-RO")}
           </p>
         </div>
-        <Badge className={statusColor[order.status] ?? ""}>
-          {statusMap[order.status] ?? order.status}
-        </Badge>
+        <div className="flex items-center gap-3 flex-wrap">
+          {activeReturn && (
+            <Badge variant="secondary">Retur solicitat</Badge>
+          )}
+          <Badge className={statusColor[order.status] ?? ""}>
+            {statusMap[order.status] ?? order.status}
+          </Badge>
+        </div>
       </div>
 
       <div className="bg-surface-2 rounded p-6">
@@ -97,7 +139,9 @@ export function OrderDetail({ order }: OrderDetailProps) {
         </div>
         <div className="flex justify-between">
           <span className="text-fog">Livrare</span>
-          <span className="text-cream">{formatPrice(order.shipping_total ?? 0)}</span>
+          <span className="text-cream">
+            {formatPrice(order.shipping_total ?? 0)}
+          </span>
         </div>
         <div className="flex justify-between">
           <span className="text-fog">TVA</span>
@@ -111,7 +155,9 @@ export function OrderDetail({ order }: OrderDetailProps) {
 
       {shippingAddress && (
         <div className="bg-surface-2 rounded p-6">
-          <h3 className="font-outfit font-medium text-cream mb-3">Adresă livrare</h3>
+          <h3 className="font-outfit font-medium text-cream mb-3">
+            Adresă livrare
+          </h3>
           <p className="text-fog text-sm">
             {shippingAddress.first_name} {shippingAddress.last_name}
             <br />
@@ -121,6 +167,42 @@ export function OrderDetail({ order }: OrderDetailProps) {
             <br />
             {shippingAddress.country_code?.toUpperCase()}
           </p>
+          {order.metadata?.cui && (
+            <p className="text-fog text-sm mt-2">
+              Cod fiscal: {String(order.metadata.cui)}
+            </p>
+          )}
+        </div>
+      )}
+
+      {trackingLinks.length > 0 && (
+        <div className="bg-surface-2 rounded p-6">
+          <h3 className="font-outfit font-medium text-cream mb-3">
+            Urmărire colet
+          </h3>
+          <div className="space-y-1">
+            {trackingLinks.map((link, i) => (
+              <a
+                key={i}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-moss-light text-sm hover:underline block"
+              >
+                {link.tracking_number}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {canReturn && (
+        <div className="pt-2">
+          <Link href={`/cont/comenzi/${order.id}/retur`}>
+            <Button variant="outline" size="sm" className="border-border">
+              Solicită retur
+            </Button>
+          </Link>
         </div>
       )}
     </div>

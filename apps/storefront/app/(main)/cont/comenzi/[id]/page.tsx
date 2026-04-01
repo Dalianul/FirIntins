@@ -8,19 +8,26 @@ import { Button } from "@/components/ui/button"
 
 interface OrderDetailPageProps {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ retur?: string }>
 }
 
-export default async function OrderDetailPage({ params }: OrderDetailPageProps) {
+export default async function OrderDetailPage({
+  params,
+  searchParams,
+}: OrderDetailPageProps) {
   const { id } = await params
+  const { retur } = await searchParams
   const cookieStore = await cookies()
   const token = cookieStore.get("_medusa_jwt")?.value
 
   if (!token) return null
 
   try {
-    const { order } = await medusa.store.order.retrieve(id, undefined, {
-      Authorization: `Bearer ${token}`,
-    })
+    const { order } = await medusa.store.order.retrieve(
+      id,
+      { fields: "+fulfillments.tracking_links,+returns,+metadata" },
+      { Authorization: `Bearer ${token}` }
+    )
 
     return (
       <>
@@ -31,7 +38,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
               ← Înapoi la comenzi
             </Button>
           </Link>
-          <OrderDetail order={order} />
+          <OrderDetail order={order} returnSuccess={retur === "success"} />
         </div>
       </>
     )
