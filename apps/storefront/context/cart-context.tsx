@@ -107,6 +107,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
             (i) => i.variant_id === variantId
           )
           if (addedItem) trackAddToCart(addedItem)
+        } else {
+          setError("Nu am putut adăuga articolul în coș.")
         }
       } else {
         setError("Nu am putut adăuga articolul în coș.")

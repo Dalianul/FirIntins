@@ -282,4 +282,31 @@ describe("CartProvider — analytics", () => {
     // Verify trackAddToCart was called with the item from the recovered cart
     expect(trackAddToCart).toHaveBeenCalledWith(mockItem)
   })
+
+  it("sets error when 404 recovery retry fails", async () => {
+    const { createCart, addItemToCart } = require("@/actions/cart")
+
+    const initialCart = { id: "cart-1", items: [], subtotal: 0, total: 0 }
+
+    createCart.mockResolvedValue(initialCart)
+    // First addItemToCart throws 404, then fails on retry
+    addItemToCart
+      .mockRejectedValueOnce(new Error("404"))
+      .mockResolvedValueOnce({ success: false })
+    // Second createCart call for recovery
+    createCart.mockResolvedValueOnce({ id: "cart-new", items: [], subtotal: 0, total: 0 })
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <CartProvider>{children}</CartProvider>
+    )
+    const { result } = renderHook(() => useCart(), { wrapper })
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    await act(async () => {
+      await result.current.addItem("var-1", 1)
+    })
+
+    expect(result.current.error).toBe("Nu am putut adăuga articolul în coș.")
+  })
 })
