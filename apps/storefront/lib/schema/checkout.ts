@@ -8,6 +8,7 @@ export const addressSchema = z.object({
   postalCode: z.string().min(1, "Codul poștal este obligatoriu"),
   countryCode: z.literal("ro"),
   phone: z.string().optional(),
+  cui: z.string().optional(),
 })
 
 export const paymentSchema = z.object({

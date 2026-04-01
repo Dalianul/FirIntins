@@ -67,6 +67,12 @@ export function AddressStep({ cartId, onNext }: AddressStepProps) {
       <div>
         <Input placeholder="Telefon (opțional)" {...register("phone")} />
       </div>
+      <div>
+        <Input
+          placeholder="Cod fiscal (CUI) — opțional"
+          {...register("cui")}
+        />
+      </div>
       <input type="hidden" {...register("countryCode")} value="ro" />
       <Button
         type="submit"

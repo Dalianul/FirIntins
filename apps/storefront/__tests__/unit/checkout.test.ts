@@ -56,6 +56,34 @@ describe("Checkout Zod schemas", () => {
   })
 })
 
+describe("addressSchema — CUI field", () => {
+  const base = {
+    firstName: "Ion",
+    lastName: "Popescu",
+    address1: "Str. Principală 123",
+    city: "București",
+    postalCode: "010101",
+    countryCode: "ro" as const,
+  }
+
+  it("accepts address with optional CUI", () => {
+    const result = addressSchema.safeParse({ ...base, cui: "RO12345678" })
+    expect(result.success).toBe(true)
+    if (result.success) expect(result.data.cui).toBe("RO12345678")
+  })
+
+  it("accepts address without CUI — field is undefined", () => {
+    const result = addressSchema.safeParse(base)
+    expect(result.success).toBe(true)
+    if (result.success) expect(result.data.cui).toBeUndefined()
+  })
+
+  it("accepts empty string CUI — treated as undefined", () => {
+    const result = addressSchema.safeParse({ ...base, cui: "" })
+    expect(result.success).toBe(true)
+  })
+})
+
 describe("promoCodeSchema", () => {
   test("accepts valid promo code", () => {
     const result = promoCodeSchema.safeParse({ code: "FISH10" })
