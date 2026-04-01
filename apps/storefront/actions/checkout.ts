@@ -6,7 +6,7 @@ import { promoCodeSchema } from "@/lib/schema/checkout"
 
 export async function updateAddressAction(cartId: string, input: AddressInput) {
   try {
-    await medusa.store.cart.update(cartId, {
+    await (medusa.store.cart.update as Function)(cartId, {
       shipping_address: {
         first_name: input.firstName,
         last_name: input.lastName,
@@ -16,6 +16,7 @@ export async function updateAddressAction(cartId: string, input: AddressInput) {
         country_code: input.countryCode,
         phone: input.phone,
       },
+      metadata: { cui: input.cui ?? null },
     })
     return { success: true }
   } catch (error: unknown) {

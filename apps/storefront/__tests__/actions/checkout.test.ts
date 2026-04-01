@@ -4,16 +4,18 @@ jest.mock("@/lib/medusa/client", () => ({
       cart: {
         addPromotions: jest.fn(),
         removePromotions: jest.fn(),
+        update: jest.fn(),
       },
     },
   },
 }))
 
-import { applyPromoCodeAction, removePromoCodeAction } from "@/actions/checkout"
+import { applyPromoCodeAction, removePromoCodeAction, updateAddressAction } from "@/actions/checkout"
 import { medusa } from "@/lib/medusa/client"
 
 const mockAddPromotions = (medusa.store.cart as any).addPromotions as jest.Mock
 const mockRemovePromotions = (medusa.store.cart as any).removePromotions as jest.Mock
+const mockUpdate = (medusa.store.cart as any).update as jest.Mock
 
 describe("applyPromoCodeAction", () => {
   beforeEach(() => jest.clearAllMocks())
@@ -47,6 +49,48 @@ describe("applyPromoCodeAction", () => {
     const result = await applyPromoCodeAction("cart_1", "BAD")
     expect(result.success).toBe(false)
     expect(result.error).toBeDefined()
+  })
+})
+
+describe("updateAddressAction — CUI metadata", () => {
+  beforeEach(() => jest.clearAllMocks())
+
+  it("passes CUI in metadata when provided", async () => {
+    mockUpdate.mockResolvedValue({ cart: { id: "cart_1" } })
+    const result = await updateAddressAction("cart_1", {
+      firstName: "Ion",
+      lastName: "Popescu",
+      address1: "Str. 1",
+      city: "București",
+      postalCode: "010101",
+      countryCode: "ro",
+      cui: "RO12345678",
+    })
+    expect(result.success).toBe(true)
+    expect(mockUpdate).toHaveBeenCalledWith(
+      "cart_1",
+      expect.objectContaining({
+        metadata: { cui: "RO12345678" },
+      })
+    )
+  })
+
+  it("passes null for CUI when not provided", async () => {
+    mockUpdate.mockResolvedValue({ cart: { id: "cart_1" } })
+    await updateAddressAction("cart_1", {
+      firstName: "Ion",
+      lastName: "Popescu",
+      address1: "Str. 1",
+      city: "București",
+      postalCode: "010101",
+      countryCode: "ro",
+    })
+    expect(mockUpdate).toHaveBeenCalledWith(
+      "cart_1",
+      expect.objectContaining({
+        metadata: { cui: null },
+      })
+    )
   })
 })
 

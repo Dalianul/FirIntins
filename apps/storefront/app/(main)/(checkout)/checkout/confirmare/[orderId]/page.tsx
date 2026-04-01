@@ -36,6 +36,14 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
           <PurchaseTracker orderId={order.id} total={order.total ?? 0} items={trackerItems} />
           <ConfirmationDisplay order={order} />
 
+          {(order as any).metadata?.cui && (
+            <div className="mt-4 text-center">
+              <p className="text-sm text-fog">
+                Cod fiscal: {(order as any).metadata.cui}
+              </p>
+            </div>
+          )}
+
           <div className="mt-12 flex justify-center">
             <Link href="/produse">
               <Button className="bg-moss hover:opacity-90 text-white">

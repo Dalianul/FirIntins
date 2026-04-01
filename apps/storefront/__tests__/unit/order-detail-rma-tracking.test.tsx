@@ -119,3 +119,28 @@ describe("OrderDetail — return success banner", () => {
     ).not.toBeInTheDocument()
   })
 })
+
+describe("OrderDetail — CUI display", () => {
+  const orderWithAddress = {
+    ...baseOrder,
+    shipping_address: {
+      first_name: "Ion",
+      last_name: "Popescu",
+      address_1: "Str. 1",
+      city: "București",
+      postal_code: "010101",
+      country_code: "ro",
+    },
+  }
+
+  it("shows CUI when present in metadata", () => {
+    const order = { ...orderWithAddress, metadata: { cui: "RO12345678" } }
+    render(<OrderDetail order={order} />)
+    expect(screen.getByText(/RO12345678/)).toBeInTheDocument()
+  })
+
+  it("hides CUI section when no metadata", () => {
+    render(<OrderDetail order={orderWithAddress} />)
+    expect(screen.queryByText(/Cod fiscal:/)).not.toBeInTheDocument()
+  })
+})
