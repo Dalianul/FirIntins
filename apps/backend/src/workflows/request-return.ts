@@ -1,4 +1,6 @@
 import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { createReturnStep } from "./steps/create-return"
+import { sendReturnConfirmationStep } from "./steps/send-return-confirmation"
 
 export function isWithin14Days(createdAt: string | Date): boolean {
   const created = new Date(createdAt)
@@ -21,9 +23,6 @@ type RequestReturnInput = {
   customerEmail: string
 }
 
-// Temporary stubs — replace in Task 2
-function createReturnStep(_: unknown) { return {} as any }
-function sendReturnConfirmationStep(_: unknown) {}
 
 export const requestReturnWorkflow = createWorkflow(
   "request-return",
