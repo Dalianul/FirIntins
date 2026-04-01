@@ -3,6 +3,7 @@
 import { useEffect } from "react"
 import * as CookieConsentLib from "vanilla-cookieconsent"
 import "vanilla-cookieconsent/dist/cookieconsent.css"
+import { grantAnalyticsConsent, denyAnalyticsConsent } from "@/lib/analytics"
 
 export function CookieConsent() {
   useEffect(() => {
@@ -59,6 +60,18 @@ export function CookieConsent() {
             },
           },
         },
+      },
+      onConsent: ({ cookie }: { cookie: { categories: string[] } }) => {
+        if (cookie.categories.includes("analytics")) {
+          grantAnalyticsConsent()
+        }
+      },
+      onChange: ({ cookie }: { cookie: { categories: string[] } }) => {
+        if (cookie.categories.includes("analytics")) {
+          grantAnalyticsConsent()
+        } else {
+          denyAnalyticsConsent()
+        }
       },
     })
   }, [])
