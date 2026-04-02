@@ -15,7 +15,7 @@
     "undici": "5.20.0"
   },
   "devDependencies": {
-    "turbo": "^2.0.0"
+    "turbo": "^2.9.3"
   },
   "engines": {
     "node": ">=20",
@@ -27,6 +27,7 @@
     },
     "onlyBuiltDependencies": [
       "@medusajs/telemetry",
+      "@parcel/watcher",
       "@swc/core",
       "esbuild",
       "msgpackr-extract",
