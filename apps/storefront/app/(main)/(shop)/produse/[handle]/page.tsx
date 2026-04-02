@@ -4,8 +4,7 @@ import { cookies } from "next/headers"
 import { getProduct, getProducts } from "@/lib/medusa/queries"
 import { BASE_URL } from "@/lib/constants"
 import { ProductGallery } from "@/components/product/product-gallery"
-import { VariantSelector } from "@/components/product/variant-selector"
-import { AddToCartButton } from "@/components/product/add-to-cart-button"
+import { ProductActions } from "@/components/product/product-actions"
 import { ProductTabs } from "@/components/product/product-tabs"
 import { ReviewList } from "@/components/reviews/review-list"
 import { ReviewForm } from "@/components/reviews/review-form"
@@ -87,7 +86,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const variants = product.variants || []
-  const selectedVariant = variants.find((v) => (v.inventory_quantity ?? 1) > 0) || variants[0]
   const outOfStock = variants.every((v) => (v.inventory_quantity ?? 1) === 0)
 
   const productSchema = {
@@ -171,19 +169,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {variants.length > 0 ? (
-              <>
-                <VariantSelector
-                  variants={variants}
-                  onSelect={() => {
-                    // Controlled by parent, no op needed
-                  }}
-                />
-                <AddToCartButton
-                  productId={product.id}
-                  variant={selectedVariant}
-                  outOfStock={outOfStock}
-                />
-              </>
+              <ProductActions productId={product.id} variants={variants} />
             ) : (
               <p className="text-fog">Nu sunt variante disponibile pentru acest produs.</p>
             )}
