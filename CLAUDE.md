@@ -62,6 +62,8 @@ NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=<from Medusa admin>
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 PAYLOAD_DATABASE_URL=<postgres connection string for Payload>
 PAYLOAD_SECRET=<random secret for Payload JWT>
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-...        # optional — omit to disable analytics
+NEXT_PUBLIC_SERVER_URL=https://firintins.ro  # optional — used for canonical URLs
 ```
 
 The storefront client (`lib/medusa/client.ts`) throws at module load if either Medusa env var is missing.
@@ -91,10 +93,10 @@ Config: `medusa-config.ts`. Active providers: Stripe (payments), SendGrid (notif
 The app has two independent root layouts (each renders `<html>` + `<body>`):
 
 **`app/(main)/`** — storefront root layout (fonts, CartProvider, WishlistProvider, LazyMotion, Header, Footer, CookieConsent):
-- `(shop)/` — homepage (`/`), product listing (`/produse`), PDP (`/produse/[handle]`), category (`/categorii/[slug]`), cart (`/cos`), blog listing (`/blog`), blog post (`/blog/[slug]`), blog by category (`/blog/categorii/[slug]`), static pages (`/pagini/[slug]`)
+- `(shop)/` — homepage (`/`), product listing (`/produse`), PDP (`/produse/[handle]`), category listing (`/categorii`), category (`/categorii/[slug]`), offers (`/oferte`), cart (`/cos`), blog listing (`/blog`), blog post (`/blog/[slug]`), blog by category (`/blog/categorii/[slug]`), static pages (`/pagini/[slug]`)
 - `(auth)/` — login (`/login`), register (`/register`)
 - `(checkout)/` — single page at `/checkout` with 3 client-side steps (address → shipping → payment); order confirmation at `/checkout/confirmare/[orderId]`
-- `cont/` — protected account pages: orders, addresses, profile, security, wishlist; guarded by `proxy.ts` checking `_medusa_jwt` cookie
+- `cont/` — protected account pages: orders (`/cont/comenzi`), order detail (`/cont/comenzi/[id]`), return request (`/cont/comenzi/[id]/retur`), addresses, profile, security, wishlist; guarded by `proxy.ts` checking `_medusa_jwt` cookie
 
 **`app/(payload)/`** — Payload CMS admin panel at `/admin` (separate root layout). Both `layout.tsx` and `admin/[[...segments]]/page.tsx` have `export const dynamic = "force-dynamic"` — **do not remove**, it's required for Payload to function alongside `experimental.useCache`.
 
@@ -105,11 +107,15 @@ The app has two independent root layouts (each renders `<html>` + `<body>`):
 - `queries.ts` — server-side fetch helpers (`getProducts`, `getProduct`, `getCategories`, `getCart`, etc.)
 - `get-customer.ts` — server-side customer fetch using `_medusa_jwt` cookie
 
-**Server Actions** (`actions/`): `auth.ts`, `checkout.ts`, `cart.ts`, `account.ts`, `review.ts`, `wishlist.ts` — all use Zod schemas from `lib/schema/` for validation.
+**Server Actions** (`actions/`): `auth.ts`, `checkout.ts`, `cart.ts`, `account.ts`, `review.ts`, `wishlist.ts`, `return.ts` — all use Zod schemas from `lib/schema/` for validation.
 
 **State:**
 - `context/cart-context.tsx` — CartProvider, persists `cartId` in localStorage
 - `context/wishlist-context.tsx` — WishlistProvider
+
+**Analytics** (`lib/analytics.ts`): GA4 via `window.gtag`. Starts with consent denied; `CookieConsent` component calls `grantAnalyticsConsent()` / `denyAnalyticsConsent()`. Tracker components (`components/analytics/`) fire `view_item`, `add_to_cart`, `begin_checkout`, `purchase` events. Requires `NEXT_PUBLIC_GA_MEASUREMENT_ID` env var — omitting it silently disables analytics.
+
+**Constants** (`lib/constants.ts`): `BASE_URL` = `NEXT_PUBLIC_SERVER_URL` ?? `"https://firintins.ro"` — used for canonical URLs and OG metadata.
 
 **Animations:** `LazyMotion` + `domAnimation` is set up in `(main)/layout.tsx`. Import from `"motion/react"`, not `"framer-motion"`.
 
