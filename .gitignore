@@ -153,3 +153,9 @@ apps/*/.medusa
 apps/**/.env
 apps/**/.env.local
 .superpowers/
+
+# Claude Code
+.claude/
+
+# CPU profiles
+*.cpuprofile
