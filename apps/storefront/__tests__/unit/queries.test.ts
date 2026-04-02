@@ -14,7 +14,7 @@ jest.mock('@/lib/medusa/client', () => ({
 }))
 
 import { medusa } from '@/lib/medusa/client'
-import { getProducts, SORT_ORDER_MAP } from '@/lib/medusa/queries'
+import { getProducts, SORT_ORDER_MAP, getOfferProducts } from '@/lib/medusa/queries'
 
 const mockList = medusa.store.product.list as jest.Mock
 
@@ -58,5 +58,38 @@ describe('getProducts', () => {
     expect(mockList).toHaveBeenCalledWith(
       expect.objectContaining({ fields: expect.stringContaining('inventory_quantity') })
     )
+  })
+})
+
+describe('getOfferProducts', () => {
+  beforeEach(() => mockList.mockClear())
+
+  it('returns only products with is_oferta: true', async () => {
+    mockList.mockResolvedValue({
+      products: [
+        { id: '1', metadata: { is_oferta: true } },
+        { id: '2', metadata: { is_oferta: false } },
+        { id: '3', metadata: {} },
+        { id: '4', metadata: { is_oferta: true } },
+      ],
+    })
+    const result = await getOfferProducts()
+    expect(result).toHaveLength(2)
+    expect(result.map((p: any) => p.id)).toEqual(['1', '4'])
+  })
+
+  it('returns empty array when no products have is_oferta: true', async () => {
+    mockList.mockResolvedValue({ products: [{ id: '1', metadata: {} }] })
+    const result = await getOfferProducts()
+    expect(result).toHaveLength(0)
+  })
+
+  it('calls product.list with limit 100 and inventory field', async () => {
+    mockList.mockResolvedValue({ products: [] })
+    await getOfferProducts()
+    expect(mockList).toHaveBeenCalledWith({
+      limit: 100,
+      fields: '+variants.inventory_quantity',
+    })
   })
 })

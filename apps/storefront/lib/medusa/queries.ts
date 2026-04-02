@@ -64,3 +64,13 @@ export async function createCart() {
   const res = await medusa.store.cart.create({ region_id })
   return res.cart
 }
+
+export async function getOfferProducts() {
+  const res = await (medusa.store.product.list as Function)({
+    limit: 100,
+    fields: '+variants.inventory_quantity',
+  })
+  return (res.products as any[]).filter(
+    (p) => p.metadata?.is_oferta === true
+  )
+}
