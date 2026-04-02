@@ -191,7 +191,7 @@ export function AddAddressSheet() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
+      <SheetTrigger>
         <button className="bg-moss hover:bg-moss-light text-white font-outfit text-sm px-4 py-2 rounded transition-colors">
           + Adaugă adresă nouă
         </button>
@@ -213,7 +213,7 @@ export function EditAddressSheet({ address }: { address: Address }) {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
+      <SheetTrigger>
         <button
           className="text-fog hover:text-cream text-xs underline"
           aria-label="Editează adresa"

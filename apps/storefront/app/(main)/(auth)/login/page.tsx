@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import Link from "next/link"
 import { LoginForm } from "@/components/auth/login-form"
 
@@ -13,7 +14,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <h1 className="font-cormorant text-4xl text-cream mb-2 text-center">Conectare</h1>
         <p className="text-fog text-center mb-8">Accesează contul tău FirIntins</p>
-        <LoginForm />
+        <Suspense fallback={null}>
+          <LoginForm />
+        </Suspense>
         <p className="text-center text-fog mt-6">Nu ai cont?{" "}
           <Link href="/register" className="text-moss hover:text-moss-light">Înregistrează-te</Link>
         </p>

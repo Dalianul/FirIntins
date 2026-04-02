@@ -23,7 +23,7 @@ export default async function PayloadLayout({ children }: Args) {
   }
 
   return (
-    <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
+    <RootLayout config={config} importMap={importMap} serverFunction={serverFunction as any}>
       {children}
     </RootLayout>
   )

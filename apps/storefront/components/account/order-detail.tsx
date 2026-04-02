@@ -167,7 +167,7 @@ export function OrderDetail({ order, returnSuccess }: OrderDetailProps) {
             <br />
             {shippingAddress.country_code?.toUpperCase()}
           </p>
-          {order.metadata?.cui && (
+          {!!order.metadata?.cui && (
             <p className="text-fog text-sm mt-2">
               Cod fiscal: {String(order.metadata.cui)}
             </p>

@@ -33,7 +33,7 @@ pnpm test:integration:modules # Module integration tests
 
 ### Storefront only
 ```bash
-pnpm --filter storefront dev         # next dev
+pnpm --filter storefront dev         # next dev --webpack (webpack, not Turbopack)
 pnpm --filter storefront test        # Jest unit tests (excludes smoke)
 pnpm --filter storefront test:smoke  # Smoke tests (requires running server)
 pnpm --filter storefront test:watch  # Watch mode
@@ -76,32 +76,36 @@ Medusa v2 uses a module + workflow architecture. Business logic belongs in **Wor
 - `src/modules/` — custom Medusa modules (data models + services)
 - `src/workflows/` — Medusa Workflows for business logic
 - `src/links/` — Module Links connecting custom modules to Medusa core modules
-- `src/subscribers/` — Event subscribers
-- `src/jobs/` — Scheduled jobs
 - `src/scripts/seed.ts` — Database seed script
 
 Config: `medusa-config.ts`. Active providers: Stripe (payments), SendGrid (notifications), local file storage.
 
+**Custom modules:**
+- `wishlist` — `Wishlist` + `WishlistItem` models; linked to customer and product via `src/links/`; workflows: `add-to-wishlist`, `remove-from-wishlist`; store API at `/store/wishlists`
+- `product-review` — `ProductReview` model; linked to customer and product; workflows: `create-product-review`, `update-product-review`; store API at `/store/products/[id]/reviews`
+
 ### Storefront (Next.js 16 App Router)
+
+**Bundler:** `next dev --webpack` (Turbopack is default in Next.js 16 but has a memory-leak dev crash with Payload; webpack is stable).
 
 The app has two independent root layouts (each renders `<html>` + `<body>`):
 
 **`app/(main)/`** — storefront root layout (fonts, CartProvider, WishlistProvider, LazyMotion, Header, Footer, CookieConsent):
-- `(shop)/` — product listing (`/produse`), PDP (`/produse/[handle]`), category (`/categorii/[slug]`), cart (`/cos`), blog (`/blog`), static pages (`/pagini/[slug]`)
-- `(auth)/` — login, register
-- `(checkout)/` — 3-step checkout (address → shipping → payment), order confirmation (`/checkout/confirmare/[orderId]`)
-- `cont/` — protected account pages (orders, addresses, profile, security, wishlist); guarded by `proxy.ts` via `_medusa_jwt` cookie
+- `(shop)/` — homepage (`/`), product listing (`/produse`), PDP (`/produse/[handle]`), category (`/categorii/[slug]`), cart (`/cos`), blog listing (`/blog`), blog post (`/blog/[slug]`), blog by category (`/blog/categorii/[slug]`), static pages (`/pagini/[slug]`)
+- `(auth)/` — login (`/login`), register (`/register`)
+- `(checkout)/` — single page at `/checkout` with 3 client-side steps (address → shipping → payment); order confirmation at `/checkout/confirmare/[orderId]`
+- `cont/` — protected account pages: orders, addresses, profile, security, wishlist; guarded by `proxy.ts` checking `_medusa_jwt` cookie
 
-**`app/(payload)/`** — Payload CMS admin panel at `/admin` (separate root layout, imports `@payloadcms/next/css`). Collections: Users, Categories, Posts, Pages, Media.
+**`app/(payload)/`** — Payload CMS admin panel at `/admin` (separate root layout). Both `layout.tsx` and `admin/[[...segments]]/page.tsx` have `export const dynamic = "force-dynamic"` — **do not remove**, it's required for Payload to function alongside `experimental.useCache`.
 
-**Auth guard:** `proxy.ts` (exported as `middleware`) matches `/cont/:path*` — redirects to `/login` if `_medusa_jwt` cookie absent.
+**Auth guard:** `proxy.ts` exports `proxy` function and `config` (matcher: `/cont/:path*`) — redirects to `/login` if `_medusa_jwt` cookie absent. Must be re-exported from `middleware.ts` for Next.js to pick it up.
 
 **Data layer** (`lib/medusa/`):
 - `client.ts` — singleton Medusa SDK instance
 - `queries.ts` — server-side fetch helpers (`getProducts`, `getProduct`, `getCategories`, `getCart`, etc.)
-- `auth.ts`, `account.ts`, `checkout.ts` — server-side SDK calls for mutations
+- `get-customer.ts` — server-side customer fetch using `_medusa_jwt` cookie
 
-**Server Actions** (`actions/`): `auth.ts`, `checkout.ts`, `cart.ts`, `account.ts` — all use Zod schemas from `lib/schema/` for validation.
+**Server Actions** (`actions/`): `auth.ts`, `checkout.ts`, `cart.ts`, `account.ts`, `review.ts`, `wishlist.ts` — all use Zod schemas from `lib/schema/` for validation.
 
 **State:**
 - `context/cart-context.tsx` — CartProvider, persists `cartId` in localStorage
@@ -113,11 +117,22 @@ The app has two independent root layouts (each renders `<html>` + `<body>`):
 
 Payload v3 runs inside the Next.js 16 app (same process, same port). Config: `payload.config.ts`.
 
-- `app/(payload)/layout.tsx` — uses `RootLayout` from `@payloadcms/next/layouts`; the only CSS import must be `import "@payloadcms/next/css"` (do NOT use `@payloadcms/ui/styles.css` or any SCSS)
+- `app/(payload)/layout.tsx` — uses `RootLayout` from `@payloadcms/next/layouts`; CSS import must be `import "@payloadcms/next/css"` only (do NOT use `@payloadcms/ui/styles.css` or any SCSS)
 - `app/(payload)/admin/[[...segments]]/page.tsx` — Payload admin UI
 - `app/(payload)/api/[...slug]/route.ts` — Payload REST + GraphQL API
 - `app/(payload)/admin/importMap.js` — auto-generated; regenerate with `generate:importmap` after adding custom components
-- `collections/` — Payload collection configs (Posts and Pages have `afterChange` hooks calling `revalidateTag`)
+- `collections/` — Posts and Pages have `afterChange` hooks calling `revalidateTag`; Media has `access: { read: () => true }` for public file serving
+
+**CMS data caching** (`lib/cms/client.ts`): uses `"use cache"` + `cacheTag` + `cacheLife` (enabled by `experimental: { useCache: true }` in `next.config.ts`). Tags: `cms-blog` (posts/categories), `cms-pages` (pages/footer).
+
+**Payload media images:** Payload returns absolute URLs (`http://localhost:3000/api/media/file/...`). Always extract the pathname before passing to `next/image` to avoid loopback fetch errors: `new URL(url).pathname`.
+
+### next.config.ts
+
+```ts
+experimental: { useCache: true }   // enables "use cache" directive without dynamicIO
+```
+`withPayload()` wraps the config. Do NOT add `cacheComponents: true` — it's incompatible with Payload's `force-dynamic` routes.
 
 ### Styling
 
@@ -147,3 +162,56 @@ UI is in Romanian. Test assertions on user-facing strings must use Romanian text
 ### Next.js Version Note
 
 This project uses Next.js 16. Dynamic route params are `Promise<{ param: string }>` — always `await params` in page components. See `apps/storefront/AGENTS.md`.
+
+### `revalidateTag` Signature
+
+Next.js 16 with `experimental.useCache` changes `revalidateTag` to require two arguments:
+
+```ts
+revalidateTag("cms-blog", {})   // second arg is CacheLifeConfig (all fields optional, {} is valid)
+```
+
+Single-arg calls are a TypeScript error. Affects `collections/Posts.ts`, `collections/Pages.ts`, and `app/api/revalidate/route.ts`.
+
+### Pages That Fetch Medusa Data at Render Time
+
+Pages whose server components call Medusa queries during render (not in `generateStaticParams`) need `export const dynamic = "force-dynamic"` to prevent build-time prerender failures (backend not running during `next build`):
+
+```ts
+export const dynamic = "force-dynamic"   // required on homepage and any page with top-level Medusa fetches
+```
+
+Dynamic route pages (`/produse/[handle]`, `/categorii/[slug]`) already have `generateStaticParams` that returns `[]` on error — these become server-rendered without needing `force-dynamic`.
+
+### `useSearchParams()` Requires Suspense
+
+Any client component using `useSearchParams()` must be wrapped in `<Suspense>` at the page level or static prerendering fails:
+
+```tsx
+<Suspense fallback={null}>
+  <LoginForm />   {/* uses useSearchParams internally */}
+</Suspense>
+```
+
+Affects `(auth)/login/page.tsx` and `(auth)/register/page.tsx`.
+
+### Medusa SDK Type Limitations
+
+The JS SDK types are narrower than what the runtime actually accepts. Known mismatches:
+
+- `StoreUpdateCustomer` does not include `email` or `password` fields (runtime supports them)
+- `createAddress` / `updateAddress` / `deleteAddress` auth header arg type doesn't match `SelectParams`
+
+Use `as Function` or `as any` casts at the call site rather than fighting the types. Examples are in `actions/account.ts`.
+
+`order.metadata` is typed `Record<string, unknown> | null` — fields like `.cui` are `unknown`, which can't be used directly in JSX. Cast with `!!value` for conditionals or `String(value)` for rendering.
+
+### Base UI vs Radix UI
+
+shadcn/ui components are built on **Base UI** (`@base-ui-components/react`), not Radix UI. The `asChild` prop does not exist on Base UI primitives (e.g. `SheetTrigger`, `DialogTrigger`). Do not pass `asChild` to these components.
+
+### pnpm Overrides
+
+Root `package.json` has critical overrides under `pnpm.overrides`:
+
+- `"zod": "^3.25.76"` — aligns Zod across Medusa and storefront to avoid version conflicts.

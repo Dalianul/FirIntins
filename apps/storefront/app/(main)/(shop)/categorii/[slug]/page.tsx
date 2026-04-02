@@ -46,7 +46,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     const offset = (page - 1) * 12
 
     const { products } = await getProducts({ limit: 12, offset })
-    const filteredProducts = products.filter((p) =>
+    const filteredProducts = products.filter((p: any) =>
       p.categories?.some((c: { handle: string }) => c.handle === slug)
     )
 
@@ -93,7 +93,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         <div className="p-6 max-w-7xl mx-auto">
           <h1 className="font-cormorant text-4xl text-cream mb-8">{category.name}</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product: any) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

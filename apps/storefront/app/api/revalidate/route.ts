@@ -13,6 +13,6 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "Missing tag" }, { status: 400 })
   }
 
-  revalidateTag(tag)
+  revalidateTag(tag, {})
   return Response.json({ revalidated: true, tag })
 }

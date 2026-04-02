@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const productUrls: MetadataRoute.Sitemap = await (async () => {
     try {
       const { products } = await getProducts({ limit: 200 })
-      return products.map((p) => ({
+      return products.map((p: any) => ({
         url: `${BASE_URL}/produse/${p.handle}`,
         changeFrequency: "weekly" as const,
         priority: 0.8,
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categoryUrls: MetadataRoute.Sitemap = await (async () => {
     try {
       const categories = await getCategories()
-      return categories.map((c) => ({
+      return categories.map((c: any) => ({
         url: `${BASE_URL}/categorii/${c.handle}`,
         changeFrequency: "monthly" as const,
         priority: 0.6,

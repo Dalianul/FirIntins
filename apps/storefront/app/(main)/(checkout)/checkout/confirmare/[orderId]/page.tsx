@@ -34,7 +34,7 @@ export default async function ConfirmationPage({ params }: ConfirmationPageProps
       <main className="min-h-screen py-12 bg-bg">
         <div className="max-w-2xl mx-auto px-4">
           <PurchaseTracker orderId={order.id} total={order.total ?? 0} items={trackerItems} />
-          <ConfirmationDisplay order={order} />
+          <ConfirmationDisplay order={order as any} />
 
           {(order as any).metadata?.cui && (
             <div className="mt-4 text-center">

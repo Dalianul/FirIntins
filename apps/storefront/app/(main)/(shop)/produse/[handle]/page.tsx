@@ -26,7 +26,7 @@ type ProductPageProps = {
 export async function generateStaticParams() {
   try {
     const { products } = await getProducts({ limit: 100, offset: 0 })
-    return products.map((product) => ({
+    return products.map((product: any) => ({
       handle: product.handle || product.id,
     }))
   } catch (error) {

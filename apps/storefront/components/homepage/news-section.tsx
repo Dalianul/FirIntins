@@ -10,7 +10,7 @@ export async function NewsSection() {
         Noutăți
       </h2>
       <div className="flex gap-6 overflow-x-auto pb-4 px-4 max-w-6xl mx-auto">
-        {products.map((product) => (
+        {products.map((product: any) => (
           <div key={product.id} className="flex-shrink-0 w-64">
             <ProductCard product={product} />
           </div>

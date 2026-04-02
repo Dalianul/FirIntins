@@ -7,6 +7,8 @@ import { NewsSection } from "@/components/homepage/news-section"
 import { WhyFirIntins } from "@/components/homepage/why-firintins"
 import { NewsletterSection } from "@/components/homepage/newsletter-section"
 
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "FirIntins — Echipamente pescuit la crap",
   description: "Lansete, muliete și accesorii de pescuit la crap premium",

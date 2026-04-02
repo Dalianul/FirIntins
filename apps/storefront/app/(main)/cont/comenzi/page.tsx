@@ -26,7 +26,7 @@ export default async function OrdersPage() {
             <p className="text-fog">Nu ai nicio comandă încă.</p>
           ) : (
             <div className="space-y-4">
-              {(orders ?? []).map((order) => (
+              {(orders ?? []).map((order: any) => (
                 <OrderCard key={order.id} order={order} />
               ))}
             </div>

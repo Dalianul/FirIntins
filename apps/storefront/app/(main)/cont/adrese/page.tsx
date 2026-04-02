@@ -72,7 +72,7 @@ export default async function AddressesPage() {
 
                     {!addr.is_default_shipping && (
                       <>
-                        <form action={setDefaultAddressAction}>
+                        <form action={setDefaultAddressAction as any}>
                           <input type="hidden" name="addressId" value={addr.id} />
                           <button
                             type="submit"
@@ -82,7 +82,7 @@ export default async function AddressesPage() {
                           </button>
                         </form>
 
-                        <form action={deleteAddressAction}>
+                        <form action={deleteAddressAction as any}>
                           <input type="hidden" name="addressId" value={addr.id} />
                           <button
                             type="submit"

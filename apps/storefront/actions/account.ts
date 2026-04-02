@@ -32,7 +32,7 @@ export async function updateProfileAction(_prevState: unknown, formData: FormDat
 
   try {
     const auth = await getAuthHeader()
-    await medusa.store.customer.update(
+    await (medusa.store.customer.update as Function)(
       {
         first_name: parsed.data.firstName,
         last_name: parsed.data.lastName,
@@ -61,7 +61,7 @@ export async function updatePasswordAction(_prevState: unknown, formData: FormDa
 
   try {
     const auth = await getAuthHeader()
-    await medusa.store.customer.update({ password: parsed.data.password }, auth)
+    await (medusa.store.customer.update as Function)({ password: parsed.data.password }, auth)
     revalidatePath("/cont/securitate")
     return { success: true }
   } catch {
@@ -89,7 +89,7 @@ export async function addAddressAction(_prevState: unknown, formData: FormData) 
 
   try {
     const auth = await getAuthHeader()
-    await medusa.store.customer.createAddress(
+    await (medusa.store.customer.createAddress as Function)(
       {
         first_name: parsed.data.firstName,
         last_name: parsed.data.lastName,
@@ -131,7 +131,7 @@ export async function updateAddressAction(_prevState: unknown, formData: FormDat
 
   try {
     const auth = await getAuthHeader()
-    await medusa.store.customer.updateAddress(
+    await (medusa.store.customer.updateAddress as Function)(
       addressId,
       {
         first_name: parsed.data.firstName,
@@ -157,7 +157,7 @@ export async function deleteAddressAction(_prevState: unknown, formData: FormDat
   const addressId = formData.get("addressId") as string
   try {
     const auth = await getAuthHeader()
-    await medusa.store.customer.deleteAddress(addressId, undefined, auth)
+    await (medusa.store.customer as any).deleteAddress(addressId, auth)
     revalidatePath("/cont/adrese")
     return { success: true }
   } catch {
@@ -169,7 +169,7 @@ export async function setDefaultAddressAction(_prevState: unknown, formData: For
   const addressId = formData.get("addressId") as string
   try {
     const auth = await getAuthHeader()
-    await medusa.store.customer.updateAddress(
+    await (medusa.store.customer.updateAddress as Function)(
       addressId,
       { is_default_shipping: true },
       auth

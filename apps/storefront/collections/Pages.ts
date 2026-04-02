@@ -40,7 +40,7 @@ export const Pages: CollectionConfig = {
       async () => {
         try {
           const { revalidateTag } = await import("next/cache")
-          revalidateTag("cms-pages")
+          revalidateTag("cms-pages", {})
         } catch (e) {
           console.warn("cms-pages revalidation skipped:", e)
         }

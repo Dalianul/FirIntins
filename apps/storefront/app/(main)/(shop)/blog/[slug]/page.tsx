@@ -113,7 +113,7 @@ export default async function BlogPostPage({ params }: Props) {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {relatedPosts.map((p) => (
-              <PostCard key={p.id} post={p} />
+              <PostCard key={p.id} post={p as any} />
             ))}
           </div>
         </section>

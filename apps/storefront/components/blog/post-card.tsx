@@ -5,6 +5,14 @@ import { calcReadTime } from "@/lib/cms/read-time"
 type Category = { name: string; slug: string }
 type MediaImage = { url?: string | null; alt?: string | null }
 
+function mediaUrl(url: string): string {
+  try {
+    return new URL(url).pathname
+  } catch {
+    return url
+  }
+}
+
 type Post = {
   slug: string
   title: string
@@ -16,7 +24,7 @@ type Post = {
   coverImage?: MediaImage | null
 }
 
-export function PostCard({ post }: { post: Post }) {
+export function PostCard({ post, priority = false }: { post: Post; priority?: boolean }) {
   const readTime = calcReadTime(post.content)
   const date = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("ro-RO", {
@@ -31,11 +39,13 @@ export function PostCard({ post }: { post: Post }) {
       {post.coverImage?.url && (
         <div className="relative aspect-[16/9] overflow-hidden">
           <Image
-            src={post.coverImage.url}
+            src={mediaUrl(post.coverImage.url)}
             alt={post.coverImage.alt ?? post.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
       )}

@@ -62,11 +62,23 @@ export const Posts: CollectionConfig = {
     },
   ],
   hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (data?.title && !data?.slug) {
+          data.slug = (data.title as string)
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, "-")
+            .replace(/[^a-z0-9-]/g, "")
+        }
+        return data
+      },
+    ],
     afterChange: [
       async () => {
         try {
           const { revalidateTag } = await import("next/cache")
-          revalidateTag("cms-blog")
+          revalidateTag("cms-blog", {})
         } catch (e) {
           console.warn("cms-blog revalidation skipped:", e)
         }

@@ -155,7 +155,6 @@ describe("deleteAddressAction", () => {
     expect(result.success).toBe(true)
     expect(medusa.store.customer.deleteAddress).toHaveBeenCalledWith(
       "addr_456",
-      undefined,
       expect.any(Object)
     )
   })
