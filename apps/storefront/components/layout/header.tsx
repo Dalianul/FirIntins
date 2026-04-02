@@ -42,7 +42,7 @@ export default function Header() {
             Blog
           </Link>
           <Link
-            href="/"
+            href="/oferte"
             className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
           >
             Oferte
