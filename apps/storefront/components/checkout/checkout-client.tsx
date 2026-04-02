@@ -22,7 +22,7 @@ interface CheckoutClientProps {
 
 export function CheckoutClient({ isGuest }: CheckoutClientProps) {
   const router = useRouter()
-  const { cart } = useCart()
+  const { cart, loading: cartLoading } = useCart()
   const { toast } = useToast()
   const cartId = cart?.id ?? ""
   const [step, setStep] = useState<CheckoutStep>("address")
@@ -31,10 +31,11 @@ export function CheckoutClient({ isGuest }: CheckoutClientProps) {
   const checkoutTracked = useRef(false)
 
   useEffect(() => {
-    if (!cartId) {
+    // Wait for cart to finish loading before deciding to redirect
+    if (!cartLoading && !cartId) {
       router.push("/cos")
     }
-  }, [cartId, router])
+  }, [cartId, cartLoading, router])
 
   useEffect(() => {
     if (cart && !checkoutTracked.current) {
@@ -42,6 +43,14 @@ export function CheckoutClient({ isGuest }: CheckoutClientProps) {
       trackBeginCheckout(cart)
     }
   }, [cart])
+
+  if (cartLoading) {
+    return (
+      <main className="bg-bg min-h-screen flex items-center justify-center">
+        <p className="text-fog">Se încarcă coșul...</p>
+      </main>
+    )
+  }
 
   if (!cartId) {
     return (

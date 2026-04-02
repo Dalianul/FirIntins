@@ -41,27 +41,27 @@ export default async function ProductGrid({ searchParams }: Props) {
   if (price_min) {
     const minBani = parseFloat(price_min) * 100
     products = products.filter((p: any) =>
-      p.variants?.some((v: any) => (v.prices?.[0]?.amount ?? 0) >= minBani)
+      p.variants?.some((v: any) => (v.calculated_price?.calculated_amount ?? 0) >= minBani)
     )
   }
   if (price_max) {
     const maxBani = parseFloat(price_max) * 100
     products = products.filter((p: any) =>
-      p.variants?.some((v: any) => (v.prices?.[0]?.amount ?? Infinity) <= maxBani)
+      p.variants?.some((v: any) => (v.calculated_price?.calculated_amount ?? Infinity) <= maxBani)
     )
   }
 
   // Post-fetch: price sort (price_asc / price_desc)
   if (sort === "price_asc") {
     products = [...products].sort((a: any, b: any) => {
-      const aPrice = a.variants?.[0]?.prices?.[0]?.amount ?? 0
-      const bPrice = b.variants?.[0]?.prices?.[0]?.amount ?? 0
+      const aPrice = a.variants?.[0]?.calculated_price?.calculated_amount ?? 0
+      const bPrice = b.variants?.[0]?.calculated_price?.calculated_amount ?? 0
       return aPrice - bPrice
     })
   } else if (sort === "price_desc") {
     products = [...products].sort((a: any, b: any) => {
-      const aPrice = a.variants?.[0]?.prices?.[0]?.amount ?? 0
-      const bPrice = b.variants?.[0]?.prices?.[0]?.amount ?? 0
+      const aPrice = a.variants?.[0]?.calculated_price?.calculated_amount ?? 0
+      const bPrice = b.variants?.[0]?.calculated_price?.calculated_amount ?? 0
       return bPrice - aPrice
     })
   }

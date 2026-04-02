@@ -9,6 +9,11 @@ jest.mock('@/lib/medusa/client', () => ({
           offset: 0,
         }),
       },
+      region: {
+        list: jest.fn().mockResolvedValue({
+          regions: [{ id: 'reg_test' }],
+        }),
+      },
     },
   },
 }))
@@ -53,10 +58,12 @@ describe('getProducts', () => {
     )
   })
 
-  it('requests inventory_quantity field expansion', async () => {
+  it('requests calculated_price and inventory_quantity field expansion', async () => {
     await getProducts({})
     expect(mockList).toHaveBeenCalledWith(
-      expect.objectContaining({ fields: expect.stringContaining('inventory_quantity') })
+      expect.objectContaining({
+        fields: expect.stringContaining('calculated_price'),
+      })
     )
   })
 })
@@ -64,7 +71,7 @@ describe('getProducts', () => {
 describe('getOfferProducts', () => {
   beforeEach(() => mockList.mockClear())
 
-  it('returns only products with is_oferta: true', async () => {
+  it('returns products with is_oferta: true', async () => {
     mockList.mockResolvedValue({
       products: [
         { id: '1', metadata: { is_oferta: true } },
@@ -78,18 +85,54 @@ describe('getOfferProducts', () => {
     expect(result.map((p: any) => p.id)).toEqual(['1', '4'])
   })
 
-  it('returns empty array when no products have is_oferta: true', async () => {
-    mockList.mockResolvedValue({ products: [{ id: '1', metadata: {} }] })
+  it('returns products with discount_percentage > 0', async () => {
+    mockList.mockResolvedValue({
+      products: [
+        { id: '1', metadata: { discount_percentage: 20 } },
+        { id: '2', metadata: { discount_percentage: 0 } },
+        { id: '3', metadata: {} },
+      ],
+    })
+    const result = await getOfferProducts()
+    expect(result).toHaveLength(1)
+    expect(result[0].id).toBe('1')
+  })
+
+  it('returns products matching either is_oferta or discount_percentage', async () => {
+    mockList.mockResolvedValue({
+      products: [
+        { id: '1', metadata: { is_oferta: true } },
+        { id: '2', metadata: { discount_percentage: 15 } },
+        { id: '3', metadata: { is_oferta: false, discount_percentage: 0 } },
+        { id: '4', metadata: {} },
+      ],
+    })
+    const result = await getOfferProducts()
+    expect(result).toHaveLength(2)
+    expect(result.map((p: any) => p.id)).toEqual(['1', '2'])
+  })
+
+  it('returns empty array when no products qualify', async () => {
+    mockList.mockResolvedValue({
+      products: [
+        { id: '1', metadata: {} },
+        { id: '2', metadata: { is_oferta: false } },
+        { id: '3', metadata: { discount_percentage: 0 } },
+      ],
+    })
     const result = await getOfferProducts()
     expect(result).toHaveLength(0)
   })
 
-  it('calls product.list with limit 100 and inventory field', async () => {
+  it('calls product.list with limit 100, region_id, and calculated_price fields', async () => {
     mockList.mockResolvedValue({ products: [] })
     await getOfferProducts()
-    expect(mockList).toHaveBeenCalledWith({
-      limit: 100,
-      fields: '+variants.inventory_quantity',
-    })
+    expect(mockList).toHaveBeenCalledWith(
+      expect.objectContaining({
+        limit: 100,
+        region_id: 'reg_test',
+        fields: '*variants.calculated_price,+variants.inventory_quantity,+metadata',
+      })
+    )
   })
 })

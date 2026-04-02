@@ -15,8 +15,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const prod = product as Record<string, unknown>
 
   const variants = prod.variants as Array<Record<string, unknown>> | null | undefined
-  const prices = (variants?.[0] as Record<string, unknown> | undefined)?.prices as Array<Record<string, unknown>> | null | undefined
-  const price = (prices?.[0] as Record<string, unknown> | undefined)?.amount as number | null | undefined ?? 0
+  const firstVariant = variants?.[0] as Record<string, unknown> | undefined
+  const calculatedPrice = firstVariant?.calculated_price as Record<string, unknown> | undefined
+  const price = calculatedPrice?.calculated_amount as number | undefined ?? 0
 
   const categories = prod.categories as Array<Record<string, unknown>> | null | undefined
   const category = (categories?.[0] as Record<string, unknown> | undefined)?.name as string | null | undefined ?? "Altele"

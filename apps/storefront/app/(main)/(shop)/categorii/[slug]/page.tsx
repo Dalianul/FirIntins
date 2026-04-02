@@ -42,13 +42,17 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     const { slug } = await params
     const { page: pageParam } = await searchParams
     const category = await getCategory(slug)
+    if (!category) notFound()
+
     const page = parseInt(pageParam || "1", 10)
     const offset = (page - 1) * 12
 
-    const { products } = await getProducts({ limit: 12, offset })
-    const filteredProducts = products.filter((p: any) =>
-      p.categories?.some((c: { handle: string }) => c.handle === slug)
-    )
+    const { products } = await getProducts({
+      limit: 12,
+      offset,
+      category_id: [category.id],
+    })
+    const filteredProducts = products
 
     const breadcrumbSchema = {
       "@context": "https://schema.org",

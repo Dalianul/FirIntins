@@ -42,8 +42,8 @@ export default function StorefrontLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ro" className={`${cormorant.variable} ${outfit.variable}`}>
-      <body className="bg-[--color-bg] text-[--color-cream]">
+    <html lang="ro" className={`${cormorant.variable} ${outfit.variable}`} suppressHydrationWarning>
+      <body className="bg-[--color-bg] text-[--color-cream]" suppressHydrationWarning>
         <LazyMotion features={domAnimation}>
           <CartProvider>
             <WishlistProvider>

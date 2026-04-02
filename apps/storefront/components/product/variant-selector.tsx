@@ -6,7 +6,7 @@ interface Variant {
   id: string
   title?: string
   inventory_quantity?: number
-  prices?: Array<{ amount?: number }>
+  calculated_price?: { calculated_amount?: number }
 }
 
 interface VariantSelectorProps {
@@ -55,7 +55,7 @@ export function VariantSelector({ variants, onSelect }: VariantSelectorProps) {
       {selectedVariant && (
         <div>
           <p className="text-mud font-cormorant text-2xl">
-            {formatPrice(selectedVariant.prices?.[0]?.amount ?? 0)}
+            {formatPrice(selectedVariant.calculated_price?.calculated_amount ?? 0)}
           </p>
           {(selectedVariant.inventory_quantity ?? 1) === 0 && (
             <p className="text-red-500 text-sm mt-2">Stoc epuizat</p>

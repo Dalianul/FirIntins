@@ -1,80 +1,52 @@
 "use client"
 
-import { useEffect } from "react"
-import * as CookieConsentLib from "vanilla-cookieconsent"
-import "vanilla-cookieconsent/dist/cookieconsent.css"
-import { grantAnalyticsConsent, denyAnalyticsConsent } from "@/lib/analytics"
+import { useState, useEffect } from "react"
 
 export function CookieConsent() {
+  const [visible, setVisible] = useState(false)
+
   useEffect(() => {
-    CookieConsentLib.run({
-      guiOptions: {
-        consentModal: {
-          layout: "bar",
-          position: "bottom",
-        },
-      },
-      categories: {
-        necessary: {
-          enabled: true,
-          readOnly: true,
-        },
-        analytics: {
-          enabled: false,
-        },
-        marketing: {
-          enabled: false,
-        },
-      },
-      language: {
-        default: "ro",
-        translations: {
-          ro: {
-            consentModal: {
-              title: "Setări cookie-uri",
-              description:
-                "Folosim cookie-uri esențiale, analitice și de marketing.",
-              acceptAllBtn: "Acceptă toate",
-              showPreferencesBtn: "Personalizează",
-            },
-            preferencesModal: {
-              title: "Preferințe cookie-uri",
-              savePreferencesBtn: "Salvează preferințele",
-              sections: [
-                {
-                  title: "Necesare",
-                  description: "Session, coș, autentificare.",
-                  linkedCategory: "necessary",
-                },
-                {
-                  title: "Analitice",
-                  description: "Trafic anonim.",
-                  linkedCategory: "analytics",
-                },
-                {
-                  title: "Marketing",
-                  description: "Reclame personalizate.",
-                  linkedCategory: "marketing",
-                },
-              ],
-            },
-          },
-        },
-      },
-      onConsent: ({ cookie }: { cookie: { categories: string[] } }) => {
-        if (cookie.categories.includes("analytics")) {
-          grantAnalyticsConsent()
-        }
-      },
-      onChange: ({ cookie }: { cookie: { categories: string[] } }) => {
-        if (cookie.categories.includes("analytics")) {
-          grantAnalyticsConsent()
-        } else {
-          denyAnalyticsConsent()
-        }
-      },
-    })
+    const accepted = localStorage.getItem("cookie-consent")
+    if (!accepted) setVisible(true)
   }, [])
 
-  return null
+  if (!visible) return null
+
+  const accept = () => {
+    localStorage.setItem("cookie-consent", "accepted")
+    setVisible(false)
+  }
+
+  const decline = () => {
+    localStorage.setItem("cookie-consent", "declined")
+    setVisible(false)
+  }
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-border p-4 shadow-lg">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
+        <p className="text-fog text-sm">
+          Folosim cookie-uri pentru a îmbunătăți experiența dvs. pe site.{" "}
+          <a href="/pagini/politica-cookie" className="text-moss hover:underline">
+            Află mai mult
+          </a>
+          .
+        </p>
+        <div className="flex gap-2 shrink-0">
+          <button
+            onClick={decline}
+            className="px-4 py-2 text-sm border border-border text-fog rounded hover:border-moss hover:text-cream transition-colors"
+          >
+            Refuz
+          </button>
+          <button
+            onClick={accept}
+            className="px-4 py-2 text-sm bg-moss text-white rounded hover:bg-moss-light transition-colors"
+          >
+            Accept
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
