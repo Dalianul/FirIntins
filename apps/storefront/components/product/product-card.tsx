@@ -25,6 +25,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const handle = prod.handle as string
   const title = prod.title as string
 
+  const metadata = prod.metadata as Record<string, unknown> | null | undefined
+  const discountPercentage = metadata?.discount_percentage as number | null | undefined
+
   return (
     <div className="relative group">
       <Link href={`/produse/${handle}`}>
@@ -40,6 +43,11 @@ export function ProductCard({ product }: ProductCardProps) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover group-hover:scale-110 transition-transform"
             />
+            {discountPercentage != null && discountPercentage > 0 && (
+              <span className="absolute top-2 left-2 z-10 bg-destructive text-white text-xs font-bold px-2 py-0.5 rounded">
+                −{discountPercentage}%
+              </span>
+            )}
           </div>
           <div className="p-4">
             <Badge variant="outline" className="mb-2 text-xs">
