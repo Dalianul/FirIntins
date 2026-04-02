@@ -32,7 +32,7 @@ export async function getProducts(params?: ProductParams) {
   // `as Function` bypasses this SDK typing limitation — revisit when SDK types are updated.
   const res = await (medusa.store.product.list as Function)({
     ...params,
-    fields: '+variants.inventory_quantity,+variants.calculated_price',
+    fields: '+variants.inventory_quantity',
   })
   return res // { products, count, offset, limit }
 }
