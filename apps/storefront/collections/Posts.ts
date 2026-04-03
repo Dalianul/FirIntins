@@ -22,6 +22,8 @@ import {
   SubscriptFeature,
   ParagraphFeature,
 } from "@payloadcms/richtext-lexical"
+import { ColorFeature } from "@/features/color/feature.server"
+import { FontSizeFeature } from "@/features/font-size/feature.server"
 
 export const Posts: CollectionConfig = {
   slug: "posts",
@@ -67,6 +69,8 @@ export const Posts: CollectionConfig = {
         features: [
           FixedToolbarFeature(),
           InlineToolbarFeature(),
+          ColorFeature(),
+          FontSizeFeature(),
           ParagraphFeature(),
           HeadingFeature({ enabledHeadingSizes: ["h1", "h2", "h3", "h4"] }),
           BoldFeature(),
