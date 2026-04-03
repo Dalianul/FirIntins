@@ -5,11 +5,11 @@ import { seoPlugin } from "@payloadcms/plugin-seo"
 import path from "path"
 
 // Import collections
-import { Users } from "./collections/Users.ts"
-import { Posts } from "./collections/Posts.ts"
-import { Pages } from "./collections/Pages.ts"
-import { Categories } from "./collections/Categories.ts"
-import { NewsletterSubscribers } from "./collections/NewsletterSubscribers.ts"
+import { Users } from "./collections/Users"
+import { Posts } from "./collections/Posts"
+import { Pages } from "./collections/Pages"
+import { Categories } from "./collections/Categories"
+import { NewsletterSubscribers } from "./collections/NewsletterSubscribers"
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000",
