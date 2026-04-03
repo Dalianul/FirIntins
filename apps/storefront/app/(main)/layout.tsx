@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Cormorant_Garamond, Outfit } from "next/font/google"
 import { Suspense } from "react"
-import { LazyMotion, domAnimation, m } from "motion/react"
+import { LazyMotion, domAnimation } from "motion/react"
 import { BASE_URL } from "@/lib/constants"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
@@ -9,6 +9,7 @@ import { Analytics } from "@/components/analytics/analytics"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import { CookieConsent } from "@/components/cookie-consent/cookie-consent"
+import { PageTransition } from "@/components/layout/page-transition"
 import "../globals.css"
 
 const cormorant = Cormorant_Garamond({
@@ -54,14 +55,9 @@ export default function StorefrontLayout({
           <CartProvider>
             <WishlistProvider>
               <Header />
-              <m.main
-                className="min-h-screen"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
-              >
+              <PageTransition>
                 {children}
-              </m.main>
+              </PageTransition>
               <Suspense fallback={null}>
                 <Footer />
               </Suspense>
