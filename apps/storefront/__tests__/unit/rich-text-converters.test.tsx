@@ -1,6 +1,3 @@
-import React from 'react'
-import { render } from '@testing-library/react'
-
 import { cssStringToReactStyle } from '@/lib/cms/rich-text-converters'
 
 describe('cssStringToReactStyle', () => {
@@ -27,8 +24,9 @@ describe('cssStringToReactStyle', () => {
     expect(cssStringToReactStyle('color: red;')).toEqual({ color: 'red' })
   })
 
-  it('handles values containing colons (e.g. rgb())', () => {
-    expect(cssStringToReactStyle('color: red')).toEqual({ color: 'red' })
+  it('handles hex color values (the actual use case)', () => {
+    // $patchStyleText sets color as hex (#rrggbb), which never contains colons in the value
+    expect(cssStringToReactStyle('color: #aabbcc')).toEqual({ color: '#aabbcc' })
   })
 
   it('returns empty object for null/undefined-like input', () => {
