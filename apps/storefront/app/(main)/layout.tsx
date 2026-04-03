@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Cormorant_Garamond, Outfit } from "next/font/google"
 import { Suspense } from "react"
-import { LazyMotion, domAnimation } from "motion/react"
+import { LazyMotion, domAnimation, m } from "motion/react"
 import { BASE_URL } from "@/lib/constants"
 import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
@@ -48,7 +48,14 @@ export default function StorefrontLayout({
           <CartProvider>
             <WishlistProvider>
               <Header />
-              <main className="min-h-screen">{children}</main>
+              <m.main
+                className="min-h-screen"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {children}
+              </m.main>
               <Suspense fallback={null}>
                 <Footer />
               </Suspense>
