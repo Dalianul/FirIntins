@@ -9,9 +9,10 @@ import { HeartButton } from "@/components/wishlist/heart-button"
 
 interface ProductCardProps {
   product: unknown
+  priority?: boolean
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   const prod = product as Record<string, unknown>
 
   const variants = prod.variants as Array<Record<string, unknown>> | null | undefined
@@ -43,6 +44,7 @@ export function ProductCard({ product }: ProductCardProps) {
               src={`https://picsum.photos/300/200?random=${id}`}
               alt={title}
               fill
+              priority={priority}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />

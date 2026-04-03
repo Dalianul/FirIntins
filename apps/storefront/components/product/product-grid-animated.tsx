@@ -25,11 +25,11 @@ export function ProductGridAnimated({ products }: Props) {
       animate="show"
       className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
     >
-      {products.map((product) => {
+      {products.map((product, index) => {
         const prod = product as { id: string }
         return (
           <m.div key={prod.id} variants={item}>
-            <ProductCard product={product} />
+            <ProductCard product={product} priority={index === 0} />
           </m.div>
         )
       })}
