@@ -1,6 +1,7 @@
 import { buildConfig } from "payload"
 import { postgresAdapter } from "@payloadcms/db-postgres"
 import { lexicalEditor } from "@payloadcms/richtext-lexical"
+import { seoPlugin } from "@payloadcms/plugin-seo"
 import path from "path"
 
 // Import collections
@@ -33,6 +34,17 @@ export default buildConfig({
       },
       fields: [{ name: "alt", type: "text" }],
     },
+  ],
+  plugins: [
+    seoPlugin({
+      collections: ["posts"],
+      generateTitle: ({ doc }) =>
+        `${(doc as { title?: string }).title ?? ""} — FirIntins Blog`,
+      generateDescription: ({ doc }) =>
+        (doc as { excerpt?: string }).excerpt ?? "",
+      generateURL: ({ doc }) =>
+        `${process.env.NEXT_PUBLIC_SERVER_URL ?? "https://firintins.ro"}/blog/${(doc as { slug?: string }).slug ?? ""}`,
+    }),
   ],
   typescript: {
     outputFile: path.resolve(process.cwd(), "payload-types.ts"),

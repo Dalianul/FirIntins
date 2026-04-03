@@ -15,14 +15,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = await getCachedPost(slug)
   if (!post) return {}
+
+  const metaTitle = (post as any).meta?.title as string | null | undefined
+  const metaDescription = (post as any).meta?.description as string | null | undefined
+  const metaImageRaw = (post as any).meta?.image
+  const metaImageUrl =
+    typeof metaImageRaw === "object" && metaImageRaw?.url
+      ? mediaUrl(metaImageRaw.url as string)
+      : null
+
   return {
-    title: `${post.title} — FirIntins Blog`,
-    description: post.excerpt ?? undefined,
+    title: metaTitle ?? `${post.title} — FirIntins Blog`,
+    description: metaDescription ?? post.excerpt ?? undefined,
     alternates: { canonical: `${BASE_URL}/blog/${slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt ?? undefined,
+      title: metaTitle ?? post.title,
+      description: metaDescription ?? post.excerpt ?? undefined,
       url: `${BASE_URL}/blog/${slug}`,
+      images: metaImageUrl
+        ? [{ url: metaImageUrl }]
+        : [{ url: `${BASE_URL}/og-default.jpg` }],
     },
   }
 }
