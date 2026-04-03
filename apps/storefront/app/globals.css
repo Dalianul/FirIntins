@@ -163,3 +163,22 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
+/* Cursor */
+button,
+[role="button"],
+a,
+select,
+label[for],
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+}
+
+/* iOS safe areas */
+header {
+  padding-top: env(safe-area-inset-top);
+}
+footer {
+  padding-bottom: env(safe-area-inset-bottom);
+}
