@@ -13,6 +13,14 @@ import {
   OrderedListFeature,
   UnorderedListFeature,
   ChecklistFeature,
+  AlignFeature,
+  IndentFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  InlineCodeFeature,
+  SuperscriptFeature,
+  SubscriptFeature,
+  ParagraphFeature,
 } from "@payloadcms/richtext-lexical"
 
 export const Posts: CollectionConfig = {
@@ -57,11 +65,19 @@ export const Posts: CollectionConfig = {
       type: "richText",
       editor: lexicalEditor({
         features: [
-          HeadingFeature({ enabledHeadingSizes: ["h2", "h3", "h4"] }),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          ParagraphFeature(),
+          HeadingFeature({ enabledHeadingSizes: ["h1", "h2", "h3", "h4"] }),
           BoldFeature(),
           ItalicFeature(),
           UnderlineFeature(),
           StrikethroughFeature(),
+          InlineCodeFeature(),
+          SuperscriptFeature(),
+          SubscriptFeature(),
+          AlignFeature(),
+          IndentFeature(),
           BlockquoteFeature(),
           LinkFeature({ enabledCollections: [] }),
           UploadFeature({
