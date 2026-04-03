@@ -1,6 +1,5 @@
 'use client'
 import { createClientFeature } from '@payloadcms/richtext-lexical/client'
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $getSelection, $isRangeSelection } from 'lexical'
 import {
   $getSelectionStyleValueForProperty,
