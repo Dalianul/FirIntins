@@ -1,5 +1,5 @@
 import { getProducts, SORT_ORDER_MAP } from "@/lib/medusa/queries"
-import { ProductCard } from "@/components/product/product-card"
+import { ProductGridAnimated } from "@/components/product/product-grid-animated"
 
 interface SearchParams {
   q?: string
@@ -74,11 +74,5 @@ export default async function ProductGrid({ searchParams }: Props) {
     )
   }
 
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {products.map((product: any) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  )
+  return <ProductGridAnimated products={products} />
 }
