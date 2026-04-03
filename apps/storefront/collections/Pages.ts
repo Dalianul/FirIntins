@@ -22,8 +22,8 @@ import {
   SubscriptFeature,
   ParagraphFeature,
 } from "@payloadcms/richtext-lexical"
-import { ColorFeature } from "@/features/color/feature.server"
-import { FontSizeFeature } from "@/features/font-size/feature.server"
+import { ColorFeature } from "../features/color/feature.server.ts"
+import { FontSizeFeature } from "../features/font-size/feature.server.ts"
 
 export const Pages: CollectionConfig = {
   slug: "pages",

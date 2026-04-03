@@ -1,4 +1,5 @@
 import { RichText } from "@payloadcms/richtext-lexical/react"
+import { richTextConverters } from "@/lib/cms/rich-text-converters"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function PostContent({ content }: { content: any }) {
@@ -20,7 +21,7 @@ export function PostContent({ content }: { content: any }) {
       prose-code:text-[--color-cream] prose-code:bg-[--color-surface-2] prose-code:px-1 prose-code:rounded
       [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:rounded-lg [&_iframe]:border [&_iframe]:border-[--color-border]
     ">
-      <RichText data={content} />
+      <RichText data={content} converters={richTextConverters} />
     </div>
   )
 }
