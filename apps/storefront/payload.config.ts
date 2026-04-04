@@ -10,9 +10,20 @@ import { Posts } from "./collections/Posts"
 import { Pages } from "./collections/Pages"
 import { Categories } from "./collections/Categories"
 import { NewsletterSubscribers } from "./collections/NewsletterSubscribers"
+import { Testimonials } from "./collections/Testimonials"
+import { Faqs } from "./collections/Faqs"
+
+// Import globals
+import { SiteSettings } from "./globals/SiteSettings"
+import { Navigation } from "./globals/Navigation"
+import { Footer } from "./globals/Footer"
+import { Homepage } from "./globals/Homepage"
+
+const serverURL =
+  process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"
 
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000",
+  serverURL,
   secret: process.env.PAYLOAD_SECRET ?? "",
   db: postgresAdapter({
     pool: {
@@ -26,24 +37,34 @@ export default buildConfig({
     Posts,
     Pages,
     NewsletterSubscribers,
+    Testimonials,
+    Faqs,
     {
       slug: "media",
       upload: true,
       access: {
         read: () => true,
       },
-      fields: [{ name: "alt", type: "text" }],
+      fields: [
+        { name: "alt", type: "text" },
+        { name: "caption", type: "text" },
+        { name: "focalPoint", type: "point" },
+      ],
     },
   ],
+  globals: [SiteSettings, Navigation, Footer, Homepage],
   plugins: [
     seoPlugin({
-      collections: ["posts"],
+      collections: ["posts", "pages"],
       generateTitle: ({ doc }) =>
-        `${(doc as { title?: string }).title ?? ""} — FirIntins Blog`,
+        `${(doc as { title?: string }).title ?? ""} — FirIntins`,
       generateDescription: ({ doc }) =>
         (doc as { excerpt?: string }).excerpt ?? "",
-      generateURL: ({ doc }) =>
-        `${process.env.NEXT_PUBLIC_SERVER_URL ?? "https://firintins.ro"}/blog/${(doc as { slug?: string }).slug ?? ""}`,
+      generateURL: ({ doc, collectionConfig }) => {
+        const slug = (doc as { slug?: string }).slug ?? ""
+        if (collectionConfig?.slug === "posts") return `${serverURL}/blog/${slug}`
+        return `${serverURL}/pagini/${slug}`
+      },
     }),
   ],
   typescript: {
@@ -52,5 +73,12 @@ export default buildConfig({
   admin: {
     user: "users",
     meta: { title: "FirIntins CMS" },
+    livePreview: {
+      breakpoints: [
+        { label: "Mobile", name: "mobile", width: 375, height: 812 },
+        { label: "Tablet", name: "tablet", width: 768, height: 1024 },
+        { label: "Desktop", name: "desktop", width: 1440, height: 900 },
+      ],
+    },
   },
 })
