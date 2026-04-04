@@ -1,11 +1,8 @@
-import { Suspense } from "react"
 import type { Metadata } from "next"
+import { connection } from "next/server"
 import { BASE_URL } from "@/lib/constants"
-import { Hero } from "@/components/homepage/hero"
-import { CategoriesSection } from "@/components/homepage/categories-section"
-import { NewsSection } from "@/components/homepage/news-section"
-import { WhyFirIntins } from "@/components/homepage/why-firintins"
-import { NewsletterSection } from "@/components/homepage/newsletter-section"
+import { getCachedHomepage } from "@/lib/cms/client"
+import { BlockRenderer } from "@/components/blocks/BlockRenderer"
 
 export const dynamic = "force-dynamic"
 
@@ -21,14 +18,14 @@ export const metadata: Metadata = {
   },
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  await connection()
+  const homepage = await getCachedHomepage()
+  const blocks = homepage?.blocks ?? []
+
   return (
     <main className="bg-bg">
-      <Hero />
-      <Suspense fallback={null}><CategoriesSection /></Suspense>
-      <Suspense fallback={null}><NewsSection /></Suspense>
-      <WhyFirIntins />
-      <NewsletterSection />
+      <BlockRenderer blocks={blocks as any} />
     </main>
   )
 }
