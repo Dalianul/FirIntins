@@ -24,11 +24,26 @@ import {
 } from "@payloadcms/richtext-lexical"
 import { ColorFeature } from "@/features/color/feature.server"
 import { FontSizeFeature } from "@/features/font-size/feature.server"
+import { isAdminOrEditor } from "@/lib/cms/access"
+
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"
 
 export const Pages: CollectionConfig = {
   slug: "pages",
   admin: {
     useAsTitle: "title",
+    livePreview: {
+      url: ({ data }) => `${serverURL}/pagini/${data?.slug ?? ""}`,
+    },
+  },
+  versions: {
+    drafts: true,
+  },
+  access: {
+    create: isAdminOrEditor,
+    read: () => true,
+    update: isAdminOrEditor,
+    delete: isAdminOrEditor,
   },
   fields: [
     {

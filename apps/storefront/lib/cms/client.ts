@@ -10,7 +10,6 @@ export async function getPosts(categorySlug?: string) {
   const { docs } = await payload.find({
     collection: "posts",
     where: {
-      status: { equals: "published" },
       ...(categorySlug ? { "category.slug": { equals: categorySlug } } : {}),
     },
     depth: 1,
@@ -23,7 +22,7 @@ export async function getPost(slug: string) {
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
     collection: "posts",
-    where: { slug: { equals: slug }, status: { equals: "published" } },
+    where: { slug: { equals: slug } },
     depth: 1,
     limit: 1,
   })
