@@ -1,13 +1,24 @@
 'use client'
-import { createClientFeature } from '@payloadcms/richtext-lexical/client'
-import { $getSelection, $isRangeSelection } from 'lexical'
+import { createClientFeature } from '@/lib/cms/create-client-feature'
+import {
+  $getSelection,
+  $isRangeSelection,
+  $createRangeSelection,
+  $setSelection,
+} from 'lexical'
 import {
   $getSelectionStyleValueForProperty,
   $patchStyleText,
 } from '@lexical/selection'
-import type { LexicalEditor } from 'lexical'
-import { useCallback, useEffect, useState } from 'react'
+import type { LexicalEditor, PointType } from 'lexical'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ToolbarGroupItem } from '@payloadcms/richtext-lexical'
+
+interface SavedPoint {
+  key: string
+  offset: number
+  type: PointType['type']
+}
 
 function ColorPickerItem({
   editor,
@@ -19,8 +30,10 @@ function ColorPickerItem({
   item: ToolbarGroupItem
 }) {
   const [color, setColor] = useState('#000000')
+  // Save last non-collapsed selection so we can restore it after the color
+  // picker steals focus (Lexical clears selection on editor blur).
+  const savedRange = useRef<{ anchor: SavedPoint; focus: SavedPoint } | null>(null)
 
-  // Keep input in sync with the current selection's color
   useEffect(() => {
     return editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
@@ -28,6 +41,12 @@ function ColorPickerItem({
         if ($isRangeSelection(selection)) {
           const c = $getSelectionStyleValueForProperty(selection, 'color', '#000000')
           if (c) setColor(c)
+          if (!selection.isCollapsed()) {
+            savedRange.current = {
+              anchor: { key: selection.anchor.key, offset: selection.anchor.offset, type: selection.anchor.type },
+              focus: { key: selection.focus.key, offset: selection.focus.offset, type: selection.focus.type },
+            }
+          }
         }
       })
     })
@@ -36,8 +55,17 @@ function ColorPickerItem({
   const applyColor = useCallback(
     (hex: string) => {
       editor.update(() => {
-        const selection = $getSelection()
-        if ($isRangeSelection(selection)) {
+        let selection = $getSelection()
+        // Restore saved selection if editor lost focus (selection is null or collapsed)
+        if ((!$isRangeSelection(selection) || selection.isCollapsed()) && savedRange.current) {
+          const { anchor, focus } = savedRange.current
+          const restored = $createRangeSelection()
+          restored.anchor.set(anchor.key, anchor.offset, anchor.type)
+          restored.focus.set(focus.key, focus.offset, focus.type)
+          $setSelection(restored)
+          selection = $getSelection()
+        }
+        if ($isRangeSelection(selection) && !selection.isCollapsed()) {
           $patchStyleText(selection, { color: hex })
         }
       })
@@ -51,8 +79,11 @@ function ColorPickerItem({
       value={color}
       title="Culoare text"
       onChange={(e) => {
-        setColor(e.target.value)
-        applyColor(e.target.value)
+        const hex = e.target.value
+        setColor(hex)
+        if (/^#(?:[0-9a-f]{3}){1,2}$/i.test(hex)) {
+          applyColor(hex)
+        }
       }}
       style={{
         width: 26,

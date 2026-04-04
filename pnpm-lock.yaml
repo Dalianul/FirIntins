@@ -95,6 +95,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.71.2(react@19.2.4))
+      '@lexical/selection':
+        specifier: ^0.41.0
+        version: 0.41.0
       '@medusajs/js-sdk':
         specifier: ^2.13.4
         version: 2.13.4
@@ -131,6 +134,9 @@ importers:
       graphql:
         specifier: ^16.0.0
         version: 16.13.1
+      lexical:
+        specifier: ^0.41.0
+        version: 0.41.0
       lucide-react:
         specifier: ^0.577.0
         version: 0.577.0(react@19.2.4)
