@@ -29,6 +29,7 @@ export function FaqBlock({ block }: { block: FaqBlockData }) {
           <div key={faq.id ?? i} className="border border-[--color-border] rounded">
             <button
               onClick={() => setOpen(open === i ? null : i)}
+              aria-expanded={open === i}
               className="w-full text-left px-5 py-4 font-outfit text-[--color-white] flex justify-between items-center"
             >
               <span>{faq.question}</span>

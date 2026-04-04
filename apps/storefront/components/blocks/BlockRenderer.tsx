@@ -14,23 +14,23 @@ export function BlockRenderer({ blocks }: { blocks: any[] }) {
       {blocks.map((block, i) => {
         switch (block.blockType) {
           case "hero":
-            return <HeroBlock key={i} block={block} />
+            return <HeroBlock key={block.id ?? i} block={block} />
           case "featuredProducts":
-            return <FeaturedProductsBlock key={i} block={block} />
+            return <FeaturedProductsBlock key={block.id ?? i} block={block} />
           case "offers":
-            return <OffersBlock key={i} block={block} />
+            return <OffersBlock key={block.id ?? i} block={block} />
           case "featuresGrid":
-            return <FeaturesGridBlock key={i} block={block} />
+            return <FeaturesGridBlock key={block.id ?? i} block={block} />
           case "testimonials":
-            return <TestimonialsBlock key={i} block={block} />
+            return <TestimonialsBlock key={block.id ?? i} block={block} />
           case "faq":
-            return <FaqBlock key={i} block={block} />
+            return <FaqBlock key={block.id ?? i} block={block} />
           case "richText":
-            return <RichTextBlock key={i} block={block} />
+            return <RichTextBlock key={block.id ?? i} block={block} />
           case "cta":
-            return <CtaBlock key={i} block={block} />
+            return <CtaBlock key={block.id ?? i} block={block} />
           case "imageBanner":
-            return <ImageBannerBlock key={i} block={block} />
+            return <ImageBannerBlock key={block.id ?? i} block={block} />
           default:
             return null
         }

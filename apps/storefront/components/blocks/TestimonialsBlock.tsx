@@ -17,7 +17,7 @@ interface TestimonialsBlockData {
 
 export function TestimonialsBlock({ block }: { block: TestimonialsBlockData }) {
   const { heading, items } = block
-  const testimonials = (items ?? []).filter((t): t is TestimonialItem => typeof t === "object")
+  const testimonials = (items ?? []).filter((t): t is TestimonialItem => typeof t === "object" && t !== null)
 
   return (
     <section className="py-16 px-6 max-w-7xl mx-auto">
