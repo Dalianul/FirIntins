@@ -1,10 +1,10 @@
-import type { CollectionConfig } from 'payload'
-import { isAdminOrEditor } from '@/lib/cms/access'
+import type { CollectionConfig } from "payload"
+import { isAdminOrEditor } from "@/lib/cms/access"
 
 export const Testimonials: CollectionConfig = {
-  slug: 'testimonials',
+  slug: "testimonials",
   admin: {
-    useAsTitle: 'author',
+    useAsTitle: "author",
   },
   access: {
     create: isAdminOrEditor,
@@ -14,28 +14,28 @@ export const Testimonials: CollectionConfig = {
   },
   fields: [
     {
-      name: 'author',
-      type: 'text',
+      name: "author",
+      type: "text",
       required: true,
     },
     {
-      name: 'role',
-      type: 'text',
-      admin: { description: 'e.g. Pescar din Cluj' },
+      name: "role",
+      type: "text",
+      admin: { description: "e.g. Pescar din Cluj" },
     },
     {
-      name: 'quote',
-      type: 'textarea',
+      name: "quote",
+      type: "textarea",
       required: true,
     },
     {
-      name: 'avatar',
-      type: 'upload',
-      relationTo: 'media',
+      name: "avatar",
+      type: "upload",
+      relationTo: "media",
     },
     {
-      name: 'rating',
-      type: 'number',
+      name: "rating",
+      type: "number",
       min: 1,
       max: 5,
     },

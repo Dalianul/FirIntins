@@ -1,5 +1,5 @@
-import type { CollectionConfig } from 'payload'
-import { isAdminOrEditor } from '@/lib/cms/access'
+import type { CollectionConfig } from "payload"
+import { isAdminOrEditor } from "@/lib/cms/access"
 import {
   lexicalEditor,
   BoldFeature,
@@ -7,12 +7,12 @@ import {
   LinkFeature,
   ParagraphFeature,
   FixedToolbarFeature,
-} from '@payloadcms/richtext-lexical'
+} from "@payloadcms/richtext-lexical"
 
 export const Faqs: CollectionConfig = {
-  slug: 'faqs',
+  slug: "faqs",
   admin: {
-    useAsTitle: 'question',
+    useAsTitle: "question",
   },
   access: {
     create: isAdminOrEditor,
@@ -22,13 +22,13 @@ export const Faqs: CollectionConfig = {
   },
   fields: [
     {
-      name: 'question',
-      type: 'text',
+      name: "question",
+      type: "text",
       required: true,
     },
     {
-      name: 'answer',
-      type: 'richText',
+      name: "answer",
+      type: "richText",
       editor: lexicalEditor({
         features: [
           FixedToolbarFeature(),
@@ -40,13 +40,13 @@ export const Faqs: CollectionConfig = {
       }),
     },
     {
-      name: 'category',
-      type: 'select',
+      name: "category",
+      type: "select",
       options: [
-        { label: 'General', value: 'general' },
-        { label: 'Livrare', value: 'shipping' },
-        { label: 'Retururi', value: 'returns' },
-        { label: 'Produse', value: 'products' },
+        { label: "General", value: "general" },
+        { label: "Livrare", value: "shipping" },
+        { label: "Retururi", value: "returns" },
+        { label: "Produse", value: "products" },
       ],
     },
   ],
