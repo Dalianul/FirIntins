@@ -1,5 +1,5 @@
 import type { GlobalConfig } from "payload"
-import { isAdmin } from "@/lib/cms/access"
+import { isAdmin } from "../lib/cms/access"
 import {
   lexicalEditor,
   BoldFeature,

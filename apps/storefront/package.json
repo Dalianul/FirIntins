@@ -2,6 +2,7 @@
   "name": "storefront",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
@@ -10,8 +11,8 @@
     "test": "jest --testPathIgnorePatterns=smoke",
     "test:watch": "jest --watch --testPathIgnorePatterns=smoke",
     "test:smoke": "jest --testPathPattern=smoke",
-    "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap"
+    "generate:types": "payload generate:types --use-swc",
+    "generate:importmap": "payload generate:importmap --use-swc"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
@@ -44,6 +45,8 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@swc-node/register": "^1.11.1",
+    "@swc/core": "^1.15.18",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
     "@testing-library/jest-dom": "^6.9.1",
@@ -59,6 +62,7 @@
     "sass": "^1.98.0",
     "tailwindcss": "^4",
     "ts-jest": "^29.4.6",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

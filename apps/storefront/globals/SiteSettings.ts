@@ -1,5 +1,5 @@
 import type { GlobalConfig } from "payload"
-import { isAdmin, isAdminOrEditor } from "@/lib/cms/access"
+import { isAdmin, isAdminOrEditor } from "../lib/cms/access"
 
 export const SiteSettings: GlobalConfig = {
   slug: "site-settings",

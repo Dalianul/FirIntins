@@ -8,8 +8,8 @@ import {
   InlineToolbarFeature, InlineCodeFeature, SuperscriptFeature,
   SubscriptFeature, ParagraphFeature,
 } from "@payloadcms/richtext-lexical"
-import { ColorFeature } from "@/features/color/feature.server"
-import { FontSizeFeature } from "@/features/font-size/feature.server"
+import { ColorFeature } from "../features/color/feature.server"
+import { FontSizeFeature } from "../features/font-size/feature.server"
 
 export const RichTextBlock: Block = {
   slug: "richText",

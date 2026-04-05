@@ -22,9 +22,9 @@ import {
   SubscriptFeature,
   ParagraphFeature,
 } from "@payloadcms/richtext-lexical"
-import { ColorFeature } from "@/features/color/feature.server"
-import { FontSizeFeature } from "@/features/font-size/feature.server"
-import { isAdminOrEditor } from "@/lib/cms/access"
+import { ColorFeature } from "../features/color/feature.server"
+import { FontSizeFeature } from "../features/font-size/feature.server"
+import { isAdminOrEditor } from "../lib/cms/access"
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"
 
