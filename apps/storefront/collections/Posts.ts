@@ -1,10 +1,49 @@
 import type { CollectionConfig } from "payload"
-import { lexicalEditor } from "@payloadcms/richtext-lexical"
+import {
+  lexicalEditor,
+  HeadingFeature,
+  BoldFeature,
+  ItalicFeature,
+  UnderlineFeature,
+  StrikethroughFeature,
+  BlockquoteFeature,
+  LinkFeature,
+  UploadFeature,
+  HorizontalRuleFeature,
+  OrderedListFeature,
+  UnorderedListFeature,
+  ChecklistFeature,
+  AlignFeature,
+  IndentFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  InlineCodeFeature,
+  SuperscriptFeature,
+  SubscriptFeature,
+  ParagraphFeature,
+} from "@payloadcms/richtext-lexical"
+import { ColorFeature } from "../features/color/feature.server"
+import { FontSizeFeature } from "../features/font-size/feature.server"
+import { isAdminOrEditor } from "../lib/cms/access"
+
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"
 
 export const Posts: CollectionConfig = {
   slug: "posts",
   admin: {
     useAsTitle: "title",
+    livePreview: {
+      url: ({ data }) => `${serverURL}/blog/${data?.slug ?? ""}`,
+    },
+  },
+  versions: {
+    drafts: true,
+  },
+  access: {
+    create: isAdminOrEditor,
+    read: () => true,
+    update: isAdminOrEditor,
+    delete: isAdminOrEditor,
   },
   fields: [
     {
@@ -41,7 +80,38 @@ export const Posts: CollectionConfig = {
     {
       name: "content",
       type: "richText",
-      editor: lexicalEditor({}),
+      editor: lexicalEditor({
+        features: [
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          ColorFeature(),
+          FontSizeFeature(),
+          ParagraphFeature(),
+          HeadingFeature({ enabledHeadingSizes: ["h1", "h2", "h3", "h4"] }),
+          BoldFeature(),
+          ItalicFeature(),
+          UnderlineFeature(),
+          StrikethroughFeature(),
+          InlineCodeFeature(),
+          SuperscriptFeature(),
+          SubscriptFeature(),
+          AlignFeature(),
+          IndentFeature(),
+          BlockquoteFeature(),
+          LinkFeature({ enabledCollections: [] }),
+          UploadFeature({
+            collections: {
+              media: {
+                fields: [{ name: "alt", type: "text" }],
+              },
+            },
+          }),
+          HorizontalRuleFeature(),
+          OrderedListFeature(),
+          UnorderedListFeature(),
+          ChecklistFeature(),
+        ],
+      }),
     },
     {
       name: "author",
@@ -50,15 +120,6 @@ export const Posts: CollectionConfig = {
     {
       name: "publishedAt",
       type: "date",
-    },
-    {
-      name: "status",
-      type: "select",
-      defaultValue: "draft",
-      options: [
-        { label: "Draft", value: "draft" },
-        { label: "Published", value: "published" },
-      ],
     },
   ],
   hooks: {

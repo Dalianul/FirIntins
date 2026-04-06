@@ -1,12 +1,13 @@
 "use client"
 
 import { Suspense, useState } from "react"
+import type { ReactNode } from "react"
 import Link from "next/link"
 import { useCart } from "@/hooks/use-cart"
 import { CartDrawer } from "@/components/cart/cart-drawer"
 import SearchButton from "@/components/layout/search-button"
 
-export default function Header() {
+export default function Header({ nav }: { nav?: ReactNode }) {
   const { itemCount } = useCart()
   const [isCartOpen, setIsCartOpen] = useState(false)
 
@@ -21,33 +22,14 @@ export default function Header() {
           FirIntins
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex gap-8">
-          <Link
-            href="/produse"
-            className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
-          >
-            Produse
-          </Link>
-          <Link
-            href="/categorii"
-            className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
-          >
-            Categorii
-          </Link>
-          <Link
-            href="/blog"
-            className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
-          >
-            Blog
-          </Link>
-          <Link
-            href="/oferte"
-            className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
-          >
-            Oferte
-          </Link>
-        </div>
+        {/* Dynamic Nav — passed from Server Component parent */}
+        {nav ?? (
+          <div className="hidden md:flex gap-8">
+            {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
+              <span key={label} className="text-[--color-cream] opacity-50">{label}</span>
+            ))}
+          </div>
+        )}
 
         {/* Right Actions */}
         <div className="flex gap-4 items-center">

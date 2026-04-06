@@ -1,11 +1,9 @@
-import { Suspense } from "react"
 import type { Metadata } from "next"
+import { connection } from "next/server"
 import { BASE_URL } from "@/lib/constants"
-import { Hero } from "@/components/homepage/hero"
-import { CategoriesSection } from "@/components/homepage/categories-section"
-import { NewsSection } from "@/components/homepage/news-section"
-import { WhyFirIntins } from "@/components/homepage/why-firintins"
-import { NewsletterSection } from "@/components/homepage/newsletter-section"
+import { getCachedHomepage } from "@/lib/cms/client"
+import { BlockRenderer } from "@/components/blocks/BlockRenderer"
+import { RefreshOnPreviewMessage } from "@/components/cms/RefreshOnPreviewMessage"
 
 export const dynamic = "force-dynamic"
 
@@ -21,14 +19,21 @@ export const metadata: Metadata = {
   },
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  await connection()
+  let blocks: any[] = []
+  try {
+    const homepage = await getCachedHomepage()
+    blocks = (homepage?.blocks ?? []) as any[]
+  } catch {
+    // CMS unavailable on first load after HMR restart — render empty shell
+  }
+
   return (
     <main className="bg-bg">
-      <Hero />
-      <Suspense fallback={null}><CategoriesSection /></Suspense>
-      <Suspense fallback={null}><NewsSection /></Suspense>
-      <WhyFirIntins />
-      <NewsletterSection />
+      {/* Triggers router.refresh() on Payload live-preview postMessage events */}
+      <RefreshOnPreviewMessage />
+      <BlockRenderer blocks={blocks} />
     </main>
   )
 }

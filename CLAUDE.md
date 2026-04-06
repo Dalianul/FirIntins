@@ -23,7 +23,7 @@ pnpm lint          # Lint all apps
 ```bash
 pnpm backend:dev          # medusa develop (watch mode)
 pnpm backend:migrate      # medusa db:migrate
-pnpm backend:seed         # Run seed script
+pnpm --filter backend seed   # Seed Medusa products/categories (NOT pnpm backend:seed — that script is broken)
 
 # From apps/backend directly:
 pnpm test:unit            # Unit tests (swc/jest)
@@ -42,6 +42,7 @@ pnpm --filter storefront test:watch  # Watch mode
 pnpm --filter storefront test -- --testPathPattern="checkout"
 
 # Payload CMS
+pnpm --filter storefront seed:cms        # Seed CMS homepage, navigation, footer, FAQs, testimonials
 pnpm --filter storefront generate:types    # Regenerate payload-types.ts
 pnpm --filter storefront generate:importmap  # Regenerate admin/importMap.js
 ```
@@ -129,6 +130,15 @@ Payload v3 runs inside the Next.js 16 app (same process, same port). Config: `pa
 - `app/(payload)/admin/importMap.js` — auto-generated; regenerate with `generate:importmap` after adding custom components
 - `collections/` — Posts and Pages have `afterChange` hooks calling `revalidateTag`; Media has `access: { read: () => true }` for public file serving
 
+**CMS block system:** Page content is built from blocks defined in two layers:
+- `blocks/*.ts` — Payload field schemas (slug, labels, fields). Each block is registered in `payload.config.ts`.
+- `components/blocks/*.tsx` — React render components, dispatched by `components/blocks/BlockRenderer.tsx`.
+- Block thumbnail previews live in `public/block-thumbnails/`.
+
+When adding a new block: create both the `.ts` schema and `.tsx` component, register the schema in `payload.config.ts` blocks array, then run `generate:types` and `generate:importmap`.
+
+**FeaturedProducts block — handle format:** The `handle` field expects the product slug only (e.g. `mulineta-crap-elite-6000`), NOT the full URL path (`/produse/mulineta-crap-elite-6000`).
+
 **CMS data caching** (`lib/cms/client.ts`): uses `"use cache"` + `cacheTag` + `cacheLife` (enabled by `experimental: { useCache: true }` in `next.config.ts`). Tags: `cms-blog` (posts/categories), `cms-pages` (pages/footer).
 
 **Payload media images:** Payload returns absolute URLs (`http://localhost:3000/api/media/file/...`). Always extract the pathname before passing to `next/image` to avoid loopback fetch errors: `new URL(url).pathname`.
@@ -215,6 +225,22 @@ Use `as Function` or `as any` casts at the call site rather than fighting the ty
 ### Base UI vs Radix UI
 
 shadcn/ui components are built on **Base UI** (`@base-ui-components/react`), not Radix UI. The `asChild` prop does not exist on Base UI primitives (e.g. `SheetTrigger`, `DialogTrigger`). Do not pass `asChild` to these components.
+
+### Medusa Workflow Error Handling
+
+`createProductsWorkflow` (and other workflows) throw **plain objects**, not `Error` instances. `err instanceof Error` is always `false`. Access the message with:
+
+```ts
+const msg = (err as any)?.message ?? String(err)
+```
+
+Unique constraint violations surface as messages containing `"already exists"` or `"duplicate"`. Payload v3 unique constraint errors say `"The following field is invalid: <field>"` — check for `"field is invalid"` rather than `"duplicate"`.
+
+### Seeding Gotchas
+
+- `revalidateTag` called from seed scripts (outside a Next.js server) logs `"Invariant: static generation store missing"` — this is harmless, not a failure.
+- Payload integer IDs (postgres) are `number`, not `string`. Relationship fields require `number[]`. Use `doc.id as number` when collecting created IDs.
+- When seeding the Medusa backend, existing product handles are fetched via `query.graph` — but always wrap each `createProductsWorkflow` call in individual try-catch rather than relying on the Set comparison, as plain-object errors can silently fall through.
 
 ### pnpm Overrides
 

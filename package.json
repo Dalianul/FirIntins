@@ -23,7 +23,8 @@
   },
   "pnpm": {
     "overrides": {
-      "zod": "^3.25.76"
+      "zod": "^3.25.76",
+      "@payloadcms/ui": "3.80.0"
     },
     "onlyBuiltDependencies": [
       "@medusajs/telemetry",

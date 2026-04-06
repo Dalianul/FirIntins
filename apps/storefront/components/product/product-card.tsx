@@ -9,15 +9,18 @@ import { HeartButton } from "@/components/wishlist/heart-button"
 
 interface ProductCardProps {
   product: unknown
+  priority?: boolean
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   const prod = product as Record<string, unknown>
 
   const variants = prod.variants as Array<Record<string, unknown>> | null | undefined
   const firstVariant = variants?.[0] as Record<string, unknown> | undefined
   const calculatedPrice = firstVariant?.calculated_price as Record<string, unknown> | undefined
   const price = calculatedPrice?.calculated_amount as number | undefined ?? 0
+  const originalPrice = calculatedPrice?.original_amount as number | undefined
+  const hasDiscount = originalPrice != null && originalPrice > price
 
   const categories = prod.categories as Array<Record<string, unknown>> | null | undefined
   const category = (categories?.[0] as Record<string, unknown> | undefined)?.name as string | null | undefined ?? "Altele"
@@ -33,16 +36,17 @@ export function ProductCard({ product }: ProductCardProps) {
     <div className="relative group">
       <Link href={`/produse/${handle}`}>
         <m.div
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.02 }}
           className="group rounded border border-border hover:border-moss transition-colors overflow-hidden bg-surface"
         >
-          <div className="relative h-48 overflow-hidden bg-surface-2">
+          <div className="relative aspect-[4/3] overflow-hidden bg-surface-2">
             <Image
               src={`https://picsum.photos/300/200?random=${id}`}
               alt={title}
               fill
+              priority={priority}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover group-hover:scale-110 transition-transform"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {discountPercentage != null && discountPercentage > 0 && (
               <span className="absolute top-2 left-2 z-10 bg-destructive text-white text-xs font-bold px-2 py-0.5 rounded">
@@ -57,9 +61,16 @@ export function ProductCard({ product }: ProductCardProps) {
             <h3 className="font-outfit font-medium text-cream text-sm line-clamp-2">
               {title}
             </h3>
-            <p className="text-mud font-cormorant text-lg mt-2">
-              {formatPrice(price)}
-            </p>
+            <div className="flex items-baseline gap-2 mt-2">
+              {hasDiscount && (
+                <span className="line-through text-[--color-fog] text-sm">
+                  {formatPrice(originalPrice!)}
+                </span>
+              )}
+              <span className={`font-cormorant text-lg ${hasDiscount ? "text-[--color-moss-light]" : "text-mud"}`}>
+                {formatPrice(price)}
+              </span>
+            </div>
           </div>
         </m.div>
       </Link>

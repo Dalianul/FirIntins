@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Cormorant_Garamond, Outfit } from "next/font/google"
 import { Suspense } from "react"
 import { LazyMotion, domAnimation } from "motion/react"
@@ -7,8 +7,10 @@ import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
 import { Analytics } from "@/components/analytics/analytics"
 import Header from "@/components/layout/header"
-import Footer from "@/components/layout/footer"
+import { HeaderNav } from "@/components/layout/HeaderNav"
+import Footer from "@/components/layout/Footer"
 import { CookieConsent } from "@/components/cookie-consent/cookie-consent"
+import { PageTransition } from "@/components/layout/page-transition"
 import "../globals.css"
 
 const cormorant = Cormorant_Garamond({
@@ -24,6 +26,12 @@ const outfit = Outfit({
   variable: "--font-outfit",
   display: "swap",
 })
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+}
 
 export const metadata: Metadata = {
   title: "FirIntins — Echipamente Pescuit Premium",
@@ -47,8 +55,16 @@ export default function StorefrontLayout({
         <LazyMotion features={domAnimation}>
           <CartProvider>
             <WishlistProvider>
-              <Header />
-              <main className="min-h-screen">{children}</main>
+              <Header nav={<Suspense fallback={
+                <div className="hidden md:flex gap-8">
+                  {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
+                    <span key={label} className="text-[--color-cream] opacity-50">{label}</span>
+                  ))}
+                </div>
+              }><HeaderNav /></Suspense>} />
+              <PageTransition>
+                {children}
+              </PageTransition>
               <Suspense fallback={null}>
                 <Footer />
               </Suspense>
