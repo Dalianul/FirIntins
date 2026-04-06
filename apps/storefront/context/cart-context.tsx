@@ -18,6 +18,7 @@ export interface CartItem {
   quantity: number
   unit_price: number
   total: number
+  thumbnail?: string | null
 }
 
 export interface Cart {
