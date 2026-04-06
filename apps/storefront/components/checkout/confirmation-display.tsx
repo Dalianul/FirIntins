@@ -71,6 +71,7 @@ export function ConfirmationDisplay({ order }: ConfirmationDisplayProps) {
                     src={`https://picsum.photos/100/100?random=${item.product_id}`}
                     alt={item.title}
                     fill
+                    sizes="80px"
                     className="object-cover"
                   />
                 </div>

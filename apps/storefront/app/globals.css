@@ -6,14 +6,17 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --color-bg: #0f0e0b;
-  --color-bg-light: #1a1814;
+  --color-bg: #0c0b09;
+  --color-bg-light: #161410;
   --color-surface: #1a1814;
   --color-surface-2: #242019;
   --color-border: #2e2a22;
   --color-moss: #4a5e3a;
   --color-moss-light: #6b8a52;
+  --color-moss-dim: rgba(74, 94, 58, 0.15);
   --color-mud: #8b6914;
+  --color-gold: #a16207;
+  --color-gold-light: #ca8a04;
   --color-fog: #c4bfb0;
   --color-cream: #f0ebe0;
   --color-white: #faf8f3;
@@ -52,14 +55,17 @@
 }
 
 @theme inline {
-  --color-bg: #0f0e0b;
-  --color-bg-light: #1a1814;
+  --color-bg: #0c0b09;
+  --color-bg-light: #161410;
   --color-surface: #1a1814;
   --color-surface-2: #242019;
   --color-border: #2e2a22;
   --color-moss: #4a5e3a;
   --color-moss-light: #6b8a52;
+  --color-moss-dim: rgba(74, 94, 58, 0.15);
   --color-mud: #8b6914;
+  --color-gold: #a16207;
+  --color-gold-light: #ca8a04;
   --color-fog: #c4bfb0;
   --color-cream: #f0ebe0;
   --color-white: #faf8f3;
@@ -107,9 +113,17 @@
 }
 
 @layer base {
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--color-bg);
+    color: var(--color-white);
     font-family: var(--font-family-outfit);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -121,12 +135,22 @@
     @apply font-semibold;
     font-family: var(--font-family-cormorant);
   }
+
   * {
     @apply border-border;
-    outline-color: rgb(var(--color-ring) / 0.5);
+    outline-color: color-mix(in srgb, var(--color-moss) 60%, transparent);
   }
-  html {
-    @apply font-sans;
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--color-bg); }
+  ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-moss); }
+
+  /* Selection */
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-moss) 35%, transparent);
+    color: var(--color-white);
   }
 }
 
@@ -181,4 +205,23 @@ header {
 }
 footer {
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Marquee animation for LogosBlock */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Reduced motion — disable CSS animations/transitions */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

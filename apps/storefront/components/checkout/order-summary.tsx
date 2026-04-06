@@ -28,6 +28,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
                 src={`https://picsum.photos/100/100?random=${item.variant_id}`}
                 alt={item.product_title}
                 fill
+                sizes="64px"
                 className="object-cover"
               />
             </div>

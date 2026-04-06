@@ -1,5 +1,5 @@
 import type { GlobalConfig } from "payload"
-import { isAdmin } from "../lib/cms/access"
+import { isAdmin, isAdminOrEditor } from "../lib/cms/access"
 import {
   lexicalEditor,
   BoldFeature,
@@ -13,8 +13,8 @@ export const Footer: GlobalConfig = {
   slug: "footer",
   admin: { group: "Setări Site" },
   access: {
-    read: isAdmin,
-    update: isAdmin,
+    read: isAdminOrEditor,
+    update: isAdminOrEditor,
   },
   hooks: {
     afterChange: [

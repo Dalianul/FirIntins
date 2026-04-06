@@ -7,6 +7,11 @@ import { FaqBlock } from "./FaqBlock"
 import { RichTextBlock } from "./RichTextBlock"
 import { CtaBlock } from "./CtaBlock"
 import { ImageBannerBlock } from "./ImageBannerBlock"
+import { NewsletterBlock } from "./NewsletterBlock"
+import { VideoBlock } from "./VideoBlock"
+import { StepsBlock } from "./StepsBlock"
+import { LogosBlock } from "./LogosBlock"
+import { SpacerBlock } from "./SpacerBlock"
 
 export function BlockRenderer({ blocks }: { blocks: any[] }) {
   return (
@@ -31,6 +36,16 @@ export function BlockRenderer({ blocks }: { blocks: any[] }) {
             return <CtaBlock key={block.id ?? i} block={block} />
           case "imageBanner":
             return <ImageBannerBlock key={block.id ?? i} block={block} />
+          case "newsletter":
+            return <NewsletterBlock key={block.id ?? i} block={block} />
+          case "video":
+            return <VideoBlock key={block.id ?? i} block={block} />
+          case "steps":
+            return <StepsBlock key={block.id ?? i} block={block} />
+          case "logos":
+            return <LogosBlock key={block.id ?? i} block={block} />
+          case "spacer":
+            return <SpacerBlock key={block.id ?? i} block={block} />
           default:
             return null
         }

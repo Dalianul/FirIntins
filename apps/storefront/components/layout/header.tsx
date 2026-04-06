@@ -1,13 +1,13 @@
 "use client"
 
 import { Suspense, useState } from "react"
+import type { ReactNode } from "react"
 import Link from "next/link"
 import { useCart } from "@/hooks/use-cart"
 import { CartDrawer } from "@/components/cart/cart-drawer"
 import SearchButton from "@/components/layout/search-button"
-import { HeaderNav } from "@/components/layout/HeaderNav"
 
-export default function Header() {
+export default function Header({ nav }: { nav?: ReactNode }) {
   const { itemCount } = useCart()
   const [isCartOpen, setIsCartOpen] = useState(false)
 
@@ -22,18 +22,14 @@ export default function Header() {
           FirIntins
         </Link>
 
-        {/* Dynamic Nav (server component wrapped in Suspense) */}
-        <Suspense
-          fallback={
-            <div className="hidden md:flex gap-8">
-              {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
-                <span key={label} className="text-[--color-cream] opacity-50">{label}</span>
-              ))}
-            </div>
-          }
-        >
-          <HeaderNav />
-        </Suspense>
+        {/* Dynamic Nav — passed from Server Component parent */}
+        {nav ?? (
+          <div className="hidden md:flex gap-8">
+            {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
+              <span key={label} className="text-[--color-cream] opacity-50">{label}</span>
+            ))}
+          </div>
+        )}
 
         {/* Right Actions */}
         <div className="flex gap-4 items-center">

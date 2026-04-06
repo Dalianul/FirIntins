@@ -7,7 +7,8 @@ import { CartProvider } from "@/context/cart-context"
 import { WishlistProvider } from "@/context/wishlist-context"
 import { Analytics } from "@/components/analytics/analytics"
 import Header from "@/components/layout/header"
-import Footer from "@/components/layout/footer"
+import { HeaderNav } from "@/components/layout/HeaderNav"
+import Footer from "@/components/layout/Footer"
 import { CookieConsent } from "@/components/cookie-consent/cookie-consent"
 import { PageTransition } from "@/components/layout/page-transition"
 import "../globals.css"
@@ -54,7 +55,13 @@ export default function StorefrontLayout({
         <LazyMotion features={domAnimation}>
           <CartProvider>
             <WishlistProvider>
-              <Header />
+              <Header nav={<Suspense fallback={
+                <div className="hidden md:flex gap-8">
+                  {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
+                    <span key={label} className="text-[--color-cream] opacity-50">{label}</span>
+                  ))}
+                </div>
+              }><HeaderNav /></Suspense>} />
               <PageTransition>
                 {children}
               </PageTransition>

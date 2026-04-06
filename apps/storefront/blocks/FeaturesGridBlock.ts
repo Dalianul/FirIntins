@@ -2,7 +2,8 @@ import type { Block } from "payload"
 
 export const FeaturesGridBlock: Block = {
   slug: "featuresGrid",
-  labels: { singular: "Grilă Caracteristici", plural: "Grilă Caracteristici" },
+  labels: { singular: "Caracteristici — Pictograme cu titlu și descriere", plural: "Blocuri Caracteristici" },
+  admin: { images: { thumbnail: { url: "/block-thumbnails/features-grid.svg", alt: "Features grid block preview" } } },
   fields: [
     { name: "heading", type: "text" },
     {

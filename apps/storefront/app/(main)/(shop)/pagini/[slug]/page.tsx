@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getCachedPage, getCachedFooterPages } from "@/lib/cms/client"
-import { PostContent } from "@/components/blog/post-content"
+import { PageLivePreviewWrapper } from "@/components/cms/PageLivePreviewWrapper"
 import { BASE_URL } from "@/lib/constants"
 
 type Props = { params: Promise<{ slug: string }> }
@@ -46,10 +46,7 @@ export default async function StaticPage({ params }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
-      <h1 className="font-cormorant text-3xl sm:text-4xl font-semibold text-[--color-white] mb-8">
-        {page.title}
-      </h1>
-      <PostContent content={page.content} />
+      <PageLivePreviewWrapper initialPage={page} />
     </div>
   )
 }

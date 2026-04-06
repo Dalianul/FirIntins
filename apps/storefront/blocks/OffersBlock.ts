@@ -2,7 +2,8 @@ import type { Block } from "payload"
 
 export const OffersBlock: Block = {
   slug: "offers",
-  labels: { singular: "Oferte", plural: "Oferte" },
+  labels: { singular: "Oferte — Carduri promoționale", plural: "Blocuri Oferte" },
+  admin: { images: { thumbnail: { url: "/block-thumbnails/offers.svg", alt: "Offers block preview" } } },
   fields: [
     { name: "heading", type: "text" },
     {

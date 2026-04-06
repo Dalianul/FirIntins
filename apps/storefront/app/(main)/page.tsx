@@ -3,6 +3,7 @@ import { connection } from "next/server"
 import { BASE_URL } from "@/lib/constants"
 import { getCachedHomepage } from "@/lib/cms/client"
 import { BlockRenderer } from "@/components/blocks/BlockRenderer"
+import { RefreshOnPreviewMessage } from "@/components/cms/RefreshOnPreviewMessage"
 
 export const dynamic = "force-dynamic"
 
@@ -20,12 +21,19 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   await connection()
-  const homepage = await getCachedHomepage()
-  const blocks = homepage?.blocks ?? []
+  let blocks: any[] = []
+  try {
+    const homepage = await getCachedHomepage()
+    blocks = (homepage?.blocks ?? []) as any[]
+  } catch {
+    // CMS unavailable on first load after HMR restart — render empty shell
+  }
 
   return (
     <main className="bg-bg">
-      <BlockRenderer blocks={blocks as any} />
+      {/* Triggers router.refresh() on Payload live-preview postMessage events */}
+      <RefreshOnPreviewMessage />
+      <BlockRenderer blocks={blocks} />
     </main>
   )
 }

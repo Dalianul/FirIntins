@@ -13,7 +13,8 @@ import { FontSizeFeature } from "../features/font-size/feature.server"
 
 export const RichTextBlock: Block = {
   slug: "richText",
-  labels: { singular: "Text Rich", plural: "Text Rich" },
+  labels: { singular: "Text Rich — Conținut formatat", plural: "Blocuri Text Rich" },
+  admin: { images: { thumbnail: { url: "/block-thumbnails/rich-text.svg", alt: "Rich text block preview" } } },
   fields: [
     {
       name: "content",

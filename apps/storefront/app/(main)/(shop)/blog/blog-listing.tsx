@@ -59,9 +59,9 @@ export function BlogListing({
           animate="show"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {filtered.map((post) => (
+          {filtered.map((post, i) => (
             <m.div key={post.id} variants={item}>
-              <PostCard post={post} />
+              <PostCard post={post} priority={i === 0} />
             </m.div>
           ))}
         </m.div>

@@ -1,12 +1,12 @@
 import type { GlobalConfig } from "payload"
-import { isAdmin } from "../lib/cms/access"
+import { isAdmin, isAdminOrEditor } from "../lib/cms/access"
 
 export const Navigation: GlobalConfig = {
   slug: "navigation",
   admin: { group: "Setări Site" },
   access: {
-    read: isAdmin,
-    update: isAdmin,
+    read: isAdminOrEditor,
+    update: isAdminOrEditor,
   },
   hooks: {
     afterChange: [

@@ -73,29 +73,68 @@ function ColorPickerItem({
     [editor],
   )
 
+  const clearColor = useCallback(() => {
+    editor.update(() => {
+      let selection = $getSelection()
+      if ((!$isRangeSelection(selection) || selection.isCollapsed()) && savedRange.current) {
+        const { anchor, focus } = savedRange.current
+        const restored = $createRangeSelection()
+        restored.anchor.set(anchor.key, anchor.offset, anchor.type)
+        restored.focus.set(focus.key, focus.offset, focus.type)
+        $setSelection(restored)
+        selection = $getSelection()
+      }
+      if ($isRangeSelection(selection) && !selection.isCollapsed()) {
+        $patchStyleText(selection, { color: '' })
+      }
+    })
+  }, [editor])
+
   return (
-    <input
-      type="color"
-      value={color}
-      title="Culoare text"
-      onChange={(e) => {
-        const hex = e.target.value
-        setColor(hex)
-        if (/^#(?:[0-9a-f]{3}){1,2}$/i.test(hex)) {
-          applyColor(hex)
-        }
-      }}
-      style={{
-        width: 26,
-        height: 26,
-        padding: 2,
-        cursor: 'pointer',
-        border: '1px solid var(--theme-elevation-300)',
-        borderRadius: 4,
-        background: 'transparent',
-        flexShrink: 0,
-      }}
-    />
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
+      <input
+        type="color"
+        value={color}
+        title="Culoare text"
+        onChange={(e) => {
+          const hex = e.target.value
+          setColor(hex)
+          if (/^#(?:[0-9a-f]{3}){1,2}$/i.test(hex)) {
+            applyColor(hex)
+          }
+        }}
+        style={{
+          width: 26,
+          height: 26,
+          padding: 2,
+          cursor: 'pointer',
+          border: '1px solid var(--theme-elevation-300)',
+          borderRadius: 4,
+          background: 'transparent',
+          flexShrink: 0,
+        }}
+      />
+      <button
+        type="button"
+        title="Resetează culoarea"
+        onClick={clearColor}
+        style={{
+          width: 18,
+          height: 18,
+          lineHeight: '16px',
+          fontSize: 12,
+          cursor: 'pointer',
+          border: '1px solid var(--theme-elevation-300)',
+          borderRadius: 3,
+          background: 'transparent',
+          color: 'var(--theme-text)',
+          padding: 0,
+          flexShrink: 0,
+        }}
+      >
+        ×
+      </button>
+    </span>
   )
 }
 

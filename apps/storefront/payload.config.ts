@@ -41,14 +41,15 @@ export default buildConfig({
     Faqs,
     {
       slug: "media",
-      upload: true,
+      upload: {
+        focalPoint: true,
+      },
       access: {
         read: () => true,
       },
       fields: [
         { name: "alt", type: "text" },
         { name: "caption", type: "text" },
-        { name: "focalPoint", type: "point" },
       ],
     },
   ],
@@ -56,10 +57,13 @@ export default buildConfig({
   plugins: [
     seoPlugin({
       collections: ["posts", "pages"],
+      uploadsCollection: "media",
       generateTitle: ({ doc }) =>
         `${(doc as { title?: string }).title ?? ""} — FirIntins`,
       generateDescription: ({ doc }) =>
         (doc as { excerpt?: string }).excerpt ?? "",
+      generateImage: ({ doc }) =>
+        (doc as { coverImage?: unknown }).coverImage ?? null,
       generateURL: ({ doc, collectionConfig }) => {
         const slug = (doc as { slug?: string }).slug ?? ""
         if (collectionConfig?.slug === "posts") return `${serverURL}/blog/${slug}`

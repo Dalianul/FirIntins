@@ -9,6 +9,11 @@ import { FaqBlock } from "../blocks/FaqBlock"
 import { RichTextBlock } from "../blocks/RichTextBlock"
 import { CtaBlock } from "../blocks/CtaBlock"
 import { ImageBannerBlock } from "../blocks/ImageBannerBlock"
+import { NewsletterBlock } from "../blocks/NewsletterBlock"
+import { VideoBlock } from "../blocks/VideoBlock"
+import { StepsBlock } from "../blocks/StepsBlock"
+import { LogosBlock } from "../blocks/LogosBlock"
+import { SpacerBlock } from "../blocks/SpacerBlock"
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"
 
@@ -59,6 +64,11 @@ export const Homepage: GlobalConfig = {
         RichTextBlock,
         CtaBlock,
         ImageBannerBlock,
+        NewsletterBlock,
+        VideoBlock,
+        StepsBlock,
+        LogosBlock,
+        SpacerBlock,
       ],
     },
   ],

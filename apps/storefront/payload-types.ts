@@ -213,6 +213,10 @@ export interface Post {
   meta?: {
     title?: string | null;
     description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
   };
   updatedAt: string;
   createdAt: string;
@@ -226,11 +230,6 @@ export interface Media {
   id: number;
   alt?: string | null;
   caption?: string | null;
-  /**
-   * @minItems 2
-   * @maxItems 2
-   */
-  focalPoint?: [number, number] | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -276,6 +275,10 @@ export interface Page {
   meta?: {
     title?: string | null;
     description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
   };
   updatedAt: string;
   createdAt: string;
@@ -484,6 +487,7 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         title?: T;
         description?: T;
+        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -503,6 +507,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         title?: T;
         description?: T;
+        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -549,7 +554,6 @@ export interface FaqsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
-  focalPoint?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -808,6 +812,83 @@ export interface Homepage {
             blockName?: string | null;
             blockType: 'imageBanner';
           }
+        | {
+            heading: string;
+            subheading?: string | null;
+            placeholder?: string | null;
+            buttonLabel?: string | null;
+            background?: ('surface' | 'moss' | 'mud' | 'dark') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsletter';
+          }
+        | {
+            heading?: string | null;
+            /**
+             * URL YouTube (https://youtube.com/watch?v=...) sau Vimeo (https://vimeo.com/...)
+             */
+            videoUrl: string;
+            caption?: string | null;
+            aspectRatio?: ('16/9' | '4/3' | '1/1' | '9/16') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'video';
+          }
+        | {
+            heading?: string | null;
+            subheading?: string | null;
+            steps?:
+              | {
+                  title: string;
+                  description?: string | null;
+                  icon?:
+                    | ('cart' | 'truck' | 'package' | 'heart' | 'check' | 'star' | 'phone' | 'email' | 'shield')
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            layout?: ('horizontal' | 'vertical') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'steps';
+          }
+        | {
+            /**
+             * Titlu opțional (ex: 'Partenerii noștri')
+             */
+            heading?: string | null;
+            logos?:
+              | {
+                  image: number | Media;
+                  /**
+                   * Text alternativ pentru accesibilitate
+                   */
+                  alt?: string | null;
+                  /**
+                   * Link opțional la site-ul partenerului
+                   */
+                  url?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Activează scroll automat (marquee) al logo-urilor
+             */
+            marquee?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'logos';
+          }
+        | {
+            size?: ('sm' | 'md' | 'lg' | 'xl') | null;
+            /**
+             * Afișează o linie orizontală în mijloc
+             */
+            showDivider?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'spacer';
+          }
       )[]
     | null;
   _status?: ('draft' | 'published') | null;
@@ -992,6 +1073,68 @@ export interface HomepageSelect<T extends boolean = true> {
               image?: T;
               caption?: T;
               linkUrl?: T;
+              id?: T;
+              blockName?: T;
+            };
+        newsletter?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              placeholder?: T;
+              buttonLabel?: T;
+              background?: T;
+              id?: T;
+              blockName?: T;
+            };
+        video?:
+          | T
+          | {
+              heading?: T;
+              videoUrl?: T;
+              caption?: T;
+              aspectRatio?: T;
+              id?: T;
+              blockName?: T;
+            };
+        steps?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              steps?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              layout?: T;
+              id?: T;
+              blockName?: T;
+            };
+        logos?:
+          | T
+          | {
+              heading?: T;
+              logos?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    url?: T;
+                    id?: T;
+                  };
+              marquee?: T;
+              id?: T;
+              blockName?: T;
+            };
+        spacer?:
+          | T
+          | {
+              size?: T;
+              showDivider?: T;
               id?: T;
               blockName?: T;
             };

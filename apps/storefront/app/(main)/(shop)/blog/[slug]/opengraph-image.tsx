@@ -35,12 +35,13 @@ export default async function OGImage({ params }: Props) {
   const post = await getPost(slug).catch(() => null)
   if (!post) return fallback()
 
+  const coverImageObj = typeof post.coverImage === "object" ? post.coverImage : null
   const coverUrl =
-    post.coverImage?.url &&
-    !post.coverImage.url.startsWith("http://localhost")
+    coverImageObj?.url &&
+    !coverImageObj.url.startsWith("http://localhost")
       ? (() => {
           try {
-            return new URL(post.coverImage!.url!).href
+            return new URL(coverImageObj.url).href
           } catch {
             return null
           }

@@ -383,96 +383,305 @@ export default async function seed({ container }: ExecArgs) {
 
   logger.info("Seeding product data...");
   const { data: existingProductsData } = await query.graph({ entity: "product", fields: ["handle"] });
-  const existingHandles = existingProductsData.map((p: { handle: string }) => p.handle);
-  if (!existingHandles.includes("lanseta-crap-pro-36m") && !existingHandles.includes("mulineta-crap-elite-6000")) {
-  await createProductsWorkflow(container).run({
-    input: {
-      products: [
-        {
-          title: "Lanseta Crap Pro 3.6m",
-          category_ids: [
-            categoryResult.find((cat) => cat.name === "Lansete")!.id,
-          ],
-          description:
-            "Lanseta profesionala pentru pescuit la crap, lungime 3.6m. Construita din carbon de inalta calitate pentru flexibilitate si rezistenta maxima.",
-          handle: "lanseta-crap-pro-36m",
-          weight: 350,
-          status: ProductStatus.PUBLISHED,
-          shipping_profile_id: shippingProfile.id,
-          options: [
-            {
-              title: "TC",
-              values: ["2.5 lbs", "3 lbs", "3.5 lbs"],
-            },
-          ],
-          variants: [
-            {
-              title: "2.5 lbs",
-              sku: "LANSETA-CRAP-PRO-36M-2.5TC",
-              options: { TC: "2.5 lbs" },
-              prices: [
-                { amount: 54999, currency_code: "ron" },
-              ],
-            },
-            {
-              title: "3 lbs",
-              sku: "LANSETA-CRAP-PRO-36M-3TC",
-              options: { TC: "3 lbs" },
-              prices: [
-                { amount: 59999, currency_code: "ron" },
-              ],
-            },
-            {
-              title: "3.5 lbs",
-              sku: "LANSETA-CRAP-PRO-36M-3.5TC",
-              options: { TC: "3.5 lbs" },
-              prices: [
-                { amount: 64999, currency_code: "ron" },
-              ],
-            },
-          ],
-          sales_channels: [{ id: defaultSalesChannel[0].id }],
-        },
-        {
-          title: "Mulineta Crap Elite 6000",
-          category_ids: [
-            categoryResult.find((cat) => cat.name === "Mulinete")!.id,
-          ],
-          description:
-            "Mulineta de inalta performanta pentru pescuit la crap. Sistem de franare puternic, constructie robusta, potrivita pentru sesiuni lungi de pescuit.",
-          handle: "mulineta-crap-elite-6000",
-          weight: 450,
-          status: ProductStatus.PUBLISHED,
-          shipping_profile_id: shippingProfile.id,
-          options: [
-            {
-              title: "Marime",
-              values: ["5000", "6000"],
-            },
-          ],
-          variants: [
-            {
-              title: "5000",
-              sku: "MULINETA-CRAP-ELITE-5000",
-              options: { Marime: "5000" },
-              prices: [
-                { amount: 34999, currency_code: "ron" },
-              ],
-            },
-            {
-              title: "6000",
-              sku: "MULINETA-CRAP-ELITE-6000",
-              options: { Marime: "6000" },
-              prices: [
-                { amount: 39999, currency_code: "ron" },
-              ],
-            },
-          ],
-          sales_channels: [{ id: defaultSalesChannel[0].id }],
-        },
+  const existingHandles = new Set(existingProductsData.map((p: { handle: string }) => p.handle));
+
+  const cat = (name: string) => categoryResult.find((c) => c.name === name)!.id;
+
+  const allProducts = [
+    // ── Lansete ────────────────────────────────────────────────────────────────
+    {
+      title: "Lanseta Crap Pro 3.6m",
+      handle: "lanseta-crap-pro-36m",
+      category_ids: [cat("Lansete")],
+      description: "Lanseta profesionala pentru pescuit la crap, lungime 3.6m. Carbon de inalta calitate, flexibilitate si rezistenta maxima.",
+      weight: 350,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "TC", values: ["2.5 lbs", "3 lbs", "3.5 lbs"] }],
+      variants: [
+        { title: "2.5 lbs", sku: "LANSETA-CRAP-PRO-36M-25TC", options: { TC: "2.5 lbs" }, prices: [{ amount: 54999, currency_code: "ron" }] },
+        { title: "3 lbs",   sku: "LANSETA-CRAP-PRO-36M-3TC",  options: { TC: "3 lbs" },   prices: [{ amount: 59999, currency_code: "ron" }] },
+        { title: "3.5 lbs", sku: "LANSETA-CRAP-PRO-36M-35TC", options: { TC: "3.5 lbs" }, prices: [{ amount: 64999, currency_code: "ron" }] },
       ],
     },
-  });
+    {
+      title: "Lanseta Crap Marker 3.9m",
+      handle: "lanseta-crap-marker-39m",
+      category_ids: [cat("Lansete")],
+      description: "Lanseta marker 3.9m pentru cartografierea fundului lacului. Actiune rapida, sensibilitate excelenta pentru detectarea obstacolelor subacvatice.",
+      weight: 320,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "LANSETA-MARKER-39M", options: { Model: "Standard" }, prices: [{ amount: 69900, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Lanseta Spod 3.6m",
+      handle: "lanseta-spod-360",
+      category_ids: [cat("Lansete")],
+      description: "Lanseta spod dedicata nadairii la distanta. Putere de aruncare ridicata, inel de varf intarit pentru fire groase.",
+      weight: 380,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "LANSETA-SPOD-36M", options: { Model: "Standard" }, prices: [{ amount: 45900, currency_code: "ron" }] },
+      ],
+    },
+    // ── Mulinete ───────────────────────────────────────────────────────────────
+    {
+      title: "Mulineta Crap Elite 6000",
+      handle: "mulineta-crap-elite-6000",
+      category_ids: [cat("Mulinete")],
+      description: "Mulineta de inalta performanta pentru pescuit la crap. Sistem de franare puternic, constructie robusta pentru sesiuni lungi.",
+      weight: 450,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Marime", values: ["5000", "6000"] }],
+      variants: [
+        { title: "5000", sku: "MULINETA-ELITE-5000", options: { Marime: "5000" }, prices: [{ amount: 34999, currency_code: "ron" }] },
+        { title: "6000", sku: "MULINETA-ELITE-6000", options: { Marime: "6000" }, prices: [{ amount: 39999, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Mulineta Free Spool 8000",
+      handle: "mulineta-freespool-8000",
+      category_ids: [cat("Mulinete")],
+      description: "Mulineta cu sistem free spool pentru pescuit la crap nocturn si de distanta. Rulmenti ceramici, ax principal din aluminiu.",
+      weight: 520,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "MULINETA-FREESPOOL-8000", options: { Model: "Standard" }, prices: [{ amount: 54900, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Mulineta Baitrunner 4000",
+      handle: "mulineta-baitrunner-4000",
+      category_ids: [cat("Mulinete")],
+      description: "Mulineta baitrunner compacta, ideala pentru pescuit la crap si alte specii de fund. Mecanismul baitrunner permite eliberarea firului la muscatura.",
+      weight: 390,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "MULINETA-BAITRUNNER-4000", options: { Model: "Standard" }, prices: [{ amount: 29900, currency_code: "ron" }] },
+      ],
+    },
+    // ── Fire ───────────────────────────────────────────────────────────────────
+    {
+      title: "Fir Monofilament 0.35mm 300m",
+      handle: "fir-monofilament-035mm",
+      category_ids: [cat("Fire")],
+      description: "Fir monofilament premium pentru pescuit la crap. Rezistenta la abraziune, transparenta ridicata, elongatie controlata.",
+      weight: 180,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Diametru", values: ["0.30mm", "0.35mm", "0.40mm"] }],
+      variants: [
+        { title: "0.30mm", sku: "FIR-MONO-030-300M", options: { Diametru: "0.30mm" }, prices: [{ amount: 4499, currency_code: "ron" }] },
+        { title: "0.35mm", sku: "FIR-MONO-035-300M", options: { Diametru: "0.35mm" }, prices: [{ amount: 4999, currency_code: "ron" }] },
+        { title: "0.40mm", sku: "FIR-MONO-040-300M", options: { Diametru: "0.40mm" }, prices: [{ amount: 5499, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Fir Textil 8x 0.16mm 300m",
+      handle: "fir-textil-8x-016mm",
+      category_ids: [cat("Fire")],
+      description: "Fir textil impletit din 8 fire pentru distanta maxima. Diametru redus, rezistenta ridicata, fara elongatie.",
+      weight: 120,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Culoare", values: ["Verde", "Maro", "Negru"] }],
+      variants: [
+        { title: "Verde", sku: "FIR-TEXTIL-8X-016-VERDE", options: { Culoare: "Verde" }, prices: [{ amount: 12900, currency_code: "ron" }] },
+        { title: "Maro",  sku: "FIR-TEXTIL-8X-016-MARO",  options: { Culoare: "Maro" },  prices: [{ amount: 12900, currency_code: "ron" }] },
+        { title: "Negru", sku: "FIR-TEXTIL-8X-016-NEGRU", options: { Culoare: "Negru" }, prices: [{ amount: 12900, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Fir Fluorocarbon Leader 0.40mm 25m",
+      handle: "fir-fluorocarbon-040mm",
+      category_ids: [cat("Fire")],
+      description: "Fir fluorocarbon invizibil in apa pentru montaje leader. Rezistenta ridicata la abraziune, impermeabil, densitate mare.",
+      weight: 80,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Diametru", values: ["0.35mm", "0.40mm", "0.50mm"] }],
+      variants: [
+        { title: "0.35mm", sku: "FIR-FLUORO-035-25M", options: { Diametru: "0.35mm" }, prices: [{ amount: 7900, currency_code: "ron" }] },
+        { title: "0.40mm", sku: "FIR-FLUORO-040-25M", options: { Diametru: "0.40mm" }, prices: [{ amount: 8900, currency_code: "ron" }] },
+        { title: "0.50mm", sku: "FIR-FLUORO-050-25M", options: { Diametru: "0.50mm" }, prices: [{ amount: 9900, currency_code: "ron" }] },
+      ],
+    },
+    // ── Carlige ────────────────────────────────────────────────────────────────
+    {
+      title: "Carlige Crap Nr.4 — 25 bucati",
+      handle: "carlige-crap-nr4-25buc",
+      category_ids: [cat("Carlige")],
+      description: "Carlige crap din otel carbon, tratament anti-coroziv. Varful ascutit chimic mentine acrosarea ferm pe toata durata luptei cu pestele.",
+      weight: 40,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Marime", values: ["Nr.2", "Nr.4", "Nr.6"] }],
+      variants: [
+        { title: "Nr.2", sku: "CARLIGE-CRAP-NR2-25BUC", options: { Marime: "Nr.2" }, prices: [{ amount: 4499, currency_code: "ron" }] },
+        { title: "Nr.4", sku: "CARLIGE-CRAP-NR4-25BUC", options: { Marime: "Nr.4" }, prices: [{ amount: 3999, currency_code: "ron" }] },
+        { title: "Nr.6", sku: "CARLIGE-CRAP-NR6-25BUC", options: { Marime: "Nr.6" }, prices: [{ amount: 3499, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Carlige Wide Gape Nr.6 — 10 bucati",
+      handle: "carlige-wide-gape-nr6",
+      category_ids: [cat("Carlige")],
+      description: "Carlige wide gape cu deschidere larga, potrivite pentru montaje cu boilies popup. Otel carbon de inalta calitate.",
+      weight: 30,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Marime", values: ["Nr.4", "Nr.6", "Nr.8"] }],
+      variants: [
+        { title: "Nr.4", sku: "CARLIGE-WG-NR4-10BUC", options: { Marime: "Nr.4" }, prices: [{ amount: 3499, currency_code: "ron" }] },
+        { title: "Nr.6", sku: "CARLIGE-WG-NR6-10BUC", options: { Marime: "Nr.6" }, prices: [{ amount: 2999, currency_code: "ron" }] },
+        { title: "Nr.8", sku: "CARLIGE-WG-NR8-10BUC", options: { Marime: "Nr.8" }, prices: [{ amount: 2499, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Carlige Curve Shank Nr.2 — 8 bucati",
+      handle: "carlige-curve-shank-nr2",
+      category_ids: [cat("Carlige")],
+      description: "Carlige curve shank pentru montaje stiff rig si hair rig. Acrosare superioara, potrivite pentru crap mare.",
+      weight: 35,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "CARLIGE-CS-NR2-8BUC", options: { Model: "Standard" }, prices: [{ amount: 3400, currency_code: "ron" }] },
+      ],
+    },
+    // ── Accesorii ──────────────────────────────────────────────────────────────
+    {
+      title: "Pod Lansete Crap — 3 Posturi",
+      handle: "pod-lansete-3posturi",
+      category_ids: [cat("Accesorii")],
+      description: "Pod lansete din aluminiu anodizat, 3 posturi reglabile in inaltime si unghi. Picioare telescopice, compatibil cu sisteme standard.",
+      weight: 2100,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "POD-LANSETE-3P", options: { Model: "Standard" }, prices: [{ amount: 34900, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Alarma Pescuit + Swinger — Set 4",
+      handle: "alarma-swinger-set4",
+      category_ids: [cat("Accesorii")],
+      description: "Set 4 alarme electronice cu LED si 4 swingere asortate. Sensibilitate reglabila, volum reglabil, rezistente la apa.",
+      weight: 800,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "ALARMA-SWINGER-SET4", options: { Model: "Standard" }, prices: [{ amount: 44900, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Guta Siliconica Asortata — 10 culori",
+      handle: "guta-siliconica-set",
+      category_ids: [cat("Accesorii")],
+      description: "Set 10 bobine guta siliconica pentru montaje crap. Culori asortate (verde, maro, negru, transparent etc.), diametru 0.5mm.",
+      weight: 60,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "GUTA-SILICONICA-SET10", options: { Model: "Standard" }, prices: [{ amount: 5900, currency_code: "ron" }] },
+      ],
+    },
+    // ── Boilies & Momeli ───────────────────────────────────────────────────────
+    {
+      title: "Boilies Fishmeal 20mm — 5kg",
+      handle: "boilies-fishmeal-20mm-5kg",
+      category_ids: [cat("Boilies & Momeli")],
+      description: "Boilies cu continut ridicat de fainuri de peste, 20mm, 5kg. Foarte atractiv pentru crap mare. Solubilitate ridicata, arome persistente.",
+      weight: 5200,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Aroma", values: ["Fishmeal Natural", "Fishmeal + Squid"] }],
+      variants: [
+        { title: "Fishmeal Natural", sku: "BOILIES-FM-20MM-5KG-NAT",  options: { Aroma: "Fishmeal Natural"  }, prices: [{ amount: 14900, currency_code: "ron" }] },
+        { title: "Fishmeal + Squid", sku: "BOILIES-FM-20MM-5KG-SQUID", options: { Aroma: "Fishmeal + Squid" }, prices: [{ amount: 15900, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Boilies Squid & Octopus 18mm — 3kg",
+      handle: "boilies-squid-octopus-3kg",
+      category_ids: [cat("Boilies & Momeli")],
+      description: "Boilies cu extract de calamar si caracatita, 18mm, 3kg. Aroma marina puternica, eficienta dovedita pentru crap si biban de dimensiuni mari.",
+      weight: 3200,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Model", values: ["Standard"] }],
+      variants: [
+        { title: "Standard", sku: "BOILIES-SQUID-18MM-3KG", options: { Model: "Standard" }, prices: [{ amount: 8900, currency_code: "ron" }] },
+      ],
+    },
+    {
+      title: "Pop-up Boilies Mix 15mm — 100g",
+      handle: "popup-boilies-mix",
+      category_ids: [cat("Boilies & Momeli")],
+      description: "Pop-up boilies flotante 15mm, mix de arome, 100g. Flotabilitate garantata, culori vii pentru vizibilitate maxima pe fund.",
+      weight: 110,
+      status: ProductStatus.PUBLISHED,
+      shipping_profile_id: shippingProfile.id,
+      sales_channels: [{ id: defaultSalesChannel[0].id }],
+      options: [{ title: "Aroma", values: ["Tutti-Frutti", "Vanilie", "Capsuna"] }],
+      variants: [
+        { title: "Tutti-Frutti", sku: "POPUP-MIX-15MM-TF",  options: { Aroma: "Tutti-Frutti" }, prices: [{ amount: 4900, currency_code: "ron" }] },
+        { title: "Vanilie",      sku: "POPUP-MIX-15MM-VAN", options: { Aroma: "Vanilie" },      prices: [{ amount: 4900, currency_code: "ron" }] },
+        { title: "Capsuna",      sku: "POPUP-MIX-15MM-CAP", options: { Aroma: "Capsuna" },      prices: [{ amount: 4900, currency_code: "ron" }] },
+      ],
+    },
+  ];
+
+  for (const product of allProducts) {
+    if (existingHandles.has(product.handle)) {
+      logger.info(`Skipping ${product.handle} (already exists)`);
+      continue;
+    }
+    try {
+      await createProductsWorkflow(container).run({ input: { products: [product] } });
+      logger.info(`Created: ${product.handle}`);
+    } catch (err: unknown) {
+      // Medusa errors are plain objects with a .message field, not Error instances
+      const msg: string = (err as any)?.message ?? (err as any)?.toString?.() ?? "unknown error";
+      if (msg.includes("already exists") || msg.includes("duplicate") || msg.includes("unique")) {
+        logger.info(`Skipping ${product.handle} (already exists)`);
+      } else {
+        logger.error(`Failed to create ${product.handle}: ${msg}`);
+        throw err;
+      }
+    }
   }
   logger.info("Finished seeding product data.");
 

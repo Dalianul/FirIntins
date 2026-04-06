@@ -31,6 +31,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
           src={mainImage.url || `https://picsum.photos/600/600?random=${product.id}`}
           alt={product.title}
           fill
+          sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover"
           priority
         />
@@ -49,6 +50,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                 src={image.url || `https://picsum.photos/100/100?random=${i}`}
                 alt={`Thumbnail ${i}`}
                 fill
+                sizes="80px"
                 className="object-cover"
               />
             </button>
