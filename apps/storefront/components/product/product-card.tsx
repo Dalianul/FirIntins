@@ -3,7 +3,6 @@
 import Link from "next/link"
 import Image from "next/image"
 import { m } from "motion/react"
-import { Badge } from "@/components/ui/badge"
 import { formatPrice } from "@/lib/utils"
 import { HeartButton } from "@/components/wishlist/heart-button"
 
@@ -28,6 +27,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const id = prod.id as string
   const handle = prod.handle as string
   const title = prod.title as string
+  const thumbnail = prod.thumbnail as string | null | undefined
 
   const metadata = prod.metadata as Record<string, unknown> | null | undefined
   const discountPercentage = metadata?.discount_percentage as number | null | undefined
@@ -41,7 +41,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         >
           <div className="relative aspect-[4/3] overflow-hidden bg-surface-2">
             <Image
-              src={`https://picsum.photos/300/200?random=${id}`}
+              src={thumbnail ?? `https://picsum.photos/300/200?random=${id}`}
               alt={title}
               fill
               priority={priority}
@@ -55,9 +55,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             )}
           </div>
           <div className="p-4">
-            <Badge variant="outline" className="mb-2 text-xs">
+            <span
+              data-testid="category-badge"
+              className="inline-block mb-2 px-2 py-0.5 text-[10px] font-outfit uppercase tracking-[0.12em] text-[--color-moss-light] border border-[--color-moss]/25 bg-[--color-moss]/8"
+            >
               {category}
-            </Badge>
+            </span>
             <h3 className="font-outfit font-medium text-cream text-sm line-clamp-2">
               {title}
             </h3>

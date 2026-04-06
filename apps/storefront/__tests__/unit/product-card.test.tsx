@@ -19,7 +19,7 @@ jest.mock("@/components/wishlist/heart-button", () => ({
   HeartButton: () => null,
 }))
 jest.mock("@/components/ui/badge", () => ({
-  Badge: ({ children }: any) => <span>{children}</span>,
+  Badge: ({ children, className, ...props }: any) => <span className={className} {...props}>{children}</span>,
 }))
 jest.mock("@/lib/utils", () => ({
   formatPrice: (amount: number) => `${amount} RON`,
@@ -50,5 +50,23 @@ describe("ProductCard sale badge", () => {
     const product = { ...baseProduct, metadata: { discount_percentage: 0 } }
     render(<ProductCard product={product} />)
     expect(screen.queryByText(/−\d+%/)).not.toBeInTheDocument()
+  })
+})
+
+describe("ProductCard category badge", () => {
+  it("renders category badge with brand-styled pill, not shadcn outline variant", () => {
+    const mockProduct = {
+      id: "prod_1",
+      handle: "test-handle",
+      title: "Test Product",
+      variants: [{ calculated_price: { calculated_amount: 5000, original_amount: 5000 } }],
+      categories: [{ name: "Mulinete" }],
+      metadata: {},
+      thumbnail: null,
+    }
+    const { container } = render(<ProductCard product={mockProduct} />)
+    const badge = container.querySelector("[data-testid='category-badge']")
+    expect(badge).not.toBeNull()
+    expect(badge?.className).not.toContain("text-foreground")
   })
 })
