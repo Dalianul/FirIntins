@@ -33,10 +33,10 @@ export default function SortSelect({ sort }: Props) {
     <select
       value={sort || "relevance"}
       onChange={handleChange}
-      className="ml-auto bg-[--color-surface] border border-[--color-fog]/20 text-sm text-[--color-fog] rounded px-3 py-1.5 focus:outline-none focus:border-[--color-moss] cursor-pointer"
+      className="ml-auto bg-[--color-surface] border border-[--color-fog]/20 text-sm text-[--color-fog] rounded px-3 pr-8 py-1.5 focus:outline-none focus:border-[--color-moss] cursor-pointer"
     >
       {SORT_OPTIONS.map((opt) => (
-        <option key={opt.value} value={opt.value}>
+        <option key={opt.value} value={opt.value} className="bg-[#1a1814] text-[#c4bfb0]">
           {opt.label}
         </option>
       ))}

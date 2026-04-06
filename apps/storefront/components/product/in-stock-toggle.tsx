@@ -33,10 +33,10 @@ export default function InStockToggle({ inStock }: Props) {
       }`}
     >
       <span
-        className={`relative inline-flex w-8 h-4 rounded-full transition-colors ${
+        className={`relative inline-flex w-8 h-4 rounded-full border transition-colors ${
           inStock
-            ? "bg-[--color-moss]"
-            : "bg-[--color-surface] border border-[--color-fog]/30"
+            ? "bg-[--color-moss] border-[--color-moss]"
+            : "bg-[--color-surface] border-[--color-fog]/30"
         }`}
       >
         <span

@@ -31,11 +31,11 @@ export function CategoryFilter({ categories, category }: Props) {
     <select
       value={category || ""}
       onChange={handleChange}
-      className="bg-[--color-surface] border border-[--color-fog]/20 text-sm text-[--color-fog] rounded px-3 py-1.5 focus:outline-none focus:border-[--color-moss] cursor-pointer"
+      className="bg-[--color-surface] border border-[--color-fog]/20 text-sm text-[--color-fog] rounded px-3 pr-8 py-1.5 focus:outline-none focus:border-[--color-moss] cursor-pointer"
     >
-      <option value="">Toate categoriile</option>
+      <option value="" className="bg-[#1a1814] text-[#c4bfb0]">Toate categoriile</option>
       {categories.map((cat) => (
-        <option key={cat.id} value={cat.id}>
+        <option key={cat.id} value={cat.id} className="bg-[#1a1814] text-[#c4bfb0]">
           {cat.name}
         </option>
       ))}

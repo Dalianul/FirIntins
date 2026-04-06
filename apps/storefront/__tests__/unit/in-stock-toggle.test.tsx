@@ -53,4 +53,18 @@ describe('InStockToggle', () => {
       expect.stringContaining('category=spinning')
     )
   })
+
+  it('maintains consistent border in both active and inactive states', () => {
+    const { rerender, container } = render(
+      <InStockToggle inStock={false} />
+    )
+    const getTrack = () => container.querySelector(".rounded-full")
+
+    const inactiveClass = getTrack()?.className ?? ""
+    rerender(<InStockToggle inStock={true} />)
+    const activeClass = getTrack()?.className ?? ""
+
+    expect(inactiveClass).toContain("border")
+    expect(activeClass).toContain("border")
+  })
 })

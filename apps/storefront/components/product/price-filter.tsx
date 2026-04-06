@@ -45,7 +45,7 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
         placeholder="Preț min"
         value={minPrice}
         onChange={(e) => setMinPrice(e.target.value)}
-        className="w-24 bg-[--color-surface] border-[--color-fog]/20 text-[--color-fog] text-sm"
+        className="w-24 [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-fog] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
       />
       <span className="text-[--color-fog]/40 text-sm">–</span>
       <Input
@@ -53,7 +53,7 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
         placeholder="Preț max"
         value={maxPrice}
         onChange={(e) => setMaxPrice(e.target.value)}
-        className="w-24 bg-[--color-surface] border-[--color-fog]/20 text-[--color-fog] text-sm"
+        className="w-24 [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-fog] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
       />
       <Button
         onClick={handleApply}
