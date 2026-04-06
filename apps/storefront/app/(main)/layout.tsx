@@ -42,6 +42,9 @@ export const metadata: Metadata = {
     url: BASE_URL,
     type: "website",
   },
+  other: {
+    "theme-color": "#0c0b09",
+  },
 }
 
 export default function StorefrontLayout({
