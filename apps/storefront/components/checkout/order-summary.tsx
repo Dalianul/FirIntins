@@ -24,19 +24,23 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
         {items.map((item: CartItem) => (
           <div key={item.id} className="flex gap-3 text-sm">
             <div className="relative h-16 w-16 bg-surface rounded overflow-hidden">
-              <Image
-                src={`https://picsum.photos/100/100?random=${item.variant_id}`}
-                alt={item.product_title}
-                fill
-                sizes="64px"
-                className="object-cover"
-              />
+              {item.thumbnail ? (
+                <Image
+                  src={item.thumbnail}
+                  alt={item.product_title}
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-surface" />
+              )}
             </div>
             <div className="flex-1">
               <p className="text-cream font-outfit">{item.product_title}</p>
               <p className="text-fog text-xs">{item.quantity}x</p>
             </div>
-            <p className="text-mud">{formatPrice(item.total)}</p>
+            <p className="text-mud">{formatPrice(item.total ?? item.unit_price * item.quantity)}</p>
           </div>
         ))}
       </div>
