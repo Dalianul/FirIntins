@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react"
 import type { ReactNode } from "react"
 import Link from "next/link"
+import { ShoppingCart } from "lucide-react"
 import { useCart } from "@/hooks/use-cart"
 import { CartDrawer } from "@/components/cart/cart-drawer"
 import SearchButton from "@/components/layout/search-button"
@@ -12,7 +13,7 @@ export default function Header({ nav }: { nav?: ReactNode }) {
   const [isCartOpen, setIsCartOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-40 bg-[--color-bg] border-b border-[--color-border] transition-all duration-300">
+    <header className="sticky top-0 z-40 bg-[--color-bg]/95 backdrop-blur-md border-b border-[--color-border]/60 transition-all duration-300">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
@@ -45,11 +46,12 @@ export default function Header({ nav }: { nav?: ReactNode }) {
           <div className="relative">
             <button
               onClick={() => setIsCartOpen(!isCartOpen)}
-              className="relative text-[--color-cream] hover:text-[--color-moss] transition-colors"
+              aria-label="Coș de cumpărături"
+              className="relative text-[--color-cream] hover:text-[--color-moss] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-moss] rounded-sm p-1"
             >
-              🛒
+              <ShoppingCart size={20} strokeWidth={1.5} />
               {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[--color-moss] text-[--color-white] text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-[--color-moss] text-white text-[10px] font-outfit font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none">
                   {itemCount}
                 </span>
               )}
