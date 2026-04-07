@@ -37,7 +37,7 @@ export function CategoryFilter({ categories, category }: Props) {
   return (
     <Select value={category || ""} onValueChange={handleChange}>
       <SelectTrigger>
-        <SelectValue />
+        <SelectValue placeholder="Toate categoriile" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="">Toate categoriile</SelectItem>

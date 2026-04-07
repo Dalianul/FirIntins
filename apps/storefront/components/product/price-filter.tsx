@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 
 interface Props {
   priceMin: string
@@ -15,15 +16,20 @@ const STEP = 10
 function StepButton({
   onClick,
   children,
+  className,
 }: {
   onClick: () => void
   children: React.ReactNode
+  className?: string
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="h-[34px] w-6 flex items-center justify-center [background:var(--color-surface)] border border-[--color-fog]/20 text-[--color-fog]/60 hover:text-[--color-fog] hover:bg-[--color-bg-light] text-base leading-none transition-colors"
+      className={cn(
+        "h-8 w-7 shrink-0 flex items-center justify-center [background:var(--color-surface)] border border-[--color-fog]/20 text-[--color-fog]/60 hover:text-[--color-fog] hover:bg-[--color-bg-light] text-sm leading-none transition-colors duration-150",
+        className
+      )}
     >
       {children}
     </button>
@@ -71,7 +77,7 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
     <div className="flex items-center gap-2">
       {/* Min stepper */}
       <div className="flex items-center">
-        <StepButton onClick={() => adjustMin(-STEP)}>−</StepButton>
+        <StepButton onClick={() => adjustMin(-STEP)} className="rounded-l border-r-0">−</StepButton>
         <Input
           type="text"
           inputMode="numeric"
@@ -80,14 +86,14 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
           onChange={(e) => setMinPrice(e.target.value)}
           className="w-20 rounded-none border-x-0 text-center [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-fog] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
         />
-        <StepButton onClick={() => adjustMin(STEP)}>+</StepButton>
+        <StepButton onClick={() => adjustMin(STEP)} className="rounded-r border-l-0">+</StepButton>
       </div>
 
       <span className="text-[--color-fog]/40 text-sm">–</span>
 
       {/* Max stepper */}
       <div className="flex items-center">
-        <StepButton onClick={() => adjustMax(-STEP)}>−</StepButton>
+        <StepButton onClick={() => adjustMax(-STEP)} className="rounded-l border-r-0">−</StepButton>
         <Input
           type="text"
           inputMode="numeric"
@@ -96,7 +102,7 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
           onChange={(e) => setMaxPrice(e.target.value)}
           className="w-20 rounded-none border-x-0 text-center [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-fog] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
         />
-        <StepButton onClick={() => adjustMax(STEP)}>+</StepButton>
+        <StepButton onClick={() => adjustMax(STEP)} className="rounded-r border-l-0">+</StepButton>
       </div>
 
       <Button

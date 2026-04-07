@@ -38,8 +38,8 @@ export default function SortSelect({ sort }: Props) {
 
   return (
     <Select value={sort || "relevance"} onValueChange={handleChange}>
-      <SelectTrigger className="ml-auto">
-        <SelectValue />
+      <SelectTrigger className="ml-auto min-w-[10rem]">
+        <SelectValue placeholder="Relevanță" />
       </SelectTrigger>
       <SelectContent>
         {SORT_OPTIONS.map((opt) => (
