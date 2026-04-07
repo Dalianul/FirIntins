@@ -2,16 +2,18 @@
 
 import { medusa } from "@/lib/medusa/client"
 
+const CART_FIELDS = "+items.thumbnail"
+
 export async function addItemToCart(
   cartId: string,
   variantId: string,
   quantity: number
 ) {
   try {
-    const { cart } = await medusa.store.cart.createLineItem(cartId, {
+    const { cart } = await (medusa.store.cart.createLineItem as Function)(cartId, {
       variant_id: variantId,
       quantity,
-    })
+    }, { fields: CART_FIELDS })
     return { success: true, cart }
   } catch (error) {
     console.error("addItemToCart error:", error)
@@ -21,9 +23,9 @@ export async function addItemToCart(
 
 export async function removeItemFromCart(cartId: string, lineItemId: string) {
   try {
-    const response = await medusa.store.cart.deleteLineItem(cartId, lineItemId)
-    // deleteLineItem returns StoreLineItemDeleteResponse with parent as the cart
-    const cart = response.parent
+    await medusa.store.cart.deleteLineItem(cartId, lineItemId)
+    // deleteLineItem has no query params — retrieve fresh cart with fields expanded
+    const cart = await retrieveCart(cartId)
     return { success: true, cart }
   } catch (error) {
     console.error("removeItemFromCart error:", error)
@@ -37,9 +39,9 @@ export async function updateCartQuantity(
   quantity: number
 ) {
   try {
-    const { cart } = await medusa.store.cart.updateLineItem(cartId, lineItemId, {
+    const { cart } = await (medusa.store.cart.updateLineItem as Function)(cartId, lineItemId, {
       quantity,
-    })
+    }, { fields: CART_FIELDS })
     return { success: true, cart }
   } catch (error) {
     console.error("updateCartQuantity error:", error)
@@ -61,7 +63,7 @@ export async function createCart() {
 
 export async function retrieveCart(cartId: string) {
   try {
-    const { cart } = await medusa.store.cart.retrieve(cartId)
+    const { cart } = await (medusa.store.cart.retrieve as Function)(cartId, { fields: CART_FIELDS })
     return cart
   } catch (error) {
     // Cart not found or expired
