@@ -52,7 +52,7 @@ function SelectContent({
         <SelectPrimitive.Popup
           data-slot="select-content"
           className={cn(
-            "z-50 min-w-[var(--available-width,8rem)] [background:var(--color-surface)] border border-[--color-fog]/20 rounded shadow-xl py-1 outline-none",
+            "z-[9999] min-w-[var(--anchor-width,8rem)] [background:var(--color-surface)] border border-[--color-fog]/20 rounded shadow-xl py-1 outline-none",
             className
           )}
           {...props}

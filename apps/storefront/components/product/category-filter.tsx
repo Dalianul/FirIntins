@@ -34,8 +34,13 @@ export function CategoryFilter({ categories, category }: Props) {
     router.push("/produse?" + params.toString())
   }
 
+  const items = [
+    { value: "", label: "Toate categoriile" },
+    ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+  ]
+
   return (
-    <Select value={category || ""} onValueChange={handleChange}>
+    <Select value={category || ""} onValueChange={handleChange} items={items}>
       <SelectTrigger>
         <SelectValue placeholder="Toate categoriile" />
       </SelectTrigger>
