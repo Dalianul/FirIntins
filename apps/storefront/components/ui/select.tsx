@@ -23,6 +23,8 @@ function SelectTrigger({
       data-slot="select-trigger"
       className={cn(
         "inline-flex w-auto items-center justify-between gap-2 [background:var(--color-surface)] border border-[--color-fog]/20 text-sm text-[--color-fog] rounded px-3 py-1.5 focus:outline-none focus:border-[--color-moss] cursor-pointer whitespace-nowrap transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed",
+        "hover:bg-[--color-bg-light] hover:border-[--color-fog]/40 hover:text-[--color-white]",
+        "aria-expanded:bg-[--color-bg-light] aria-expanded:border-[--color-moss]/60 aria-expanded:text-[--color-white]",
         className
       )}
       {...props}
@@ -52,7 +54,7 @@ function SelectContent({
         <SelectPrimitive.Popup
           data-slot="select-content"
           className={cn(
-            "z-[9999] min-w-[var(--anchor-width,8rem)] [background:var(--color-surface)] border border-[--color-fog]/20 rounded shadow-xl py-1 outline-none",
+            "z-40 min-w-[var(--anchor-width,8rem)] [background:var(--color-surface)] border border-[--color-fog]/20 rounded shadow-xl py-1 outline-none",
             className
           )}
           {...props}
