@@ -22,7 +22,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent side="right" className="bg-[--color-bg-light] border-[--color-border] max-w-md px-5">
+      <SheetContent side="right" className="[background:var(--color-bg-light)] border-[--color-border] max-w-md px-5">
         <SheetHeader>
           <SheetTitle className="text-[--color-white]">
             Coș de cumpărături

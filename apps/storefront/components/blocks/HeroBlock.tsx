@@ -23,7 +23,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
   const words = heading.split(" ")
 
   return (
-    <section className="relative min-h-[calc(100dvh-4rem)] flex items-end overflow-hidden">
+    <section className="relative min-h-[80vh] flex items-center overflow-hidden">
       {/* Background */}
       {imgSrc && (
         <Image
@@ -50,7 +50,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent pointer-events-none" />
 
       {/* Content */}
-      <div className="relative z-10 w-full px-6 sm:px-10 pb-16 md:pb-24 max-w-7xl mx-auto">
+      <div className="relative z-10 w-full px-6 sm:px-10 py-16 max-w-7xl mx-auto">
         {/* Eyebrow */}
         <motion.div
           className="flex items-center gap-3 mb-6"
