@@ -1,3 +1,4 @@
+import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import SortSelect from '@/components/product/sort-select'
 
@@ -7,6 +8,19 @@ let mockParamsStr = ''
 jest.mock('next/navigation', () => ({
   useRouter: () => ({ push: mockPush }),
   useSearchParams: () => ({ toString: () => mockParamsStr }),
+}))
+
+// Shim the custom Select with a native <select> so test assertions stay simple
+jest.mock('@/components/ui/select', () => ({
+  Select: ({ value, onValueChange, children }: any) => (
+    <select value={value ?? ''} onChange={(e) => onValueChange?.(e.target.value)}>
+      {children}
+    </select>
+  ),
+  SelectTrigger: ({ children }: any) => <>{children}</>,
+  SelectValue: () => null,
+  SelectContent: ({ children }: any) => <>{children}</>,
+  SelectItem: ({ value, children }: any) => <option value={value}>{children}</option>,
 }))
 
 describe('SortSelect', () => {
