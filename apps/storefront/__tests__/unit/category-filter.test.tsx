@@ -9,6 +9,18 @@ jest.mock('next/navigation', () => ({
   useSearchParams: () => ({ toString: () => mockParamsStr }),
 }))
 
+jest.mock('@/components/ui/select', () => ({
+  Select: ({ value, onValueChange, children }: any) => (
+    <select value={value ?? ''} onChange={(e) => onValueChange?.(e.target.value)}>
+      {children}
+    </select>
+  ),
+  SelectTrigger: ({ children }: any) => <>{children}</>,
+  SelectValue: () => null,
+  SelectContent: ({ children }: any) => <>{children}</>,
+  SelectItem: ({ value, children }: any) => <option value={value}>{children}</option>,
+}))
+
 const categories = [
   { id: 'cat_spinning', name: 'Spinning' },
   { id: 'cat_crap', name: 'Crap' },
