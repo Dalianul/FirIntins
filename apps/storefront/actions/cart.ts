@@ -2,7 +2,7 @@
 
 import { medusa } from "@/lib/medusa/client"
 
-const CART_FIELDS = "+items.thumbnail"
+const CART_FIELDS = "+items.*"
 
 export async function addItemToCart(
   cartId: string,

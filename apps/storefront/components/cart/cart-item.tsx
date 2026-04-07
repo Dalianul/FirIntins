@@ -34,17 +34,13 @@ export function CartItem({ item, index }: CartItemProps) {
     >
       {/* Thumbnail */}
       <div className="w-16 h-16 bg-[--color-surface] flex-shrink-0 overflow-hidden">
-        {item.thumbnail ? (
-          <Image
-            src={item.thumbnail}
-            alt={item.product_title}
-            width={64}
-            height={64}
-            className="object-cover w-full h-full"
-          />
-        ) : (
-          <div className="w-full h-full bg-[--color-surface]" />
-        )}
+        <Image
+          src={item.thumbnail ?? `https://picsum.photos/64/64?random=${item.product_id ?? item.id}`}
+          alt={item.product_title}
+          width={64}
+          height={64}
+          className="object-cover w-full h-full"
+        />
       </div>
 
       {/* Info */}

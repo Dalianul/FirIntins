@@ -13,6 +13,7 @@ import { trackAddToCart } from "@/lib/analytics"
 export interface CartItem {
   id: string
   variant_id: string
+  product_id?: string | null
   product_title: string
   variant_title: string | null
   quantity: number
