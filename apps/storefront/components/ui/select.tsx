@@ -5,19 +5,10 @@ import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { Check, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-interface SelectProps {
-  value?: string
-  onValueChange?: (value: string) => void
-  defaultValue?: string
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
-  children: React.ReactNode
-}
-
-function Select({ children, ...props }: SelectProps) {
+function Select(props: SelectPrimitive.Root.Props<string>) {
   return (
-    <SelectPrimitive.Root data-slot="select" {...(props as any)}>
-      {children}
+    <SelectPrimitive.Root data-slot="select" {...props}>
+      {props.children}
     </SelectPrimitive.Root>
   )
 }
@@ -31,7 +22,7 @@ function SelectTrigger({
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       className={cn(
-        "flex items-center justify-between gap-2 [background:var(--color-surface)] border border-[--color-fog]/20 text-sm text-[--color-fog] rounded px-3 py-1.5 focus:outline-none focus:border-[--color-moss] cursor-pointer whitespace-nowrap",
+        "flex items-center justify-between gap-2 [background:var(--color-surface)] border border-[--color-fog]/20 text-sm text-[--color-fog] rounded px-3 py-1.5 focus:outline-none focus:border-[--color-moss] cursor-pointer whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed",
         className
       )}
       {...props}
