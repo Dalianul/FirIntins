@@ -15,16 +15,17 @@ export interface ProductParams {
   region_id?: string
   handle?: string
   q?: string
-  order?: Record<string, string>
+  order?: string
 }
 
-// Maps URL `sort` param → Medusa `order` object.
+// Maps URL `sort` param → Medusa v2 `order` string.
+// Prefix `-` means DESC. No prefix = ASC.
 // price_asc / price_desc are NOT here — they are applied post-fetch.
 // relevance is NOT here — omitting `order` uses Medusa's default ranking.
-export const SORT_ORDER_MAP: Record<string, Record<string, string>> = {
-  newest:     { created_at: 'DESC' },
-  title_asc:  { title: 'ASC' },
-  title_desc: { title: 'DESC' },
+export const SORT_ORDER_MAP: Record<string, string> = {
+  newest:     '-created_at',
+  title_asc:  'title',
+  title_desc: '-title',
 }
 
 // Lazily fetched and cached — region_id is required by Medusa v2 to compute calculated_price.
