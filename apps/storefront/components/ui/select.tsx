@@ -66,7 +66,7 @@ function SelectContent({
 }: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Popup>) {
   return (
     <SelectPrimitive.Portal>
-      <SelectPrimitive.Positioner sideOffset={4} keepMounted>
+      <SelectPrimitive.Positioner sideOffset={4}>
         <SelectPrimitive.Popup
           data-slot="select-content"
           className={cn(

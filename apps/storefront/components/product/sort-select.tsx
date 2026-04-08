@@ -25,7 +25,8 @@ export default function SortSelect({ sort }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  function handleChange(value: string) {
+  function handleChange(value: string | null) {
+    if (value === null) return
     const params = new URLSearchParams(searchParams.toString())
     if (value === "relevance") {
       params.delete("sort")

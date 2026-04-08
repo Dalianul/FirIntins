@@ -23,7 +23,8 @@ export function CategoryFilter({ categories, category }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  function handleChange(value: string) {
+  function handleChange(value: string | null) {
+    if (value === null) return
     const params = new URLSearchParams(searchParams.toString())
     if (value === "") {
       params.delete("category")
