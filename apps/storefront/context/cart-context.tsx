@@ -28,7 +28,7 @@ export interface Cart {
   subtotal: number
   shipping_total?: number
   discount_total?: number
-  promotions?: Array<{ code: string }>
+  promotions?: Array<{ code: string; is_automatic?: boolean }>
   total: number
 }
 

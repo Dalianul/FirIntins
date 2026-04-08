@@ -15,7 +15,8 @@ export function PromoCodeInput() {
   const [removingCodes, setRemovingCodes] = useState<Set<string>>(new Set())
 
   const cartId = cart?.id ?? ""
-  const appliedCodes = cart?.promotions ?? []
+  const allPromotions = cart?.promotions ?? []
+  const appliedCodes = allPromotions.filter((p) => !p.is_automatic)
   const isReady = cart !== null
 
   const handleApply = async () => {
