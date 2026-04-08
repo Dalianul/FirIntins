@@ -24,68 +24,79 @@ export function CartItem({ item, index }: CartItemProps) {
     }
   }
 
+  const imgSrc = item.thumbnail ?? `https://picsum.photos/64/64?random=${item.product_id ?? item.id}`
+
   return (
     <m.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.2, delay: index * 0.05 }}
-      className="flex gap-3 py-4 border-b border-[--color-border] last:border-b-0"
+      exit={{ opacity: 0, x: -20, height: 0, marginBottom: 0 }}
+      transition={{ duration: 0.2, delay: index * 0.04 }}
+      className="group flex gap-3 px-5 py-3.5 relative after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-[--color-border] last:after:hidden hover:bg-[rgba(74,94,58,0.04)] transition-colors duration-150"
     >
-      {/* Thumbnail */}
-      <div className="w-16 h-16 bg-[--color-surface] flex-shrink-0 overflow-hidden">
-        <Image
-          src={item.thumbnail ?? `https://picsum.photos/64/64?random=${item.product_id ?? item.id}`}
-          alt={item.product_title}
-          width={64}
-          height={64}
-          className="object-cover w-full h-full"
-        />
+      {/* Thumbnail + qty badge */}
+      <div className="relative flex-shrink-0">
+        <div className="w-[60px] h-[60px] bg-[--color-surface] border border-[--color-border] rounded-md overflow-hidden">
+          <Image
+            src={imgSrc}
+            alt={item.product_title}
+            width={60}
+            height={60}
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[--color-moss] text-white text-[9px] font-bold rounded-full flex items-center justify-center border-[1.5px] border-[--color-bg-light]">
+          {item.quantity}
+        </span>
       </div>
 
       {/* Info */}
-      <div className="flex-1 min-w-0 flex flex-col gap-1">
-        <h3 className="text-sm font-outfit font-medium text-[--color-white] leading-snug line-clamp-2">
+      <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+        <h3 className="text-[13px] font-outfit font-medium text-[--color-white] leading-snug truncate">
           {item.product_title}
         </h3>
         {item.variant_title && (
-          <span className="text-[10px] font-outfit text-[--color-fog]">
+          <span className="text-[10px] font-outfit text-[--color-fog]/40">
             {item.variant_title}
           </span>
         )}
-        <p className="text-sm font-outfit font-semibold text-[--color-moss] mt-auto">
-          {formatPrice(item.unit_price)}
-        </p>
 
-        {/* Quantity controls */}
-        <div className="flex items-center gap-2 mt-1">
-          <button
-            onClick={handleDecrease}
-            aria-label="Scade cantitate"
-            className="w-6 h-6 border border-[--color-border] hover:border-[--color-moss]/50 flex items-center justify-center text-[--color-fog] hover:text-[--color-moss] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-moss]"
-          >
-            <Minus size={11} />
-          </button>
-          <span className="text-sm font-outfit font-medium text-[--color-white] w-6 text-center tabular-nums">
-            {item.quantity}
+        {/* Price + qty controls */}
+        <div className="flex items-center justify-between mt-0.5">
+          <span className="text-[13px] font-outfit font-semibold text-[--color-moss-light,#6b8a52]">
+            {formatPrice(item.unit_price)}
           </span>
-          <button
-            onClick={handleIncrease}
-            aria-label="Crește cantitate"
-            className="w-6 h-6 border border-[--color-border] hover:border-[--color-moss]/50 flex items-center justify-center text-[--color-fog] hover:text-[--color-moss] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-moss]"
-          >
-            <Plus size={11} />
-          </button>
+
+          {/* Pill qty control */}
+          <div className="flex items-center bg-[--color-surface] border border-[--color-border] rounded overflow-hidden">
+            <button
+              onClick={handleDecrease}
+              aria-label="Scade cantitate"
+              className="w-[26px] h-[24px] flex items-center justify-center text-[--color-fog]/60 hover:bg-[rgba(74,94,58,0.15)] hover:text-[--color-moss] transition-colors duration-150 focus-visible:outline-none"
+            >
+              <Minus size={10} />
+            </button>
+            <span className="text-[12px] font-outfit font-semibold text-[--color-white] px-1.5 border-x border-[--color-border] tabular-nums select-none">
+              {item.quantity}
+            </span>
+            <button
+              onClick={handleIncrease}
+              aria-label="Crește cantitate"
+              className="w-[26px] h-[24px] flex items-center justify-center text-[--color-fog]/60 hover:bg-[rgba(74,94,58,0.15)] hover:text-[--color-moss] transition-colors duration-150 focus-visible:outline-none"
+            >
+              <Plus size={10} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Remove button */}
+      {/* Remove button — fades in on row hover */}
       <button
         onClick={() => removeItem(item.id)}
         aria-label="Șterge din coș"
-        className="flex-shrink-0 w-7 h-7 flex items-center justify-center text-[--color-fog]/50 hover:text-[--color-moss] transition-colors duration-200 self-start mt-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-moss]"
+        className="absolute top-3.5 right-4 w-6 h-6 flex items-center justify-center rounded text-[--color-fog]/30 opacity-0 group-hover:opacity-100 hover:bg-[rgba(196,191,176,0.08)] hover:text-[--color-fog]/70 transition-all duration-150 focus-visible:outline-none focus-visible:opacity-100"
       >
-        <X size={14} />
+        <X size={12} />
       </button>
     </m.div>
   )
