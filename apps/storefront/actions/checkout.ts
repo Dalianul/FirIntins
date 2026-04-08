@@ -86,11 +86,23 @@ export async function removePromoCodeAction(cartId: string, code: string) {
     return { success: false, error: parse.error.errors[0]?.message ?? "Cod invalid", cart: null }
   }
   try {
-    // Medusa JS SDK types don't expose removePromotions — cast required
-    const { cart } = await (medusa.store.cart as any).removePromotions(cartId, {
-      promo_codes: [parse.data.code],
+    const baseUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+    const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+    const res = await fetch(`${baseUrl}/store/carts/${cartId}/promotions`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-publishable-api-key": publishableKey ?? "",
+      },
+      body: JSON.stringify({ promo_codes: [parse.data.code] }),
     })
-    return { success: true, cart }
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}))
+      const message = (data as any)?.message ?? `Eroare ${res.status}`
+      return { success: false, error: message, cart: null }
+    }
+    const data = await res.json()
+    return { success: true, cart: data.cart ?? null }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "A apărut o eroare"
     return { success: false, error: message, cart: null }

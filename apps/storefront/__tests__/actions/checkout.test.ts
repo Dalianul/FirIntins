@@ -3,19 +3,20 @@ jest.mock("@/lib/medusa/client", () => ({
     store: {
       cart: {
         addPromotions: jest.fn(),
-        removePromotions: jest.fn(),
         update: jest.fn(),
       },
     },
   },
 }))
 
+global.fetch = jest.fn()
+
 import { applyPromoCodeAction, removePromoCodeAction, updateAddressAction } from "@/actions/checkout"
 import { medusa } from "@/lib/medusa/client"
 
 const mockAddPromotions = (medusa.store.cart as any).addPromotions as jest.Mock
-const mockRemovePromotions = (medusa.store.cart as any).removePromotions as jest.Mock
 const mockUpdate = (medusa.store.cart as any).update as jest.Mock
+const mockFetch = global.fetch as jest.Mock
 
 describe("applyPromoCodeAction", () => {
   beforeEach(() => jest.clearAllMocks())
@@ -95,19 +96,36 @@ describe("updateAddressAction — CUI metadata", () => {
 })
 
 describe("removePromoCodeAction", () => {
-  beforeEach(() => jest.clearAllMocks())
+  beforeEach(() => {
+    jest.clearAllMocks()
+    process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL = "http://localhost:9000"
+    process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY = "pk_test_123"
+  })
 
   it("returns success with updated cart", async () => {
     const mockCart = { id: "cart_1", discount_total: 0, promotions: [], total: 10000 }
-    mockRemovePromotions.mockResolvedValue({ cart: mockCart })
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ cart: mockCart }),
+    })
     const result = await removePromoCodeAction("cart_1", "FISH10")
     expect(result.success).toBe(true)
     expect(result.cart).toEqual(mockCart)
-    expect(mockRemovePromotions).toHaveBeenCalledWith("cart_1", { promo_codes: ["FISH10"] })
+    expect(mockFetch).toHaveBeenCalledWith(
+      "http://localhost:9000/store/carts/cart_1/promotions",
+      expect.objectContaining({
+        method: "DELETE",
+        body: JSON.stringify({ promo_codes: ["FISH10"] }),
+      })
+    )
   })
 
   it("returns error on API failure", async () => {
-    mockRemovePromotions.mockRejectedValue(new Error("Eroare server"))
+    mockFetch.mockResolvedValue({
+      ok: false,
+      status: 400,
+      json: jest.fn().mockResolvedValue({ message: "Eroare server" }),
+    })
     const result = await removePromoCodeAction("cart_1", "FISH10")
     expect(result.success).toBe(false)
     expect(result.error).toBeDefined()
@@ -117,6 +135,6 @@ describe("removePromoCodeAction", () => {
     const result = await removePromoCodeAction("cart_1", "")
     expect(result.success).toBe(false)
     expect(result.error).toBeDefined()
-    expect(mockRemovePromotions).not.toHaveBeenCalled()
+    expect(mockFetch).not.toHaveBeenCalled()
   })
 })
