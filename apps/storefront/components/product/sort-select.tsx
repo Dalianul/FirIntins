@@ -37,7 +37,7 @@ export default function SortSelect({ sort }: Props) {
   }
 
   return (
-    <Select value={sort || "relevance"} onValueChange={handleChange} items={SORT_OPTIONS}>
+    <Select value={sort || "relevance"} onValueChange={handleChange}>
       <SelectTrigger className="ml-auto min-w-[10rem]">
         <SelectValue />
       </SelectTrigger>
