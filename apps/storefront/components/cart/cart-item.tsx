@@ -45,9 +45,6 @@ export function CartItem({ item, index }: CartItemProps) {
             className="object-cover w-full h-full"
           />
         </div>
-        <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[--color-moss] text-white text-[9px] font-bold rounded-full flex items-center justify-center border-[1.5px] border-[--color-bg-light]">
-          {item.quantity}
-        </span>
       </div>
 
       {/* Info */}

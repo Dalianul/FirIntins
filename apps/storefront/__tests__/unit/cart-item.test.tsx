@@ -43,15 +43,6 @@ describe("CartItem", () => {
     expect(screen.getByText("3.6m · 3lbs")).toBeInTheDocument()
   })
 
-  it("renders quantity badge on thumbnail", () => {
-    render(<CartItem item={item} index={0} />)
-    // badge shows quantity on the thumbnail corner
-    const badge = screen.getAllByText("2").find((el) =>
-      el.className.includes("rounded-full")
-    )
-    expect(badge).toBeInTheDocument()
-  })
-
   it("uses picsum fallback when thumbnail is null", () => {
     render(<CartItem item={item} index={0} />)
     const img = screen.getByRole("img")
