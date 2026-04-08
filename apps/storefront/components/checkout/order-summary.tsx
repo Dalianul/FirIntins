@@ -23,18 +23,14 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
       <div className="space-y-3 max-h-64 overflow-y-auto">
         {items.map((item: CartItem) => (
           <div key={item.id} className="flex gap-3 text-sm">
-            <div className="relative h-16 w-16 bg-surface rounded overflow-hidden">
-              {item.thumbnail ? (
-                <Image
-                  src={item.thumbnail}
-                  alt={item.product_title}
-                  fill
-                  sizes="64px"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-surface" />
-              )}
+            <div className="relative h-16 w-16 rounded overflow-hidden bg-[--color-surface] border border-[--color-border] flex-shrink-0">
+              <Image
+                src={item.thumbnail ?? `https://picsum.photos/64/64?random=${item.id}`}
+                alt={item.product_title}
+                fill
+                sizes="64px"
+                className="object-cover"
+              />
             </div>
             <div className="flex-1">
               <p className="text-cream font-outfit">{item.product_title}</p>
