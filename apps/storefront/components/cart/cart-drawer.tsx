@@ -67,7 +67,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
         {/* Footer */}
         {!loading && cart && itemCount > 0 && (
-          <CartSummary onClose={onClose} />
+          <CartSummary />
         )}
       </SheetContent>
     </Sheet>

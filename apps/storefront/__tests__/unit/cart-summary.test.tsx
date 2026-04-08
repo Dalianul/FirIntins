@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import React from "react"
-import { render, screen, fireEvent } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { CartSummary } from "@/components/cart/cart-summary"
 
 const mockCart = {
@@ -20,31 +20,25 @@ jest.mock("@/hooks/use-cart", () => ({
 }))
 
 describe("CartSummary", () => {
-  it("renders Finalizează comanda link to /checkout", () => {
-    render(<CartSummary onClose={jest.fn()} />)
+  it("renders 'Mergi la coș' link to /cos", () => {
+    render(<CartSummary />)
+    const link = screen.getByRole("link", { name: /Mergi la coș/i })
+    expect(link).toHaveAttribute("href", "/cos")
+  })
+
+  it("renders 'Finalizează comanda' link to /checkout", () => {
+    render(<CartSummary />)
     const link = screen.getByRole("link", { name: /Finalizează comanda/i })
     expect(link).toHaveAttribute("href", "/checkout")
   })
 
-  it("renders 'sau continuă cumpărăturile' button", () => {
-    render(<CartSummary onClose={jest.fn()} />)
-    expect(screen.getByText(/sau continuă cumpărăturile/i)).toBeInTheDocument()
-  })
-
-  it("calls onClose when 'sau continuă' is clicked", () => {
-    const onClose = jest.fn()
-    render(<CartSummary onClose={onClose} />)
-    fireEvent.click(screen.getByText(/sau continuă cumpărăturile/i))
-    expect(onClose).toHaveBeenCalledTimes(1)
-  })
-
   it("renders subtotal row", () => {
-    render(<CartSummary onClose={jest.fn()} />)
+    render(<CartSummary />)
     expect(screen.getByText("Subtotal")).toBeInTheDocument()
   })
 
   it("renders 'Transport gratuit' when shipping is 0", () => {
-    render(<CartSummary onClose={jest.fn()} />)
+    render(<CartSummary />)
     expect(screen.getByText("Gratuit")).toBeInTheDocument()
   })
 })
