@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { useCart } from "@/hooks/use-cart"
 import { formatPrice } from "@/lib/utils"
 
@@ -46,9 +47,13 @@ export function CartSummary() {
       {/* Secondary CTA — checkout */}
       <Link
         href="/checkout"
-        className="flex items-center justify-center w-full py-2 rounded-md border border-[--color-border] text-[--color-fog]/60 text-[12px] font-outfit tracking-wide hover:border-[rgba(74,94,58,0.3)] hover:text-[--color-fog]/90 transition-all duration-200"
+        className="group flex items-center justify-center gap-1.5 w-full py-2 rounded-md border border-[--color-border] text-[--color-fog]/60 text-[12px] font-outfit tracking-wide hover:border-[rgba(74,94,58,0.3)] hover:text-[--color-fog]/90 hover:bg-[rgba(74,94,58,0.06)] transition-all duration-200"
       >
         Finalizează comanda
+        <ArrowRight
+          size={11}
+          className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
+        />
       </Link>
     </div>
   )
