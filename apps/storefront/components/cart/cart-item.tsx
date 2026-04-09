@@ -60,7 +60,7 @@ export function CartItem({ item, index }: CartItemProps) {
 
         {/* Price + qty controls */}
         <div className="flex items-center justify-between mt-0.5">
-          <span className="text-[13px] font-outfit font-semibold text-[--color-moss-light,#6b8a52]">
+          <span className="text-[13px] font-outfit font-semibold text-[--color-moss-light,#4f7339]">
             {formatPrice(item.unit_price)}
           </span>
 

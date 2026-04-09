@@ -102,7 +102,7 @@ export default async function OGImage({ params }: Props) {
         {categoryName && (
           <span
             style={{
-              background: "#4a5e3a",
+              background: "#3d5630",
               color: "#faf8f3",
               fontSize: 18,
               padding: "4px 12px",
