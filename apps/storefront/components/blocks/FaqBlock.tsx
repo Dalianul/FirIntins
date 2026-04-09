@@ -80,7 +80,7 @@ export function FaqBlock({ block }: { block: FaqBlockData }) {
                       transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
                       className="overflow-hidden"
                     >
-                      <div className="pb-6 text-[--color-fog] text-sm leading-relaxed font-outfit prose prose-invert prose-sm max-w-none [&_p]:text-[--color-fog] [&_a]:text-[--color-moss] [&_a:hover]:text-[--color-moss-light]">
+                      <div className="pb-6 text-[--color-fog] text-sm leading-relaxed font-outfit prose prose-sm max-w-none [&_p]:text-[--color-fog] [&_a]:text-[--color-moss] [&_a:hover]:text-[--color-moss-light]">
                         <RichText data={faq.answer} />
                       </div>
                     </motion.div>

@@ -103,7 +103,7 @@ export default async function Footer() {
       <div className="border-t border-[--color-border] bg-[--color-bg]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[--color-fog]">
           {legalText ? (
-            <div className="prose prose-sm prose-invert">
+            <div className="prose prose-sm">
               <RichText data={legalText as any} />
             </div>
           ) : (

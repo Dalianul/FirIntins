@@ -6,7 +6,7 @@ export function PostContent({ content }: { content: any }) {
   if (!content) return null
   return (
     <div className="
-      prose prose-invert max-w-none
+      prose max-w-none
       prose-headings:font-cormorant prose-headings:text-[--color-white] prose-headings:leading-tight
       prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl
       prose-p:text-[--color-fog] prose-p:leading-8
