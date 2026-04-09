@@ -21,6 +21,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
 
   const imgSrc = backgroundImage?.url ? new URL(backgroundImage.url).pathname : null
   const words = heading.split(" ")
+  const isLight = overlay === "light"
 
   return (
     <section className="relative min-h-[80vh] flex items-center overflow-hidden -mt-16">
@@ -47,7 +48,9 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
             : "bg-gradient-to-t from-black/80 via-black/55 to-black/10",
         ].join(" ")}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent pointer-events-none" />
+      {!isLight && (
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent pointer-events-none" />
+      )}
 
       {/* Content */}
       <div className="relative z-10 w-full px-6 sm:px-10 pb-16 max-w-7xl mx-auto">
@@ -65,7 +68,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
         </motion.div>
 
         {/* Heading — word-by-word stagger */}
-        <h1 className="font-cormorant font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-white leading-[1.05] tracking-[-0.01em] max-w-4xl mb-6">
+        <h1 className={`font-cormorant font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-[-0.01em] max-w-4xl mb-6 ${isLight ? "text-[--color-white]" : "text-white"}`}>
           {words.map((word, i) => (
             <motion.span
               key={i}
@@ -85,7 +88,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
 
         {subheading && (
           <motion.p
-            className="text-white/75 text-lg md:text-xl font-outfit font-light max-w-xl mb-10 leading-relaxed"
+            className={`text-lg md:text-xl font-outfit font-light max-w-xl mb-10 leading-relaxed ${isLight ? "text-[--color-fog]" : "text-white/75"}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -130,11 +133,11 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
         transition={{ delay: 1.8, duration: 0.6 }}
         aria-hidden="true"
       >
-        <span className="text-white/50 text-[10px] font-outfit uppercase tracking-[0.22em] [writing-mode:vertical-rl]">
+        <span className={`text-[10px] font-outfit uppercase tracking-[0.22em] [writing-mode:vertical-rl] ${isLight ? "text-[--color-fog]/60" : "text-white/50"}`}>
           Scroll
         </span>
         <motion.span
-          className="block w-px h-10 bg-white/40"
+          className={`block w-px h-10 ${isLight ? "bg-[--color-fog]/30" : "bg-white/40"}`}
           animate={reduced ? {} : { scaleY: [1, 0.3, 1] }}
           transition={{ repeat: reduced ? 0 : Infinity, duration: 1.8, ease: "easeInOut" }}
         />
