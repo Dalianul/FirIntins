@@ -83,8 +83,8 @@ function SelectTrigger({
         "text-[13px] text-[--color-fog]",
         "cursor-pointer whitespace-nowrap select-none",
         "transition-all duration-150 focus:outline-none",
-        "hover:border-[rgba(74,94,58,0.5)] hover:text-[--color-white]",
-        open && "border-[--color-moss] text-[--color-white] shadow-[0_0_0_1px_rgba(74,94,58,0.2)]",
+        "hover:border-[rgba(61,86,48,0.5)] hover:text-[--color-white]",
+        open && "border-[--color-moss] text-[--color-white] shadow-[0_0_0_1px_rgba(61,86,48,0.2)]",
         className
       )}
     >
@@ -167,7 +167,7 @@ function SelectItem({
         "text-[13px] text-[--color-fog]",
         "rounded cursor-pointer select-none outline-none",
         "transition-colors duration-100",
-        "hover:bg-[rgba(74,94,58,0.12)] hover:text-[--color-white]",
+        "hover:bg-[rgba(61,86,48,0.12)] hover:text-[--color-white]",
         isSelected && "text-[#3d5630]",
         className
       )}
