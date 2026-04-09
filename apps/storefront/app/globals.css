@@ -6,20 +6,20 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --color-bg: #0c0b09;
-  --color-bg-light: #161410;
-  --color-surface: #1a1814;
-  --color-surface-2: #242019;
-  --color-border: #2e2a22;
-  --color-moss: #4a5e3a;
-  --color-moss-light: #6b8a52;
-  --color-moss-dim: rgba(74, 94, 58, 0.15);
+  --color-bg: #f5f1ea;
+  --color-bg-light: #faf7f2;
+  --color-surface: #ffffff;
+  --color-surface-2: #ede9df;
+  --color-border: #d4cdbf;
+  --color-moss: #3d5630;
+  --color-moss-light: #4f7339;
+  --color-moss-dim: rgba(61, 86, 48, 0.08);
   --color-mud: #8b6914;
   --color-gold: #a16207;
   --color-gold-light: #ca8a04;
-  --color-fog: #c4bfb0;
-  --color-cream: #f0ebe0;
-  --color-white: #faf8f3;
+  --color-fog: #6b6359;
+  --color-cream: #3d3630;
+  --color-white: #1c1a15;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -55,20 +55,20 @@
 }
 
 @theme inline {
-  --color-bg: #0c0b09;
-  --color-bg-light: #161410;
-  --color-surface: #1a1814;
-  --color-surface-2: #242019;
-  --color-border: #2e2a22;
-  --color-moss: #4a5e3a;
-  --color-moss-light: #6b8a52;
-  --color-moss-dim: rgba(74, 94, 58, 0.15);
+  --color-bg: #f5f1ea;
+  --color-bg-light: #faf7f2;
+  --color-surface: #ffffff;
+  --color-surface-2: #ede9df;
+  --color-border: #d4cdbf;
+  --color-moss: #3d5630;
+  --color-moss-light: #4f7339;
+  --color-moss-dim: rgba(61, 86, 48, 0.08);
   --color-mud: #8b6914;
   --color-gold: #a16207;
   --color-gold-light: #ca8a04;
-  --color-fog: #c4bfb0;
-  --color-cream: #f0ebe0;
-  --color-white: #faf8f3;
+  --color-fog: #6b6359;
+  --color-cream: #3d3630;
+  --color-white: #1c1a15;
   --font-family-cormorant: var(--font-cormorant), serif;
   --font-family-outfit: var(--font-outfit), sans-serif;
   --font-heading: var(--font-sans);
