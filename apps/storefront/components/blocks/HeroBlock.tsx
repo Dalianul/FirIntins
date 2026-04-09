@@ -23,7 +23,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
   const words = heading.split(" ")
 
   return (
-    <section className="relative min-h-[80vh] flex items-center overflow-hidden">
+    <section className="relative min-h-[80vh] flex items-center overflow-hidden -mt-16">
       {/* Background */}
       {imgSrc && (
         <Image
@@ -65,7 +65,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
         </motion.div>
 
         {/* Heading — word-by-word stagger */}
-        <h1 className="font-cormorant font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-[--color-white] leading-[1.05] tracking-[-0.01em] max-w-4xl mb-6">
+        <h1 className="font-cormorant font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-white leading-[1.05] tracking-[-0.01em] max-w-4xl mb-6">
           {words.map((word, i) => (
             <motion.span
               key={i}
@@ -85,7 +85,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
 
         {subheading && (
           <motion.p
-            className="text-[--color-cream]/75 text-lg md:text-xl font-outfit font-light max-w-xl mb-10 leading-relaxed"
+            className="text-white/75 text-lg md:text-xl font-outfit font-light max-w-xl mb-10 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -130,11 +130,11 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
         transition={{ delay: 1.8, duration: 0.6 }}
         aria-hidden="true"
       >
-        <span className="text-[--color-fog] text-[10px] font-outfit uppercase tracking-[0.22em] [writing-mode:vertical-rl]">
+        <span className="text-white/50 text-[10px] font-outfit uppercase tracking-[0.22em] [writing-mode:vertical-rl]">
           Scroll
         </span>
         <motion.span
-          className="block w-px h-10 bg-[--color-fog]"
+          className="block w-px h-10 bg-white/40"
           animate={reduced ? {} : { scaleY: [1, 0.3, 1] }}
           transition={{ repeat: reduced ? 0 : Infinity, duration: 1.8, ease: "easeInOut" }}
         />
