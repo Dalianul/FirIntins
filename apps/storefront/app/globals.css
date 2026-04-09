@@ -5,6 +5,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Brand palette — Light Theme (migrated 2026-04-09)
+ * Variable names are preserved for backward compatibility with 50+ existing usages.
+ * After dark→light migration values are semantically inverted:
+ *   --color-white  = primary dark text (#1c1a15, near-black warm brown)
+ *   --color-cream  = secondary text (#3d3630)
+ *   --color-fog    = muted text (#6b6359, medium warm gray)
+ * See docs/superpowers/plans/2026-04-09-light-theme-migration.md for full rationale.
+ */
 :root {
   --color-bg: #f5f1ea;
   --color-bg-light: #faf7f2;
