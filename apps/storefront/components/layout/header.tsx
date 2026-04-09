@@ -17,7 +17,7 @@ export default function Header({ nav }: { nav?: ReactNode }) {
 
   return (
     <m.header
-      animate={{ y: scrollDirection === "down" ? -64 : 0 }}
+      animate={{ y: scrollDirection === "down" ? "-100%" : 0 }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
       className="sticky top-0 z-50 border-b border-[--color-border] [background:color-mix(in_srgb,var(--color-bg-light)_92%,transparent)] backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.07)]"
     >
