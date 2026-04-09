@@ -46,14 +46,14 @@ export default function Header({ nav }: { nav?: ReactNode }) {
           </Suspense>
           <Link
             href="/cont"
-            className="h-9 px-3 flex items-center rounded-md text-sm text-[--color-cream] hover:text-[--color-white] hover:bg-[rgba(74,94,58,0.12)] transition-colors duration-150"
+            className="h-9 px-3 flex items-center rounded-md text-sm text-[--color-cream] hover:text-[--color-white] hover:bg-[rgba(61,86,48,0.12)] transition-colors duration-150"
           >
             Cont
           </Link>
           <button
             onClick={() => setIsCartOpen(!isCartOpen)}
             aria-label="Coș de cumpărături"
-            className="relative h-9 px-3 flex items-center gap-1.5 rounded-md border border-[rgba(74,94,58,0.25)] bg-[rgba(74,94,58,0.08)] text-[--color-cream] hover:border-[rgba(74,94,58,0.5)] hover:bg-[rgba(74,94,58,0.18)] hover:text-[--color-white] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-moss]"
+            className="relative h-9 px-3 flex items-center gap-1.5 rounded-md border border-[rgba(61,86,48,0.25)] bg-[rgba(61,86,48,0.08)] text-[--color-cream] hover:border-[rgba(61,86,48,0.5)] hover:bg-[rgba(61,86,48,0.18)] hover:text-[--color-white] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-moss]"
           >
             <ShoppingCart size={16} strokeWidth={1.5} />
             {itemCount > 0 && (

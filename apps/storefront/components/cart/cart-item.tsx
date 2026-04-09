@@ -32,7 +32,7 @@ export function CartItem({ item, index }: CartItemProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -20, height: 0, marginBottom: 0 }}
       transition={{ duration: 0.2, delay: index * 0.04 }}
-      className="group flex gap-3 px-5 py-3.5 relative after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-[--color-border] last:after:hidden hover:bg-[rgba(74,94,58,0.04)] transition-colors duration-150"
+      className="group flex gap-3 px-5 py-3.5 relative after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-[--color-border] last:after:hidden hover:bg-[rgba(61,86,48,0.04)] transition-colors duration-150"
     >
       {/* Thumbnail + qty badge */}
       <div className="relative flex-shrink-0">
@@ -69,7 +69,7 @@ export function CartItem({ item, index }: CartItemProps) {
             <button
               onClick={handleDecrease}
               aria-label="Scade cantitate"
-              className="w-[26px] h-[24px] flex items-center justify-center text-[--color-fog]/60 hover:bg-[rgba(74,94,58,0.15)] hover:text-[--color-moss] transition-colors duration-150 focus-visible:outline-none"
+              className="w-[26px] h-[24px] flex items-center justify-center text-[--color-fog]/60 hover:bg-[rgba(61,86,48,0.15)] hover:text-[--color-moss] transition-colors duration-150 focus-visible:outline-none"
             >
               <Minus size={10} />
             </button>
@@ -79,7 +79,7 @@ export function CartItem({ item, index }: CartItemProps) {
             <button
               onClick={handleIncrease}
               aria-label="Crește cantitate"
-              className="w-[26px] h-[24px] flex items-center justify-center text-[--color-fog]/60 hover:bg-[rgba(74,94,58,0.15)] hover:text-[--color-moss] transition-colors duration-150 focus-visible:outline-none"
+              className="w-[26px] h-[24px] flex items-center justify-center text-[--color-fog]/60 hover:bg-[rgba(61,86,48,0.15)] hover:text-[--color-moss] transition-colors duration-150 focus-visible:outline-none"
             >
               <Plus size={10} />
             </button>

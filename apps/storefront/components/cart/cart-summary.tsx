@@ -39,7 +39,7 @@ export function CartSummary() {
       {/* Primary CTA — cart page */}
       <Link
         href="/cos"
-        className="flex items-center justify-center w-full py-3 rounded-md border border-[rgba(74,94,58,0.4)] [background:linear-gradient(135deg,rgba(74,94,58,0.25)_0%,rgba(107,138,82,0.2)_100%)] shadow-[0_2px_12px_rgba(74,94,58,0.15),inset_0_1px_0_rgba(255,255,255,0.04)] text-[--color-white] text-[13px] font-outfit font-medium tracking-widest uppercase hover:border-[rgba(74,94,58,0.6)] hover:[background:linear-gradient(135deg,rgba(74,94,58,0.4)_0%,rgba(107,138,82,0.3)_100%)] hover:shadow-[0_4px_20px_rgba(74,94,58,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-200"
+        className="flex items-center justify-center w-full py-3 rounded-md bg-[--color-moss] hover:bg-[--color-moss-light] text-white text-[13px] font-outfit font-medium tracking-widest uppercase transition-colors duration-200"
       >
         Mergi la coș
       </Link>
@@ -47,7 +47,7 @@ export function CartSummary() {
       {/* Secondary CTA — checkout */}
       <Link
         href="/checkout"
-        className="group flex items-center justify-center gap-1.5 w-full py-2 rounded-md border border-[--color-border] text-[--color-fog]/60 text-[12px] font-outfit tracking-wide hover:border-[rgba(74,94,58,0.3)] hover:text-[--color-fog]/90 hover:bg-[rgba(74,94,58,0.06)] transition-all duration-200"
+        className="group flex items-center justify-center gap-1.5 w-full py-2 rounded-md border border-[--color-border] text-[--color-fog]/60 text-[12px] font-outfit tracking-wide hover:border-[rgba(61,86,48,0.3)] hover:text-[--color-fog]/90 hover:bg-[rgba(61,86,48,0.06)] transition-all duration-200"
       >
         Finalizează comanda
         <ArrowRight

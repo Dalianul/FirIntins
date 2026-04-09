@@ -76,7 +76,7 @@ export function PromoCodeInput() {
       </div>
 
       {error && (
-        <p className="text-red-400 text-xs">{error}</p>
+        <p className="text-red-600 text-xs">{error}</p>
       )}
 
       {appliedCodes.length > 0 && (

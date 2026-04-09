@@ -57,7 +57,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <div className="p-4">
             <span
               data-testid="category-badge"
-              className="inline-block mb-2 px-2 py-0.5 text-[10px] font-outfit uppercase tracking-[0.12em] text-[--color-moss-light] border border-[--color-moss]/25 bg-[--color-moss]/8"
+              className="inline-block mb-2 px-2 py-0.5 text-[10px] font-outfit uppercase tracking-[0.12em] text-[--color-moss] border border-[--color-moss]/25 bg-[--color-moss]/8"
             >
               {category}
             </span>

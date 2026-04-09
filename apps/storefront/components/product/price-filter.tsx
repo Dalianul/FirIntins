@@ -84,7 +84,7 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
           placeholder="Preț min"
           value={minPrice}
           onChange={(e) => setMinPrice(e.target.value)}
-          className="w-20 rounded-none border-x-0 text-center [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-fog] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
+          className="w-20 rounded-none border-x-0 text-center [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-white] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
         />
         <StepButton onClick={() => adjustMin(STEP)} className="rounded-r border-l-0">+</StepButton>
       </div>
@@ -100,7 +100,7 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
           placeholder="Preț max"
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          className="w-20 rounded-none border-x-0 text-center [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-fog] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
+          className="w-20 rounded-none border-x-0 text-center [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-white] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
         />
         <StepButton onClick={() => adjustMax(STEP)} className="rounded-r border-l-0">+</StepButton>
       </div>

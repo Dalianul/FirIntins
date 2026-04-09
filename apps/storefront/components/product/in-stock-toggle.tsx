@@ -40,7 +40,7 @@ export default function InStockToggle({ inStock }: Props) {
         }`}
       >
         <span
-          className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${
+          className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-sm transition-transform ${
             inStock ? "translate-x-4" : "translate-x-0.5"
           }`}
         />

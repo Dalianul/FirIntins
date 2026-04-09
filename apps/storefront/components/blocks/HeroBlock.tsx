@@ -43,8 +43,8 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
           overlay === "light"
             ? "bg-gradient-to-t from-white/80 via-white/20 to-transparent"
             : overlay === "none"
-            ? "bg-gradient-to-t from-[--color-bg]/70 via-black/10 to-transparent"
-            : "bg-gradient-to-t from-[--color-bg] via-black/55 to-black/10",
+            ? "bg-gradient-to-t from-black/70 via-black/10 to-transparent"
+            : "bg-gradient-to-t from-black/80 via-black/55 to-black/10",
         ].join(" ")}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent pointer-events-none" />
