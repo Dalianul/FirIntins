@@ -1,127 +1,182 @@
 "use client"
 
 import * as React from "react"
-import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { ChevronDown, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-function Select(props: SelectPrimitive.Root.Props<string>) {
+interface SelectContextValue {
+  value: string
+  onValueChange: (v: string | null) => void
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const SelectCtx = React.createContext<SelectContextValue | null>(null)
+
+function useSelectCtx() {
+  const ctx = React.useContext(SelectCtx)
+  if (!ctx) throw new Error("Select components must be wrapped in <Select>")
+  return ctx
+}
+
+// ─── Root ─────────────────────────────────────────────────────────────────────
+
+function Select({
+  value,
+  onValueChange,
+  children,
+}: {
+  value: string
+  onValueChange: (v: string | null) => void
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = React.useState(false)
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (!open) return
+    const onMouse = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+    document.addEventListener("mousedown", onMouse)
+    document.addEventListener("keydown", onKey)
+    return () => {
+      document.removeEventListener("mousedown", onMouse)
+      document.removeEventListener("keydown", onKey)
+    }
+  }, [open])
+
   return (
-    <SelectPrimitive.Root data-slot="select" {...props}>
-      {props.children}
-    </SelectPrimitive.Root>
+    <SelectCtx.Provider value={{ value, onValueChange, open, setOpen }}>
+      <div ref={ref} data-slot="select" className="relative inline-block">
+        {children}
+      </div>
+    </SelectCtx.Provider>
   )
 }
+
+// ─── Trigger ──────────────────────────────────────────────────────────────────
 
 function SelectTrigger({
   className,
   children,
-  ...props
-}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>) {
+}: {
+  className?: string
+  children: React.ReactNode
+}) {
+  const { open, setOpen } = useSelectCtx()
+
   return (
-    <SelectPrimitive.Trigger
+    <button
+      type="button"
       data-slot="select-trigger"
+      onClick={() => setOpen((v) => !v)}
+      aria-expanded={open}
+      aria-haspopup="listbox"
       className={cn(
-        // base
-        "group inline-flex w-auto items-center justify-between gap-2",
-        "[background:rgba(26,24,20,0.7)] border border-[rgba(196,191,176,0.15)]",
+        "inline-flex w-auto items-center justify-between gap-2",
+        "[background:rgba(245,241,234,0.92)] border border-[rgba(100,92,80,0.2)]",
         "rounded-md px-3 py-1.5",
         "text-[13px] text-[--color-fog]",
         "cursor-pointer whitespace-nowrap select-none",
-        "transition-all duration-150",
-        "focus:outline-none",
-        "disabled:opacity-50 disabled:cursor-not-allowed",
-        // hover
+        "transition-all duration-150 focus:outline-none",
         "hover:border-[rgba(74,94,58,0.5)] hover:text-[--color-white]",
-        // open state (Base UI sets aria-expanded on trigger)
-        "aria-expanded:border-[--color-moss] aria-expanded:text-[--color-white]",
-        "aria-expanded:[box-shadow:0_0_0_1px_rgba(74,94,58,0.2)]",
+        open && "border-[--color-moss] text-[--color-white] shadow-[0_0_0_1px_rgba(74,94,58,0.2)]",
         className
       )}
-      {...props}
     >
       {children}
-      <SelectPrimitive.Icon>
-        <ChevronDown
-          className={cn(
-            "h-3.5 w-3.5 shrink-0 text-[--color-fog]/50 transition-transform duration-150",
-            "group-aria-expanded:rotate-180"
-          )}
-        />
-      </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
+      <ChevronDown
+        className={cn(
+          "h-3.5 w-3.5 shrink-0 text-[--color-fog]/50 transition-transform duration-150",
+          open && "rotate-180"
+        )}
+      />
+    </button>
   )
 }
 
-function SelectValue(
-  props: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>
-) {
-  return <SelectPrimitive.Value data-slot="select-value" {...props} />
+// ─── Value (passthrough display) ──────────────────────────────────────────────
+
+function SelectValue({ placeholder }: { placeholder?: string }) {
+  const { value } = useSelectCtx()
+  return <span data-slot="select-value">{value || placeholder}</span>
 }
+
+// ─── Content (absolute, anchored to trigger) ──────────────────────────────────
 
 function SelectContent({
   className,
   children,
-  ...props
-}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Popup>) {
+}: {
+  className?: string
+  children: React.ReactNode
+}) {
+  const { open } = useSelectCtx()
+
+  if (!open) return null
+
   return (
-    <SelectPrimitive.Portal>
-      <SelectPrimitive.Positioner sideOffset={4}>
-        <SelectPrimitive.Popup
-          data-slot="select-content"
-          className={cn(
-            // layout
-            "z-50 min-w-[var(--anchor-width,8rem)] p-1 outline-none",
-            // glass background
-            "[background:rgba(22,20,16,0.98)] backdrop-blur-md",
-            "border border-[rgba(196,191,176,0.12)]",
-            "rounded-md shadow-[0_8px_32px_rgba(0,0,0,0.6)]",
-            // animation — Base UI sets data-open / data-closed
-            "origin-top transition-[opacity,transform] duration-150 ease-out",
-            "data-[closed]:opacity-0 data-[closed]:scale-y-95 data-[closed]:pointer-events-none",
-            "data-[open]:opacity-100 data-[open]:scale-y-100",
-            className
-          )}
-          {...props}
-        >
-          <SelectPrimitive.List>{children}</SelectPrimitive.List>
-        </SelectPrimitive.Popup>
-      </SelectPrimitive.Positioner>
-    </SelectPrimitive.Portal>
+    <div
+      data-slot="select-content"
+      role="listbox"
+      className={cn(
+        // anchored directly below trigger, full trigger width minimum
+        "absolute top-full left-0 mt-1 z-50 min-w-full",
+        // visual
+        "p-1 outline-none",
+        "[background:rgba(250,247,242,0.99)] backdrop-blur-md",
+        "border border-[rgba(100,92,80,0.15)]",
+        "rounded-md shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
+        className
+      )}
+    >
+      {children}
+    </div>
   )
 }
 
+// ─── Item ─────────────────────────────────────────────────────────────────────
+
 function SelectItem({
+  value,
   className,
   children,
-  ...props
-}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>) {
+}: {
+  value: string
+  className?: string
+  children: React.ReactNode
+}) {
+  const { value: selectedValue, onValueChange, setOpen } = useSelectCtx()
+  const isSelected = value === selectedValue
+
   return (
-    <SelectPrimitive.Item
+    <div
       data-slot="select-item"
+      role="option"
+      aria-selected={isSelected}
+      onClick={() => {
+        onValueChange(value)
+        setOpen(false)
+      }}
       className={cn(
-        // layout — left padding leaves room for check icon
         "relative flex items-center gap-2 pl-7 pr-3 py-[7px]",
         "text-[13px] text-[--color-fog]",
         "rounded cursor-pointer select-none outline-none",
         "transition-colors duration-100",
-        // hover / highlighted
         "hover:bg-[rgba(74,94,58,0.12)] hover:text-[--color-white]",
-        "data-[highlighted]:bg-[rgba(74,94,58,0.12)] data-[highlighted]:text-[--color-white]",
-        // selected
-        "data-[selected]:text-[#6b8a52]",
+        isSelected && "text-[#3d5630]",
         className
       )}
-      {...props}
     >
-      {/* Check indicator — only shows when selected */}
       <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        <SelectPrimitive.ItemIndicator>
-          <Check className="h-3 w-3 text-[--color-moss]" />
-        </SelectPrimitive.ItemIndicator>
+        {isSelected && <Check className="h-3 w-3 text-[--color-moss]" />}
       </span>
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-    </SelectPrimitive.Item>
+      {children}
+    </div>
   )
 }
 

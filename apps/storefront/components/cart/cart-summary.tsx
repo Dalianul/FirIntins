@@ -15,7 +15,7 @@ export function CartSummary() {
   const shippingTotal = cart.shipping_total ?? 0
 
   return (
-    <div className="border-t border-[--color-border] bg-[rgba(22,20,16,0.5)] px-5 py-4 flex flex-col gap-3">
+    <div className="border-t border-[--color-border] bg-[--color-surface-2] px-5 py-4 flex flex-col gap-3">
       {/* Totals */}
       <div className="flex flex-col gap-1.5">
         <div className="flex justify-between items-center">
