@@ -13,15 +13,18 @@ interface HeroBlockData {
   ctaLabel?: string
   ctaUrl?: string
   overlay?: "none" | "dark" | "light"
+  textColor?: "light" | "dark"
 }
 
 export function HeroBlock({ block }: { block: HeroBlockData }) {
-  const { heading, subheading, backgroundImage, ctaLabel, ctaUrl, overlay } = block
+  const { heading, subheading, backgroundImage, ctaLabel, ctaUrl, overlay, textColor } = block
   const reduced = useReducedMotion()
 
   const imgSrc = backgroundImage?.url ? new URL(backgroundImage.url).pathname : null
   const words = heading.split(" ")
-  const isLight = overlay === "light"
+  const isDarkText = textColor === "dark"
+  // legacy fallback: if textColor not set, infer from overlay (backward compat)
+  const isLight = textColor ? isDarkText : overlay === "light"
 
   return (
     <section className="relative min-h-[80vh] flex items-center overflow-hidden -mt-16">

@@ -20,5 +20,15 @@ export const HeroBlock: Block = {
         { label: "Luminos", value: "light" },
       ],
     },
+    {
+      name: "textColor",
+      label: "Culoarea textului",
+      type: "select",
+      defaultValue: "light",
+      options: [
+        { label: "Alb (pentru fundaluri închise)", value: "light" },
+        { label: "Închis (pentru fundaluri deschise)", value: "dark" },
+      ],
+    },
   ],
 }

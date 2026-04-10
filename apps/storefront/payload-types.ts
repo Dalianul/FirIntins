@@ -713,6 +713,7 @@ export interface Homepage {
             ctaLabel?: string | null;
             ctaUrl?: string | null;
             overlay?: ('none' | 'dark' | 'light') | null;
+            textColor?: ('light' | 'dark') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'hero';
@@ -984,6 +985,7 @@ export interface HomepageSelect<T extends boolean = true> {
               ctaLabel?: T;
               ctaUrl?: T;
               overlay?: T;
+              textColor?: T;
               id?: T;
               blockName?: T;
             };
