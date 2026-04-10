@@ -110,7 +110,7 @@ export function ReviewForm({ productId, isAuthenticated }: ReviewFormProps) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-moss hover:bg-moss-light disabled:opacity-50 text-cream text-sm font-outfit py-2 px-4 rounded transition-colors"
+        className="w-full bg-moss hover:bg-moss-light disabled:opacity-50 text-white text-sm font-outfit py-2 px-4 rounded transition-colors"
       >
         {pending ? "Se trimite..." : "Trimite recenzia"}
       </button>

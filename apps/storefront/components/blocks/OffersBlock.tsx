@@ -79,7 +79,7 @@ export function OffersBlock({ block }: { block: OffersBlockData }) {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     {/* Image overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[--color-surface]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                     {offer.badge && (
                       <span className="absolute top-4 left-4 bg-[--color-mud] text-white text-[10px] font-outfit font-semibold px-3 py-1 uppercase tracking-[0.1em]">
                         {offer.badge}
