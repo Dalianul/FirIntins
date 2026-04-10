@@ -25,9 +25,6 @@ export const Homepage: GlobalConfig = {
       url: () => serverURL,
     },
   },
-  versions: {
-    drafts: true,
-  },
   access: {
     read: isAdminOrEditor,
     update: isAdmin,
