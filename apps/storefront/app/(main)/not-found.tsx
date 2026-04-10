@@ -35,7 +35,7 @@ export default function NotFound() {
           style={{
             padding: "0.75rem 1.5rem",
             background: "var(--color-moss)",
-            color: "var(--color-white)",
+            color: "#ffffff",
             textDecoration: "none",
             borderRadius: "0.375rem",
           }}

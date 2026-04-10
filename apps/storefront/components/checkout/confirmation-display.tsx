@@ -42,7 +42,7 @@ export function ConfirmationDisplay({ order }: ConfirmationDisplayProps) {
       <div className="text-center">
         <div className="mb-4 flex justify-center">
           <div className="h-16 w-16 rounded-full flex items-center justify-center bg-moss">
-            <span className="text-3xl text-moss">✓</span>
+            <span className="text-3xl text-white">✓</span>
           </div>
         </div>
         <h1 className="font-cormorant text-4xl mb-2 text-cream">

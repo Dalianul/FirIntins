@@ -33,14 +33,14 @@ export default function Error({ error, reset }: ErrorProps) {
         <div className="flex gap-4 justify-center">
           <button
             onClick={reset}
-            className="px-6 py-3 bg-[--color-moss] text-[--color-cream] font-outfit font-medium rounded-lg hover:bg-[--color-moss-light] transition-colors duration-200"
+            className="px-6 py-3 bg-[--color-moss] text-white font-outfit font-medium rounded-lg hover:bg-[--color-moss-light] transition-colors duration-200"
           >
             Încearcă din nou
           </button>
 
           <Link
             href="/"
-            className="px-6 py-3 bg-[--color-mud] text-[--color-cream] font-outfit font-medium rounded-lg hover:bg-[--color-mud]/80 transition-colors duration-200"
+            className="px-6 py-3 bg-[--color-mud] text-white font-outfit font-medium rounded-lg hover:bg-[--color-mud]/80 transition-colors duration-200"
           >
             Acasă
           </Link>
