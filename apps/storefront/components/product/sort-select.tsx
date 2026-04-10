@@ -6,7 +6,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select"
 
 const SORT_OPTIONS = [
@@ -37,10 +36,13 @@ export default function SortSelect({ sort }: Props) {
     router.push("/produse?" + params.toString())
   }
 
+  const currentLabel =
+    SORT_OPTIONS.find((o) => o.value === (sort || "relevance"))?.label ?? "Sortare"
+
   return (
     <Select value={sort || "relevance"} onValueChange={handleChange}>
-      <SelectTrigger className="ml-auto min-w-[10rem]">
-        <SelectValue />
+      <SelectTrigger className="min-w-[10rem]">
+        {currentLabel}
       </SelectTrigger>
       <SelectContent>
         {SORT_OPTIONS.map((opt) => (

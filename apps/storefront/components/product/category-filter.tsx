@@ -6,7 +6,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select"
 
 interface Category {
@@ -35,10 +34,13 @@ export function CategoryFilter({ categories, category }: Props) {
     router.push("/produse?" + params.toString())
   }
 
+  const currentLabel =
+    (category ? categories.find((c) => c.id === category)?.name : null) ?? "Toate categoriile"
+
   return (
     <Select value={category || ""} onValueChange={handleChange}>
-      <SelectTrigger>
-        <SelectValue placeholder="Toate categoriile" />
+      <SelectTrigger className="min-w-[11rem]">
+        {currentLabel}
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="">Toate categoriile</SelectItem>
