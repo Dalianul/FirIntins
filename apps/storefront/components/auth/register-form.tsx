@@ -36,26 +36,26 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <Input {...register("firstName")} type="text" placeholder="Prenume" className="bg-surface-2 border-border" />
+        <Input {...register("firstName")} type="text" placeholder="Prenume" />
         {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>}
       </div>
       <div>
-        <Input {...register("lastName")} type="text" placeholder="Nume" className="bg-surface-2 border-border" />
+        <Input {...register("lastName")} type="text" placeholder="Nume" />
         {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>}
       </div>
       <div>
-        <Input {...register("email")} type="email" placeholder="Email" className="bg-surface-2 border-border" />
+        <Input {...register("email")} type="email" placeholder="Email" />
         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
       </div>
       <div>
-        <Input {...register("password")} type="password" placeholder="Parolă" className="bg-surface-2 border-border" />
+        <Input {...register("password")} type="password" placeholder="Parolă" />
         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
       </div>
       <div>
-        <Input {...register("confirmPassword")} type="password" placeholder="Confirmare parolă" className="bg-surface-2 border-border" />
+        <Input {...register("confirmPassword")} type="password" placeholder="Confirmare parolă" />
         {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
       </div>
-      <Button type="submit" disabled={loading} className="w-full bg-moss hover:bg-moss-light">
+      <Button type="submit" disabled={loading} variant="brand" size="heroInline" className="w-full">
         {loading ? "Se înregistrează..." : "Înregistrare"}
       </Button>
     </form>

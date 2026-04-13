@@ -44,7 +44,7 @@ export default async function OfertePage() {
       </div>
 
       <div className="p-6 max-w-7xl mx-auto">
-        <h1 className="font-cormorant text-4xl text-cream mb-8">Oferte</h1>
+        <h1 className="font-cormorant text-4xl text-[#1c1a15] mb-8">Oferte</h1>
         {products.length === 0 ? (
           <p className="text-fog">Nu există produse în ofertă momentan.</p>
         ) : (

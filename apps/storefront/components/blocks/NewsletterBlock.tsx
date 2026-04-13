@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion } from "motion/react"
 import { ArrowRight, Check } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface NewsletterBlockData {
   blockType: "newsletter"
@@ -13,11 +14,65 @@ interface NewsletterBlockData {
   background?: "surface" | "moss" | "mud" | "dark"
 }
 
-const bgClass: Record<string, string> = {
-  surface: "bg-[--color-surface] border-y border-[--color-border]",
-  moss: "bg-[--color-moss]",
-  mud: "bg-[--color-mud]",
-  dark: "bg-[--color-bg]",
+type BtnVariant = "brand" | "brandLight"
+
+const themes: Record<
+  "surface" | "moss" | "mud" | "dark",
+  {
+    section: string
+    eyebrow: string | null
+    showEyebrow: boolean
+    heading: string
+    subheading: string
+    input: string
+    btnVariant: BtnVariant
+    success: string
+  }
+> = {
+  surface: {
+    section: "bg-bg border-y border-border",
+    eyebrow: "text-moss",
+    showEyebrow: true,
+    heading: "text-[#1c1a15]",
+    subheading: "text-[#1c1a15]/60",
+    input:
+      "bg-surface border-border text-[#1c1a15] placeholder:text-fog focus:border-moss",
+    btnVariant: "brand",
+    success: "text-moss",
+  },
+  dark: {
+    section: "bg-[#1c1a15]",
+    eyebrow: "text-moss",
+    showEyebrow: true,
+    heading: "text-[#ffffff]",
+    subheading: "text-[#ffffff]/65",
+    input:
+      "bg-white/10 border-white/20 text-[#ffffff] placeholder:text-[#ffffff]/45 focus:border-white/60",
+    btnVariant: "brand",
+    success: "text-[#ffffff]",
+  },
+  moss: {
+    section: "bg-moss",
+    eyebrow: null,
+    showEyebrow: false,
+    heading: "text-[#ffffff]",
+    subheading: "text-[#ffffff]/70",
+    input:
+      "bg-white/10 border-white/25 text-[#ffffff] placeholder:text-[#ffffff]/45 focus:border-white/65",
+    btnVariant: "brandLight",
+    success: "text-[#ffffff]",
+  },
+  mud: {
+    section: "bg-mud",
+    eyebrow: null,
+    showEyebrow: false,
+    heading: "text-[#ffffff]",
+    subheading: "text-[#ffffff]/70",
+    input:
+      "bg-white/10 border-white/25 text-[#ffffff] placeholder:text-[#ffffff]/45 focus:border-white/65",
+    btnVariant: "brandLight",
+    success: "text-[#ffffff]",
+  },
 }
 
 export function NewsletterBlock({ block }: { block: NewsletterBlockData }) {
@@ -32,15 +87,15 @@ export function NewsletterBlock({ block }: { block: NewsletterBlockData }) {
   const [email, setEmail] = useState("")
   const [submitted, setSubmitted] = useState(false)
 
+  const t = themes[background] ?? themes.surface
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (email) setSubmitted(true)
   }
 
-  const isMoss = background === "moss" || background === "mud"
-
   return (
-    <section className={`py-20 md:py-24 px-6 sm:px-10 ${bgClass[background] ?? bgClass.surface}`}>
+    <section className={`py-20 md:py-24 px-6 sm:px-10 ${t.section}`}>
       <div className="max-w-2xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -48,20 +103,18 @@ export function NewsletterBlock({ block }: { block: NewsletterBlockData }) {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          {!isMoss && (
-            <span className="block text-[--color-moss] text-xs font-outfit uppercase tracking-[0.25em] mb-4">
+          {t.showEyebrow && (
+            <span className={`block text-xs font-outfit uppercase tracking-[0.25em] mb-4 ${t.eyebrow}`}>
               Noutăți și oferte
             </span>
           )}
-          <h2
-            className={`font-cormorant text-4xl md:text-5xl mb-4 ${isMoss ? "text-white" : "text-[--color-white]"}`}
-          >
+
+          <h2 className={`font-cormorant text-4xl md:text-5xl mb-4 ${t.heading}`}>
             {heading}
           </h2>
+
           {subheading && (
-            <p
-              className={`font-outfit text-sm leading-relaxed mb-10 max-w-md mx-auto ${isMoss ? "text-white/75" : "text-[--color-fog]"}`}
-            >
+            <p className={`font-outfit text-sm leading-relaxed mb-10 max-w-md mx-auto ${t.subheading}`}>
               {subheading}
             </p>
           )}
@@ -72,12 +125,10 @@ export function NewsletterBlock({ block }: { block: NewsletterBlockData }) {
               animate={{ opacity: 1, scale: 1 }}
               className="flex items-center justify-center gap-3"
             >
-              <span className="w-8 h-8 rounded-full bg-[--color-moss] flex items-center justify-center flex-shrink-0">
-                <Check size={15} className="text-white" strokeWidth={2.5} />
+              <span className="w-8 h-8 rounded-full bg-moss flex items-center justify-center flex-shrink-0">
+                <Check size={15} className="text-[#ffffff]" strokeWidth={2.5} />
               </span>
-              <p
-                className={`font-outfit text-base ${isMoss ? "text-white" : "text-[--color-moss]"}`}
-              >
+              <p className={`font-outfit text-base ${t.success}`}>
                 Mulțumim! Te-ai abonat cu succes.
               </p>
             </motion.div>
@@ -96,22 +147,17 @@ export function NewsletterBlock({ block }: { block: NewsletterBlockData }) {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={placeholder}
                 required
-                className={`flex-1 px-5 py-3.5 text-[--color-white] border focus:outline-none font-outfit text-sm placeholder:text-[--color-fog] transition-colors duration-200 ${
-                  isMoss
-                    ? "bg-white/10 border-white/30 focus:outline-none focus:border-white/70"
-                    : "bg-[--color-bg] border-[--color-border] focus:outline-none focus:border-[--color-moss] focus-visible:ring-2 focus-visible:ring-[--color-moss]"
-                }`}
+                className={`flex-1 px-5 py-3.5 border focus:outline-none font-outfit text-sm transition-colors duration-200 ${t.input}`}
               />
-              <button
+              <Button
                 type="submit"
-                className="group flex items-center justify-center gap-2 px-6 py-3.5 bg-[--color-moss] hover:bg-[--color-moss-light] text-white font-outfit text-sm uppercase tracking-[0.1em] transition-colors duration-300 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-moss] focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg] active:opacity-80 cursor-pointer"
+                variant={t.btnVariant}
+                size="heroInline"
+                className="group"
               >
                 {buttonLabel}
-                <ArrowRight
-                  size={14}
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                />
-              </button>
+                <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
             </form>
           )}
         </motion.div>

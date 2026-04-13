@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { motion } from "motion/react"
 import { ArrowRight } from "lucide-react"
+import { buttonVariants } from "@/components/ui/button"
 
 interface CtaBlockData {
   blockType: "cta"
@@ -13,27 +14,38 @@ interface CtaBlockData {
   background?: "moss" | "mud" | "dark"
 }
 
-const variants = {
+type BtnVariant = "brand" | "brandLight"
+
+const variants: Record<
+  "moss" | "mud" | "dark",
+  {
+    section: string
+    eyebrow: string
+    heading: string
+    sub: string
+    btnVariant: BtnVariant
+  }
+> = {
   moss: {
-    section: "bg-[--color-moss]",
-    eyebrow: "text-white/60",
-    heading: "text-white",
-    sub: "text-white/75",
-    btn: "bg-white text-[--color-moss] hover:bg-white/90",
+    section: "bg-moss",
+    eyebrow: "text-[#ffffff]/60",
+    heading: "text-[#ffffff]",
+    sub: "text-[#ffffff]/75",
+    btnVariant: "brandLight",
   },
   mud: {
-    section: "bg-[--color-mud]",
-    eyebrow: "text-white/60",
-    heading: "text-white",
-    sub: "text-white/75",
-    btn: "bg-white text-[--color-mud] hover:bg-white/90",
+    section: "bg-mud",
+    eyebrow: "text-[#ffffff]/60",
+    heading: "text-[#ffffff]",
+    sub: "text-[#ffffff]/75",
+    btnVariant: "brandLight",
   },
   dark: {
-    section: "bg-[--color-surface] border-y border-[--color-border]",
-    eyebrow: "text-[--color-moss]",
-    heading: "text-[--color-white]",
-    sub: "text-[--color-fog]",
-    btn: "bg-[--color-moss] text-white hover:bg-[--color-moss-light]",
+    section: "bg-surface border-y border-border",
+    eyebrow: "text-moss",
+    heading: "text-[#1c1a15]",
+    sub: "text-fog",
+    btnVariant: "brand",
   },
 }
 
@@ -62,13 +74,10 @@ export function CtaBlock({ block }: { block: CtaBlockData }) {
           {ctaLabel && ctaUrl && (
             <Link
               href={ctaUrl}
-              className={`group inline-flex items-center gap-3 px-8 py-4 font-outfit text-sm uppercase tracking-[0.12em] transition-colors duration-300 ${v.btn}`}
+              className={`group ${buttonVariants({ variant: v.btnVariant, size: "hero" })}`}
             >
               {ctaLabel}
-              <ArrowRight
-                size={15}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
+              <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           )}
         </motion.div>

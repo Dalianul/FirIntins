@@ -17,8 +17,8 @@ export function ProductTabs({ description, reviewsSection }: ProductTabsProps) {
           onClick={() => setActiveTab("description")}
           className={`text-sm font-outfit py-3 border-b-2 transition-colors ${
             activeTab === "description"
-              ? "border-moss text-cream"
-              : "border-transparent text-fog hover:text-cream"
+              ? "border-moss text-[#1c1a15]"
+              : "border-transparent text-fog hover:text-[#1c1a15]"
           }`}
         >
           Descriere
@@ -27,8 +27,8 @@ export function ProductTabs({ description, reviewsSection }: ProductTabsProps) {
           onClick={() => setActiveTab("reviews")}
           className={`text-sm font-outfit py-3 border-b-2 transition-colors ${
             activeTab === "reviews"
-              ? "border-moss text-cream"
-              : "border-transparent text-fog hover:text-cream"
+              ? "border-moss text-[#1c1a15]"
+              : "border-transparent text-fog hover:text-[#1c1a15]"
           }`}
         >
           Recenzii

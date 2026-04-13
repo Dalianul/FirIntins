@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
 import { ArrowRight } from "lucide-react"
+import { buttonVariants } from "@/components/ui/button"
 
 interface HeroBlockData {
   blockType: "hero"
@@ -22,9 +23,8 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
 
   const imgSrc = backgroundImage?.url ? new URL(backgroundImage.url).pathname : null
   const words = heading.split(" ")
-  const isDarkText = textColor === "dark"
-  // legacy fallback: if textColor not set, infer from overlay (backward compat)
-  const isLight = textColor ? isDarkText : overlay === "light"
+  // textColor: "dark" = dark text for light backgrounds, default "light" = white text for dark backgrounds
+  const darkText = textColor === "dark"
 
   return (
     <section className="relative min-h-[80vh] flex items-center overflow-hidden -mt-16">
@@ -40,7 +40,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
         />
       )}
 
-      {/* Gradient overlay */}
+      {/* Gradient overlay — controlled only by the overlay field */}
       <div
         className={[
           "absolute inset-0",
@@ -51,7 +51,8 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
             : "bg-gradient-to-t from-black/80 via-black/55 to-black/10",
         ].join(" ")}
       />
-      {!isLight && (
+      {/* Side vignette only on dark overlays for depth */}
+      {overlay !== "light" && (
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent pointer-events-none" />
       )}
 
@@ -64,14 +65,14 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
         >
-          <span className="block h-px w-10 bg-[--color-moss]" />
-          <span className="text-[--color-moss-light] text-xs font-outfit uppercase tracking-[0.25em]">
+          <span className="block h-px w-10 bg-moss" />
+          <span className={`text-xs font-outfit uppercase tracking-[0.25em] ${darkText ? "text-moss" : "text-[#ffffff]/80"}`}>
             Echipament premium de pescuit
           </span>
         </motion.div>
 
         {/* Heading — word-by-word stagger */}
-        <h1 className={`font-cormorant font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-[-0.01em] max-w-4xl mb-6 ${isLight ? "text-[--color-white]" : "text-white"}`}>
+        <h1 className={`font-cormorant font-semibold text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-[-0.01em] max-w-4xl mb-6 ${darkText ? "text-[#1c1a15]" : "text-[#ffffff]"}`}>
           {words.map((word, i) => (
             <motion.span
               key={i}
@@ -91,7 +92,7 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
 
         {subheading && (
           <motion.p
-            className={`text-lg md:text-xl font-outfit font-light max-w-xl mb-10 leading-relaxed ${isLight ? "text-[--color-fog]" : "text-white/75"}`}
+            className={`text-lg md:text-xl font-outfit font-light max-w-xl mb-10 leading-relaxed ${darkText ? "text-[#1c1a15]/75" : "text-[#ffffff]/75"}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -116,13 +117,13 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
           >
             <Link
               href={ctaUrl}
-              className="group inline-flex items-center gap-3 bg-[--color-moss] hover:bg-[--color-moss-light] text-white px-8 py-4 font-outfit text-sm uppercase tracking-[0.12em] transition-colors duration-300"
+              className={`group ${buttonVariants({
+                variant: darkText ? "brandOutline" : "brand",
+                size: "hero",
+              })}`}
             >
               {ctaLabel}
-              <ArrowRight
-                size={15}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
+              <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </motion.div>
         )}
@@ -136,11 +137,11 @@ export function HeroBlock({ block }: { block: HeroBlockData }) {
         transition={{ delay: 1.8, duration: 0.6 }}
         aria-hidden="true"
       >
-        <span className={`text-[10px] font-outfit uppercase tracking-[0.22em] [writing-mode:vertical-rl] ${isLight ? "text-[--color-fog]/60" : "text-white/50"}`}>
+        <span className={`text-[10px] font-outfit uppercase tracking-[0.22em] [writing-mode:vertical-rl] ${darkText ? "text-[#1c1a15]/60" : "text-[#ffffff]/50"}`}>
           Scroll
         </span>
         <motion.span
-          className={`block w-px h-10 ${isLight ? "bg-[--color-fog]/30" : "bg-white/40"}`}
+          className={`block w-px h-10 ${darkText ? "bg-[#1c1a15]/30" : "bg-[#ffffff]/40"}`}
           animate={reduced ? {} : { scaleY: [1, 0.3, 1] }}
           transition={{ repeat: reduced ? 0 : Infinity, duration: 1.8, ease: "easeInOut" }}
         />

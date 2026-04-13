@@ -19,7 +19,7 @@ export default async function OrdersPage() {
       <>
         <AccountNav />
         <div>
-          <h2 className="font-outfit font-medium text-cream text-xl mb-6">
+          <h2 className="font-outfit font-medium text-[#1c1a15] text-xl mb-6">
             Comenzile mele
           </h2>
           {(orders ?? []).length === 0 ? (

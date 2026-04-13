@@ -3,6 +3,8 @@
 import { useActionState, useEffect, useRef } from "react"
 import { useFormStatus } from "react-dom"
 import { updatePasswordAction } from "@/actions/account"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 type ActionState = {
   success?: boolean
@@ -13,13 +15,9 @@ type ActionState = {
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="bg-moss hover:bg-moss-light text-white font-outfit text-sm px-6 py-2 rounded transition-colors disabled:opacity-50"
-    >
+    <Button type="submit" disabled={pending} variant="brand" size="heroInline">
       {pending ? "Se salvează..." : "Actualizează parola"}
-    </button>
+    </Button>
   )
 }
 
@@ -58,12 +56,11 @@ export function PasswordForm() {
         <label className="block text-fog text-sm mb-1" htmlFor="password">
           Parolă nouă
         </label>
-        <input
+        <Input
           id="password"
           name="password"
           type="password"
           autoComplete="new-password"
-          className="w-full bg-surface-2 border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
         />
         <FieldError errors={state?.fieldErrors?.password} />
       </div>
@@ -72,12 +69,11 @@ export function PasswordForm() {
         <label className="block text-fog text-sm mb-1" htmlFor="confirmPassword">
           Confirmă parola
         </label>
-        <input
+        <Input
           id="confirmPassword"
           name="confirmPassword"
           type="password"
           autoComplete="new-password"
-          className="w-full bg-surface-2 border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
         />
         <FieldError errors={state?.fieldErrors?.confirmPassword} />
       </div>

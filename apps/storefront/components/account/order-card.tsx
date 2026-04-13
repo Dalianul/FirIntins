@@ -31,7 +31,7 @@ export function OrderCard({ order }: OrderCardProps) {
       <div className="p-4 bg-surface-2 rounded border border-border hover:border-moss transition-colors cursor-pointer">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <p className="font-outfit font-medium text-cream">#{order.id.slice(0, 8)}</p>
+            <p className="font-outfit font-medium text-[#1c1a15]">#{order.id.slice(0, 8)}</p>
             <p className="text-fog text-sm">
               {new Date(order.created_at).toLocaleDateString("ro-RO")}
             </p>

@@ -10,6 +10,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { addAddressAction, updateAddressAction } from "@/actions/account"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 const COUNTRY_OPTIONS = [
   { code: "ro", label: "România" },
@@ -44,13 +46,9 @@ type ActionState = {
 function SubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus()
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="bg-moss hover:bg-moss-light text-white font-outfit text-sm px-6 py-2 rounded transition-colors disabled:opacity-50"
-    >
+    <Button type="submit" disabled={pending} variant="brand" size="heroInline">
       {pending ? "Se salvează..." : label}
-    </button>
+    </Button>
   )
 }
 
@@ -86,19 +84,17 @@ function AddressForm({
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-fog text-xs mb-1">Prenume *</label>
-          <input
+          <Input
             name="firstName"
             defaultValue={address?.first_name ?? ""}
-            className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
           />
           <FieldError errors={state?.fieldErrors?.firstName} />
         </div>
         <div>
           <label className="block text-fog text-xs mb-1">Nume *</label>
-          <input
+          <Input
             name="lastName"
             defaultValue={address?.last_name ?? ""}
-            className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
           />
           <FieldError errors={state?.fieldErrors?.lastName} />
         </div>
@@ -106,39 +102,35 @@ function AddressForm({
 
       <div>
         <label className="block text-fog text-xs mb-1">Adresă *</label>
-        <input
+        <Input
           name="address1"
           defaultValue={address?.address_1 ?? ""}
-          className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
         />
         <FieldError errors={state?.fieldErrors?.address1} />
       </div>
 
       <div>
         <label className="block text-fog text-xs mb-1">Adresă (linia 2)</label>
-        <input
+        <Input
           name="address2"
           defaultValue={address?.address_2 ?? ""}
-          className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-fog text-xs mb-1">Oraș *</label>
-          <input
+          <Input
             name="city"
             defaultValue={address?.city ?? ""}
-            className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
           />
           <FieldError errors={state?.fieldErrors?.city} />
         </div>
         <div>
           <label className="block text-fog text-xs mb-1">Județ *</label>
-          <input
+          <Input
             name="province"
             defaultValue={address?.province ?? ""}
-            className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
           />
           <FieldError errors={state?.fieldErrors?.province} />
         </div>
@@ -147,10 +139,9 @@ function AddressForm({
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-fog text-xs mb-1">Cod poștal *</label>
-          <input
+          <Input
             name="postalCode"
             defaultValue={address?.postal_code ?? ""}
-            className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
           />
           <FieldError errors={state?.fieldErrors?.postalCode} />
         </div>
@@ -159,7 +150,7 @@ function AddressForm({
           <select
             name="countryCode"
             defaultValue={address?.country_code ?? "ro"}
-            className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
+            className="w-full bg-bg border border-border rounded px-3 py-2 text-[#1c1a15] text-sm focus:outline-none focus:border-moss"
           >
             {COUNTRY_OPTIONS.map((c) => (
               <option key={c.code} value={c.code}>
@@ -173,11 +164,10 @@ function AddressForm({
 
       <div>
         <label className="block text-fog text-xs mb-1">Telefon</label>
-        <input
+        <Input
           name="phone"
           type="tel"
           defaultValue={address?.phone ?? ""}
-          className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
         />
       </div>
 
@@ -191,14 +181,12 @@ export function AddAddressSheet() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger>
-        <button className="bg-moss hover:bg-moss-light text-white font-outfit text-sm px-4 py-2 rounded transition-colors">
-          + Adaugă adresă nouă
-        </button>
+      <SheetTrigger className="inline-flex items-center justify-center h-11 px-6 py-3.5 bg-moss text-[#ffffff] font-outfit text-[12px] uppercase tracking-[0.1em] hover:bg-moss-light transition-colors">
+        + Adaugă adresă nouă
       </SheetTrigger>
       <SheetContent side="right" className="bg-surface-2 border-border w-full sm:max-w-md overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="font-cormorant text-2xl text-cream">
+          <SheetTitle className="font-cormorant text-2xl text-[#1c1a15]">
             Adresă nouă
           </SheetTitle>
         </SheetHeader>
@@ -213,17 +201,15 @@ export function EditAddressSheet({ address }: { address: Address }) {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger>
-        <button
-          className="text-fog hover:text-cream text-xs underline"
-          aria-label="Editează adresa"
-        >
-          Editează
-        </button>
+      <SheetTrigger
+        className="text-fog hover:text-[#1c1a15] text-xs underline transition-colors"
+        aria-label="Editează adresa"
+      >
+        Editează
       </SheetTrigger>
       <SheetContent side="right" className="bg-surface-2 border-border w-full sm:max-w-md overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="font-cormorant text-2xl text-cream">
+          <SheetTitle className="font-cormorant text-2xl text-[#1c1a15]">
             Editează adresa
           </SheetTitle>
         </SheetHeader>

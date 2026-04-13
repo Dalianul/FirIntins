@@ -6,7 +6,7 @@ export async function NewsSection() {
 
   return (
     <section className="py-20 px-4 bg-surface">
-      <h2 className="font-cormorant text-5xl text-cream mb-12 max-w-6xl mx-auto">
+      <h2 className="font-cormorant text-5xl text-[#1c1a15] mb-12 max-w-6xl mx-auto">
         Noutăți
       </h2>
       <div className="flex gap-6 overflow-x-auto pb-4 px-4 max-w-6xl mx-auto">

@@ -64,8 +64,8 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Related posts — server-fetched, not live-previewed */}
       {relatedPosts.length > 0 && (
-        <section className="mt-16 pt-8 border-t border-[--color-border]">
-          <h2 className="font-cormorant text-2xl font-semibold text-[--color-white] mb-6">
+        <section className="mt-16 pt-8 border-t border-border">
+          <h2 className="font-cormorant text-2xl font-semibold text-[#1c1a15] mb-6">
             Articole similare
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

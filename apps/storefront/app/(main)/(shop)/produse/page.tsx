@@ -59,7 +59,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   return (
-    <main className="bg-[--color-bg] min-h-screen">
+    <main className="bg-bg min-h-screen">
       <div className="px-6 py-4 max-w-7xl mx-auto">
         <Breadcrumb>
           <BreadcrumbList>
@@ -80,10 +80,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       />
 
       <div className="px-6 pb-6 max-w-7xl mx-auto">
-        <h1 className="font-cormorant text-4xl text-[--color-cream] mb-6">Produse</h1>
+        <h1 className="font-cormorant text-4xl text-[#1c1a15] mb-6">Produse</h1>
 
         {/* Filter bar — wrapped in Suspense because filter components use useSearchParams() */}
-        <Suspense fallback={<div className="h-10 animate-pulse bg-[--color-surface] rounded mb-6" />}>
+        <Suspense fallback={<div className="h-10 animate-pulse bg-surface rounded mb-6" />}>
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <CategoryFilter categories={categories} category={sp.category ?? ""} />
             <PriceFilter priceMin={sp.price_min ?? ""} priceMax={sp.price_max ?? ""} />
@@ -96,7 +96,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <div className="mb-4">
             <Link
               href="/produse"
-              className="text-sm text-[--color-moss] hover:text-[--color-moss-light] transition-colors"
+              className="text-sm text-moss hover:text-moss-light transition-colors"
             >
               Resetează filtrele
             </Link>

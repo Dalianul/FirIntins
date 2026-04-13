@@ -68,7 +68,7 @@ export default async function ProductGrid({ searchParams }: Props) {
 
   if (products.length === 0) {
     return (
-      <p className="py-16 text-center text-[--color-fog]/60">
+      <p className="py-16 text-center text-fog/60">
         Niciun produs găsit.
       </p>
     )

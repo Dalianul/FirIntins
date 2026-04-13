@@ -34,7 +34,7 @@ export function OffersBlock({ block }: { block: OffersBlockData }) {
   if (!offers?.length) return null
 
   return (
-    <section className="py-20 md:py-28 px-6 sm:px-10 bg-[--color-bg]">
+    <section className="py-20 md:py-28 px-6 sm:px-10 bg-bg">
       <div className="max-w-7xl mx-auto">
         {heading && (
           <motion.div
@@ -45,10 +45,10 @@ export function OffersBlock({ block }: { block: OffersBlockData }) {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <div>
-              <span className="block text-[--color-mud] text-xs font-outfit uppercase tracking-[0.25em] mb-2">
+              <span className="block text-mud text-xs font-outfit uppercase tracking-[0.25em] mb-2">
                 Promoții exclusive
               </span>
-              <h2 className="font-cormorant text-4xl md:text-5xl text-[--color-white]">{heading}</h2>
+              <h2 className="font-cormorant text-4xl md:text-5xl text-[#1c1a15]">{heading}</h2>
             </div>
           </motion.div>
         )}
@@ -66,7 +66,7 @@ export function OffersBlock({ block }: { block: OffersBlockData }) {
               <motion.article
                 key={i}
                 variants={cardVariant}
-                className="group relative bg-[--color-surface] border border-[--color-border] hover:border-[--color-moss]/40 overflow-hidden transition-colors duration-400"
+                className="group relative bg-surface border border-border hover:border-moss/40 overflow-hidden transition-colors duration-400"
               >
                 {/* Image */}
                 {imgSrc && (
@@ -81,7 +81,7 @@ export function OffersBlock({ block }: { block: OffersBlockData }) {
                     {/* Image overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                     {offer.badge && (
-                      <span className="absolute top-4 left-4 bg-[--color-mud] text-white text-[10px] font-outfit font-semibold px-3 py-1 uppercase tracking-[0.1em]">
+                      <span className="absolute top-4 left-4 bg-moss text-[#ffffff] text-[10px] font-outfit font-semibold px-3 py-1 uppercase tracking-[0.1em]">
                         {offer.badge}
                       </span>
                     )}
@@ -91,23 +91,23 @@ export function OffersBlock({ block }: { block: OffersBlockData }) {
                 {/* No image but has badge */}
                 {!imgSrc && offer.badge && (
                   <div className="px-6 pt-6">
-                    <span className="inline-block bg-[--color-mud] text-white text-[10px] font-outfit font-semibold px-3 py-1 uppercase tracking-[0.1em]">
+                    <span className="inline-block bg-moss text-[#ffffff] text-[10px] font-outfit font-semibold px-3 py-1 uppercase tracking-[0.1em]">
                       {offer.badge}
                     </span>
                   </div>
                 )}
 
                 <div className="p-6">
-                  <h3 className="font-cormorant text-2xl text-[--color-white] mb-2 leading-snug">
+                  <h3 className="font-cormorant text-2xl text-[#1c1a15] mb-2 leading-snug">
                     {offer.title}
                   </h3>
                   {offer.description && (
-                    <p className="text-[--color-fog] text-sm leading-relaxed mb-5">{offer.description}</p>
+                    <p className="text-fog text-sm leading-relaxed mb-5">{offer.description}</p>
                   )}
                   {offer.ctaUrl && (
                     <Link
                       href={offer.ctaUrl}
-                      className="inline-flex items-center gap-2 text-[--color-moss] hover:text-[--color-moss-light] text-sm font-outfit transition-colors duration-200"
+                      className="inline-flex items-center gap-2 text-moss hover:text-moss-light text-sm font-outfit transition-colors duration-200"
                     >
                       <span>Află mai mult</span>
                       <ArrowRight

@@ -25,7 +25,7 @@ export function FaqBlock({ block }: { block: FaqBlockData }) {
   if (!faqs.length) return null
 
   return (
-    <section className="py-20 md:py-28 px-6 sm:px-10 bg-[--color-bg]">
+    <section className="py-20 md:py-28 px-6 sm:px-10 bg-bg">
       <div className="max-w-3xl mx-auto">
         {heading && (
           <motion.div
@@ -35,15 +35,15 @@ export function FaqBlock({ block }: { block: FaqBlockData }) {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <span className="block text-[--color-moss] text-xs font-outfit uppercase tracking-[0.25em] mb-3">
+            <span className="block text-moss text-xs font-outfit uppercase tracking-[0.25em] mb-3">
               Întrebări frecvente
             </span>
-            <h2 className="font-cormorant text-4xl md:text-5xl text-[--color-white]">{heading}</h2>
+            <h2 className="font-cormorant text-4xl md:text-5xl text-[#1c1a15]">{heading}</h2>
           </motion.div>
         )}
 
         <motion.div
-          className="divide-y divide-[--color-border]"
+          className="divide-y divide-border"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -55,17 +55,17 @@ export function FaqBlock({ block }: { block: FaqBlockData }) {
               <div key={faq.id ?? i}>
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="w-full text-left flex items-center justify-between gap-4 py-5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-moss] focus-visible:ring-inset"
+                  className="w-full text-left flex items-center justify-between gap-4 py-5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss focus-visible:ring-inset"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-outfit text-[--color-white] text-base leading-snug group-hover:text-[--color-cream] transition-colors duration-200">
+                  <span className="font-outfit text-[#1c1a15] text-base leading-snug group-hover:text-moss transition-colors duration-200">
                     {faq.question}
                   </span>
-                  <span className="flex-shrink-0 w-7 h-7 border border-[--color-border] group-hover:border-[--color-moss]/50 flex items-center justify-center transition-colors duration-200">
+                  <span className="flex-shrink-0 w-7 h-7 border border-border group-hover:border-moss/50 flex items-center justify-center transition-colors duration-200">
                     {isOpen ? (
-                      <Minus size={13} className="text-[--color-moss]" />
+                      <Minus size={13} className="text-moss" />
                     ) : (
-                      <Plus size={13} className="text-[--color-fog] group-hover:text-[--color-moss] transition-colors duration-200" />
+                      <Plus size={13} className="text-fog group-hover:text-moss transition-colors duration-200" />
                     )}
                   </span>
                 </button>
@@ -80,7 +80,7 @@ export function FaqBlock({ block }: { block: FaqBlockData }) {
                       transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
                       className="overflow-hidden"
                     >
-                      <div className="pb-6 text-[--color-fog] text-sm leading-relaxed font-outfit prose prose-sm max-w-none [&_p]:text-[--color-fog] [&_a]:text-[--color-moss] [&_a:hover]:text-[--color-moss-light]">
+                      <div className="pb-6 text-fog text-sm leading-relaxed font-outfit prose prose-sm max-w-none [&_p]:text-fog [&_a]:text-moss [&_a:hover]:text-moss-light">
                         <RichText data={faq.answer} />
                       </div>
                     </motion.div>

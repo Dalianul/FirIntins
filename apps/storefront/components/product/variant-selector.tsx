@@ -27,7 +27,7 @@ export function VariantSelector({ variants, onSelect }: VariantSelectorProps) {
 
   return (
     <div className="space-y-4">
-      <h3 className="font-outfit font-medium text-cream">Variante</h3>
+      <h3 className="font-outfit font-medium text-[#1c1a15]">Variante</h3>
       <div className="flex flex-wrap gap-2">
         {variants.map((variant) => {
           const title = variant.title || "Standard"
@@ -41,10 +41,10 @@ export function VariantSelector({ variants, onSelect }: VariantSelectorProps) {
               disabled={outOfStock}
               className={`px-4 py-2 rounded border transition-colors ${
                 isSelected
-                  ? "bg-moss border-moss text-white"
+                  ? "bg-moss border-moss text-[#ffffff]"
                   : outOfStock
                     ? "border-border bg-surface-2 text-fog cursor-not-allowed opacity-50"
-                    : "border-border bg-surface hover:border-moss text-cream"
+                    : "border-border bg-surface hover:border-moss text-[#1c1a15]"
               }`}
             >
               {title}

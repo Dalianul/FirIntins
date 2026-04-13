@@ -27,7 +27,7 @@ function StepButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "h-8 w-7 shrink-0 flex items-center justify-center [background:var(--color-surface)] border border-[--color-fog]/20 text-[--color-fog]/60 hover:text-[--color-fog] hover:bg-[--color-bg-light] text-sm leading-none transition-colors duration-150",
+        "h-8 w-7 shrink-0 flex items-center justify-center bg-surface border border-fog/20 text-fog/60 hover:text-fog hover:bg-bg-light text-sm leading-none transition-colors duration-150",
         className
       )}
     >
@@ -84,12 +84,12 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
           placeholder="Preț min"
           value={minPrice}
           onChange={(e) => setMinPrice(e.target.value)}
-          className="w-20 rounded-none border-x-0 text-center [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-white] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
+          className="h-8 w-20 border-x-0 text-center text-sm"
         />
         <StepButton onClick={() => adjustMin(STEP)} className="rounded-r border-l-0">+</StepButton>
       </div>
 
-      <span className="text-[--color-fog]/40 text-sm">–</span>
+      <span className="text-fog/40 text-sm">–</span>
 
       {/* Max stepper */}
       <div className="flex items-center">
@@ -100,15 +100,15 @@ export function PriceFilter({ priceMin, priceMax }: Props) {
           placeholder="Preț max"
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          className="w-20 rounded-none border-x-0 text-center [background:var(--color-surface)] border-[--color-fog]/20 text-[--color-white] placeholder:text-[--color-fog]/40 text-sm focus-visible:ring-[--color-moss]"
+          className="h-8 w-20 border-x-0 text-center text-sm"
         />
         <StepButton onClick={() => adjustMax(STEP)} className="rounded-r border-l-0">+</StepButton>
       </div>
 
       <Button
         onClick={handleApply}
-        size="sm"
-        className="bg-[--color-moss] text-white hover:bg-[--color-moss-light]"
+        variant="brand"
+        className="h-8 rounded-none px-4 text-[11px] font-outfit uppercase tracking-[0.14em]"
       >
         Aplică
       </Button>

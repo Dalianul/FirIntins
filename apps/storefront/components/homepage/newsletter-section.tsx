@@ -47,7 +47,7 @@ export function NewsletterSection() {
       viewport={{ once: true }}
       className="py-20 px-4 bg-surface-2 text-center"
     >
-      <h2 className="font-cormorant text-5xl text-cream mb-4">
+      <h2 className="font-cormorant text-5xl text-[#1c1a15] mb-4">
         Rămâi la curent
       </h2>
       <p className="text-fog mb-8 max-w-2xl mx-auto">
@@ -62,7 +62,7 @@ export function NewsletterSection() {
           required
           className="bg-surface border-border"
         />
-        <Button type="submit" disabled={loading} className="bg-moss">
+        <Button type="submit" disabled={loading} variant="brand" size="heroInline">
           {loading ? "Trimitere..." : "Abonează-te"}
         </Button>
       </form>

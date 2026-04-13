@@ -54,14 +54,14 @@ export default function StorefrontLayout({
 }) {
   return (
     <html lang="ro" className={`${cormorant.variable} ${outfit.variable}`} suppressHydrationWarning>
-      <body className="bg-[--color-bg] text-[--color-cream]" suppressHydrationWarning>
+      <body className="bg-bg text-[#1c1a15]" suppressHydrationWarning>
         <LazyMotion features={domAnimation}>
           <CartProvider>
             <WishlistProvider>
               <Header nav={<Suspense fallback={
                 <div className="hidden md:flex gap-8">
                   {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
-                    <span key={label} className="text-[--color-cream] opacity-50">{label}</span>
+                    <span key={label} className="text-fog opacity-50">{label}</span>
                   ))}
                 </div>
               }><HeaderNav /></Suspense>} />

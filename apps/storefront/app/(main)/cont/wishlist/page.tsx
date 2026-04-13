@@ -3,6 +3,7 @@ import Link from "next/link"
 import { medusa } from "@/lib/medusa/client"
 import { Heart } from "lucide-react"
 import { ProductCard } from "@/components/product/product-card"
+import { Button } from "@/components/ui/button"
 
 export const metadata = { title: "Lista de dorinte | Fir & Instinct" }
 
@@ -51,17 +52,16 @@ export default async function WishlistPage() {
 
   return (
     <div>
-      <h1 className="font-cormorant text-2xl text-cream mb-6">Lista de dorinte</h1>
+      <h1 className="font-cormorant text-2xl text-[#1c1a15] mb-6">Lista de dorinte</h1>
 
       {items.length === 0 ? (
         <div className="text-center py-12">
           <Heart size={48} className="mx-auto mb-4 text-fog opacity-40" />
           <p className="text-fog mb-4">Lista ta de dorinte este goală.</p>
-          <Link
-            href="/produse"
-            className="inline-block px-6 py-3 bg-moss text-white font-outfit text-sm hover:bg-moss-light transition-colors"
-          >
-            Explorează produsele
+          <Link href="/produse">
+            <Button variant="brand" size="hero">
+              Explorează produsele
+            </Button>
           </Link>
         </div>
       ) : (

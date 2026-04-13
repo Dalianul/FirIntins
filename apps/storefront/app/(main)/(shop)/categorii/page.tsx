@@ -44,12 +44,12 @@ export default async function CategoriiPage() {
       </div>
 
       <div className="p-6 max-w-7xl mx-auto">
-        <h1 className="font-cormorant text-4xl text-cream mb-8">Categorii</h1>
+        <h1 className="font-cormorant text-4xl text-[#1c1a15] mb-8">Categorii</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((cat: any) => (
             <Link key={cat.id} href={`/categorii/${cat.handle}`}>
               <div className="p-6 bg-surface rounded border border-border hover:border-moss transition-colors cursor-pointer">
-                <h2 className="font-cormorant text-2xl text-white">{cat.name}</h2>
+                <h2 className="font-cormorant text-2xl text-[#1c1a15]">{cat.name}</h2>
                 {cat.description && (
                   <p className="text-fog text-sm mt-2 line-clamp-2">{cat.description}</p>
                 )}

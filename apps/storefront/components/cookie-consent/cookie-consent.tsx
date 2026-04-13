@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false)
@@ -33,18 +34,12 @@ export function CookieConsent() {
           .
         </p>
         <div className="flex gap-2 shrink-0">
-          <button
-            onClick={decline}
-            className="px-4 py-2 text-sm border border-border text-fog rounded hover:border-moss hover:text-cream transition-colors"
-          >
+          <Button onClick={decline} variant="brandOutline" size="heroInline">
             Refuz
-          </button>
-          <button
-            onClick={accept}
-            className="px-4 py-2 text-sm bg-moss text-white rounded hover:bg-moss-light transition-colors"
-          >
+          </Button>
+          <Button onClick={accept} variant="brand" size="heroInline">
             Accept
-          </button>
+          </Button>
         </div>
       </div>
     </div>

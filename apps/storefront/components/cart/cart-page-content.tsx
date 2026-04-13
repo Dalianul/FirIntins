@@ -23,7 +23,7 @@ export function CartPageContent() {
       <div className="text-center py-16">
         <p className="text-fog mb-6">Coșul tău este gol.</p>
         <Link href="/produse">
-          <Button className="bg-moss hover:bg-moss-light text-white">
+          <Button variant="brand" size="hero">
             Continuă cumpărăturile
           </Button>
         </Link>
@@ -45,10 +45,10 @@ export function CartPageContent() {
 
       <div className="lg:col-span-1">
         <div className="bg-surface rounded p-6 space-y-4">
-          <h2 className="font-cormorant text-2xl text-cream">Sumar comandă</h2>
+          <h2 className="font-cormorant text-2xl text-[#1c1a15]">Sumar comandă</h2>
           <div className="flex justify-between text-sm">
             <span className="text-fog">Subtotal</span>
-            <span className="text-cream font-medium">{formatPrice(cart.subtotal)}</span>
+            <span className="text-[#1c1a15] font-medium">{formatPrice(cart.subtotal)}</span>
           </div>
           {(cart.discount_total ?? 0) > 0 && (
             <div className="flex justify-between text-sm">
@@ -57,11 +57,11 @@ export function CartPageContent() {
             </div>
           )}
           <div className="border-t border-border pt-4 flex justify-between">
-            <span className="text-cream font-medium">Total</span>
+            <span className="text-[#1c1a15] font-medium">Total</span>
             <span className="text-mud font-cormorant text-xl">{formatPrice(cart.total)}</span>
           </div>
           <Link href="/checkout" className="block">
-            <Button className="w-full bg-moss hover:bg-moss-light text-white py-6 text-lg">
+            <Button variant="brand" size="cart">
               Finalizează comanda
             </Button>
           </Link>

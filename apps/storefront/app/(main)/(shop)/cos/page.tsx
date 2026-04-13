@@ -10,7 +10,7 @@ export default function CartPage() {
   return (
     <main className="bg-bg min-h-screen">
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <h1 className="font-cormorant text-4xl text-cream mb-8">Coș de cumpărături</h1>
+        <h1 className="font-cormorant text-4xl text-[#1c1a15] mb-8">Coș de cumpărături</h1>
         <CartPageContent />
       </div>
     </main>

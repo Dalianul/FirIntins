@@ -55,12 +55,12 @@ export default function SearchButton() {
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Caută produse..."
-            className="bg-[--color-surface] border border-[--color-moss]/40 rounded px-3 py-1.5 text-sm text-[--color-cream] placeholder:text-[--color-fog]/40 focus:outline-none focus:border-[--color-moss] w-48"
+            className="bg-surface border border-moss/40 rounded px-3 py-1.5 text-sm text-[#1c1a15] placeholder:text-fog/40 focus:outline-none focus:border-moss w-48"
           />
           <m.button
             type="button"
             onClick={handleClose}
-            className="text-[--color-fog] hover:text-[--color-cream] transition-colors"
+            className="text-fog hover:text-[#1c1a15] transition-colors"
             aria-label="Închide căutarea"
           >
             <X size={18} />
@@ -75,7 +75,7 @@ export default function SearchButton() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
+          className="text-fog hover:text-[#1c1a15] transition-colors"
           aria-label="Caută"
         >
           <Search size={18} />

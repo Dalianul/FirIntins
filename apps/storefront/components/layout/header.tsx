@@ -19,13 +19,13 @@ export default function Header({ nav }: { nav?: ReactNode }) {
     <m.header
       animate={{ y: scrollDirection === "down" ? "-100%" : 0 }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
-      className="sticky top-0 z-50 border-b border-[--color-border] [background:color-mix(in_srgb,var(--color-bg-light)_92%,transparent)] backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.07)]"
+      className="sticky top-0 z-50 border-b border-border [background:color-mix(in_srgb,var(--color-bg-light)_92%,transparent)] backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.07)]"
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
-          className="text-2xl font-semibold font-cormorant text-[--color-white]"
+          className="text-2xl font-semibold font-cormorant text-[#1c1a15]"
         >
           FirIntins
         </Link>
@@ -34,7 +34,7 @@ export default function Header({ nav }: { nav?: ReactNode }) {
         {nav ?? (
           <div className="hidden md:flex gap-8">
             {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
-              <span key={label} className="text-[--color-cream] opacity-50">{label}</span>
+              <span key={label} className="text-fog opacity-50">{label}</span>
             ))}
           </div>
         )}
@@ -46,18 +46,18 @@ export default function Header({ nav }: { nav?: ReactNode }) {
           </Suspense>
           <Link
             href="/cont"
-            className="h-9 px-3 flex items-center rounded-md text-sm text-[--color-cream] hover:text-[--color-white] hover:bg-[rgba(61,86,48,0.12)] transition-colors duration-150"
+            className="h-9 px-3 flex items-center rounded-md text-sm text-fog hover:text-[#1c1a15] hover:bg-[rgba(61,86,48,0.12)] transition-colors duration-150"
           >
             Cont
           </Link>
           <button
             onClick={() => setIsCartOpen(!isCartOpen)}
             aria-label="Coș de cumpărături"
-            className="relative h-9 px-3 flex items-center gap-1.5 rounded-md border border-[rgba(61,86,48,0.25)] bg-[rgba(61,86,48,0.08)] text-[--color-cream] hover:border-[rgba(61,86,48,0.5)] hover:bg-[rgba(61,86,48,0.18)] hover:text-[--color-white] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-moss]"
+            className="relative h-9 px-3 flex items-center gap-1.5 rounded-md border border-[rgba(61,86,48,0.25)] bg-[rgba(61,86,48,0.08)] text-fog hover:border-[rgba(61,86,48,0.5)] hover:bg-[rgba(61,86,48,0.18)] hover:text-[#1c1a15] transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
           >
             <ShoppingCart size={16} strokeWidth={1.5} />
             {itemCount > 0 && (
-              <span className="text-xs font-outfit font-semibold tabular-nums text-[--color-moss]">
+              <span className="text-xs font-outfit font-semibold tabular-nums text-moss">
                 {itemCount}
               </span>
             )}

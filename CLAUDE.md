@@ -23,7 +23,9 @@ pnpm lint          # Lint all apps
 ```bash
 pnpm backend:dev          # medusa develop (watch mode)
 pnpm backend:migrate      # medusa db:migrate
-pnpm --filter backend seed   # Seed Medusa products/categories (NOT pnpm backend:seed — that script is broken)
+pnpm --filter backend seed   # Seed Medusa products/categories
+# NOTE: `pnpm backend:seed` at the root is broken (path resolution). Always use `pnpm --filter backend seed`.
+# `apps/backend/SETUP.md` still instructs `pnpm backend:seed` — ignore that line until SETUP.md is updated.
 
 # From apps/backend directly:
 pnpm test:unit            # Unit tests (swc/jest)
@@ -54,7 +56,7 @@ docker compose up -d   # Start Postgres + Redis
 
 ## Environment Setup
 
-**Backend** (`apps/backend/.env`): Copy from `.env.template`. Requires `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, `COOKIE_SECRET`, CORS vars, `STRIPE_API_KEY`, `SENDGRID_API_KEY`.
+**Backend** (`apps/backend/.env`): Copy from `.env.template`. Requires `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, `COOKIE_SECRET`, CORS vars, `STRIPE_API_KEY`, `SENDGRID_API_KEY`. Full bootstrap steps (DB creation, admin user, migrations, prod env vars) are in `apps/backend/SETUP.md`.
 
 **Storefront** (`apps/storefront/.env.local`): Requires:
 ```
@@ -129,6 +131,8 @@ Payload v3 runs inside the Next.js 16 app (same process, same port). Config: `pa
 - `app/(payload)/api/[...slug]/route.ts` — Payload REST + GraphQL API
 - `app/(payload)/admin/importMap.js` — auto-generated; regenerate with `generate:importmap` after adding custom components
 - `collections/` — Posts and Pages have `afterChange` hooks calling `revalidateTag`; Media has `access: { read: () => true }` for public file serving
+- `globals/` — Payload globals: `Homepage.ts` (authoring surface for CMS block layouts on `/`), `Navigation.ts`, `Footer.ts`, `SiteSettings.ts`. Globals use the same `afterChange` + `revalidateTag` pattern as collections. `Homepage` has drafts disabled so saves take effect immediately (see commit d3ae50c).
+- `features/color/` and `features/font-size/` — custom Lexical editor features (color picker + font-size dropdown) wired into `RichTextBlock`'s editor via `payload.config.ts`.
 
 **CMS block system:** Page content is built from blocks defined in two layers:
 - `blocks/*.ts` — Payload field schemas (slug, labels, fields). Each block is registered in `payload.config.ts`.

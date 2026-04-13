@@ -38,9 +38,9 @@ export function ImageBannerBlock({ block }: { block: ImageBannerBlockData }) {
 
       {caption && (
         <div className="absolute bottom-6 left-8 right-8 flex items-end justify-between">
-          <p className="text-white/90 font-outfit text-sm tracking-wide">{caption}</p>
+          <p className="text-[#ffffff]/90 font-outfit text-sm tracking-wide">{caption}</p>
           {linkUrl && (
-            <span className="flex items-center gap-2 text-white/70 hover:text-white font-outfit text-xs uppercase tracking-[0.15em] transition-colors duration-200">
+            <span className="flex items-center gap-2 text-[#ffffff]/70 hover:text-[#ffffff] font-outfit text-xs uppercase tracking-[0.15em] transition-colors duration-200">
               <span>Descoperă</span>
               <ArrowRight size={12} />
             </span>

@@ -48,7 +48,7 @@ export function BlogListing({
       )}
 
       {filtered.length === 0 ? (
-        <p className="text-[--color-fog] text-center py-16">
+        <p className="text-fog text-center py-16">
           Niciun articol în această categorie.
         </p>
       ) : (

@@ -1,11 +1,13 @@
 import type { Metadata } from "next"
 import { connection } from "next/server"
 import { BASE_URL } from "@/lib/constants"
-import { getCachedHomepage } from "@/lib/cms/client"
-import { BlockRenderer } from "@/components/blocks/BlockRenderer"
-import { RefreshOnPreviewMessage } from "@/components/cms/RefreshOnPreviewMessage"
+import { getHomepage } from "@/lib/cms/client"
+import { getProduct } from "@/lib/medusa/queries"
+import { HomepageContent } from "@/components/cms/HomepageContent"
 
 export const dynamic = "force-dynamic"
+
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"
 
 export const metadata: Metadata = {
   title: "FirIntins — Echipamente pescuit la crap",
@@ -21,19 +23,41 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   await connection()
-  let blocks: any[] = []
+
+  let initialData: any = null
+  const prefetchedProducts: Record<string, any[]> = {}
+
   try {
-    const homepage = await getCachedHomepage()
-    blocks = (homepage?.blocks ?? []) as any[]
+    initialData = await getHomepage()
+
+    // Pre-fetch Medusa products for FeaturedProductsBlocks so the client-side
+    // live preview can render them without async server calls
+    const blocks = (initialData?.blocks ?? []) as any[]
+    const featuredBlocks = blocks.filter(
+      (b: any) => b.blockType === "featuredProducts" && b.id,
+    )
+    await Promise.all(
+      featuredBlocks.map(async (block: any) => {
+        const handles = (block.productHandles ?? [])
+          .map((h: any) => h.handle)
+          .filter(Boolean) as string[]
+        const products = (
+          await Promise.all(handles.map((h) => getProduct(h).catch(() => null)))
+        ).filter(Boolean)
+        prefetchedProducts[block.id] = products
+      }),
+    )
   } catch {
-    // CMS unavailable on first load after HMR restart — render empty shell
+    // CMS or Medusa unavailable on first load — render empty shell
   }
 
   return (
     <main className="bg-bg">
-      {/* Triggers router.refresh() on Payload live-preview postMessage events */}
-      <RefreshOnPreviewMessage />
-      <BlockRenderer blocks={blocks} />
+      <HomepageContent
+        initialData={initialData}
+        serverURL={serverURL}
+        prefetchedProducts={prefetchedProducts}
+      />
     </main>
   )
 }

@@ -162,7 +162,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* Details */}
           <div className="space-y-6">
             <div>
-              <h1 className="font-cormorant text-4xl md:text-5xl text-cream mb-2">{product.title}</h1>
+              <h1 className="font-cormorant text-4xl md:text-5xl text-[#1c1a15] mb-2">{product.title}</h1>
               {product.description && (
                 <p className="text-fog text-sm leading-relaxed">{product.description}</p>
               )}

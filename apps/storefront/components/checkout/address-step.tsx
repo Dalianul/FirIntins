@@ -39,7 +39,7 @@ export function AddressStep({ cartId, onNext }: AddressStepProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <h2 className="font-outfit font-medium text-cream text-xl mb-4">Adresă livrare</h2>
+      <h2 className="font-outfit font-medium text-[#1c1a15] text-xl mb-4">Adresă livrare</h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Input placeholder="Prenume" {...register("firstName")} />
@@ -77,7 +77,9 @@ export function AddressStep({ cartId, onNext }: AddressStepProps) {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-moss hover:bg-moss-light"
+        variant="brand"
+        size="heroInline"
+        className="w-full"
       >
         {isSubmitting ? "Se procesează..." : "Continuă la livrare"}
       </Button>

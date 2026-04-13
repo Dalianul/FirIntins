@@ -81,10 +81,10 @@ export function ReturnForm({ order }: ReturnFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <h2 className="font-cormorant text-3xl text-cream">Cerere retur</h2>
+      <h2 className="font-cormorant text-3xl text-[#1c1a15]">Cerere retur</h2>
 
       <div className="bg-surface-2 rounded p-6 space-y-4">
-        <h3 className="font-outfit font-medium text-cream mb-3">Produse</h3>
+        <h3 className="font-outfit font-medium text-[#1c1a15] mb-3">Produse</h3>
         {items.map((item) => (
           <div key={item.id} className="flex items-center gap-4">
             <input
@@ -109,7 +109,7 @@ export function ReturnForm({ order }: ReturnFormProps) {
                 onChange={(e) =>
                   updateQuantity(item.id, Number(e.target.value))
                 }
-                className="w-16 bg-surface border border-border rounded px-2 py-1 text-cream text-sm"
+                className="w-16 bg-surface border border-border rounded px-2 py-1 text-[#1c1a15] text-sm"
                 aria-label={`Cantitate ${item.title}`}
               />
             )}
@@ -122,7 +122,7 @@ export function ReturnForm({ order }: ReturnFormProps) {
         <select
           value={reason}
           onChange={(e) => setReason(e.target.value)}
-          className="w-full bg-surface border border-border rounded px-3 py-2 text-cream"
+          className="w-full bg-surface border border-border rounded px-3 py-2 text-[#1c1a15]"
         >
           <option value="">Selectează motivul</option>
           {RETURN_REASONS.map((r) => (
@@ -138,7 +138,9 @@ export function ReturnForm({ order }: ReturnFormProps) {
       <Button
         type="submit"
         disabled={submitting || selectedItems.size === 0 || !reason}
-        className="w-full bg-moss hover:opacity-90"
+        variant="brand"
+        size="heroInline"
+        className="w-full"
       >
         {submitting ? "Se trimite..." : "Trimite cererea de retur"}
       </Button>

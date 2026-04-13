@@ -7,19 +7,19 @@ export function PostContent({ content }: { content: any }) {
   return (
     <div className="
       prose max-w-none
-      prose-headings:font-cormorant prose-headings:text-[--color-white] prose-headings:leading-tight
+      prose-headings:font-cormorant prose-headings:text-[#1c1a15] prose-headings:leading-tight
       prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl
-      prose-p:text-[--color-fog] prose-p:leading-8
-      prose-a:text-[--color-moss-light] prose-a:no-underline hover:prose-a:underline
-      prose-strong:text-[--color-cream] prose-strong:font-semibold
-      prose-em:text-[--color-cream]
-      prose-blockquote:border-l-[--color-moss] prose-blockquote:text-[--color-fog] prose-blockquote:italic prose-blockquote:pl-4
-      prose-ul:text-[--color-fog] prose-ol:text-[--color-fog]
-      prose-li:marker:text-[--color-moss]
-      prose-hr:border-[--color-border]
-      prose-img:rounded-lg prose-img:border prose-img:border-[--color-border] prose-img:mx-auto
-      prose-code:text-[--color-cream] prose-code:bg-[--color-surface-2] prose-code:px-1 prose-code:rounded
-      [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:rounded-lg [&_iframe]:border [&_iframe]:border-[--color-border]
+      prose-p:text-fog prose-p:leading-8
+      prose-a:text-moss-light prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-[#1c1a15] prose-strong:font-semibold
+      prose-em:text-[#1c1a15]
+      prose-blockquote:border-l-moss prose-blockquote:text-fog prose-blockquote:italic prose-blockquote:pl-4
+      prose-ul:text-fog prose-ol:text-fog
+      prose-li:marker:text-moss
+      prose-hr:border-border
+      prose-img:rounded-lg prose-img:border prose-img:border-border prose-img:mx-auto
+      prose-code:text-[#1c1a15] prose-code:bg-surface prose-code:px-1 prose-code:rounded
+      [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:rounded-lg [&_iframe]:border [&_iframe]:border-border
     ">
       <RichText data={content} converters={richTextConverters} />
     </div>

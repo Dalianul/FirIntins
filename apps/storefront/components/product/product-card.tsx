@@ -49,7 +49,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {discountPercentage != null && discountPercentage > 0 && (
-              <span className="absolute top-2 left-2 z-10 bg-destructive text-white text-xs font-bold px-2 py-0.5 rounded">
+              <span className="absolute top-2 left-2 z-10 bg-destructive text-[#ffffff] text-xs font-bold px-2 py-0.5 rounded">
                 −{discountPercentage}%
               </span>
             )}
@@ -57,20 +57,20 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <div className="p-4">
             <span
               data-testid="category-badge"
-              className="inline-block mb-2 px-2 py-0.5 text-[10px] font-outfit uppercase tracking-[0.12em] text-[--color-moss] border border-[--color-moss]/25 bg-[--color-moss]/8"
+              className="inline-block mb-2 px-2 py-0.5 text-[10px] font-outfit uppercase tracking-[0.12em] text-moss border border-moss/25 bg-moss/8"
             >
               {category}
             </span>
-            <h3 className="font-outfit font-medium text-cream text-sm line-clamp-2">
+            <h3 className="font-outfit font-medium text-[#1c1a15] text-base line-clamp-2">
               {title}
             </h3>
             <div className="flex items-baseline gap-2 mt-2">
               {hasDiscount && (
-                <span className="line-through text-[--color-fog] text-sm">
+                <span className="line-through text-fog text-sm">
                   {formatPrice(originalPrice!)}
                 </span>
               )}
-              <span className={`font-cormorant text-lg ${hasDiscount ? "text-[--color-moss-light]" : "text-mud"}`}>
+              <span className={`font-cormorant text-lg ${hasDiscount ? "text-moss-light" : "text-mud"}`}>
                 {formatPrice(price)}
               </span>
             </div>

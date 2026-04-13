@@ -92,11 +92,11 @@ export function CheckoutClient({ isGuest }: CheckoutClientProps) {
     <main className="bg-bg min-h-screen py-12">
       <div className="max-w-6xl mx-auto px-4">
         {isGuest && (
-          <div className="mb-6 flex items-center justify-between bg-[--color-surface] border border-[--color-border] rounded px-4 py-3 text-sm">
+          <div className="mb-6 flex items-center justify-between bg-surface border border-border rounded px-4 py-3 text-sm">
             <span className="text-fog">Checkout rapid fără cont</span>
             <Link
               href={`/login?redirect=/checkout`}
-              className="text-[--color-moss] hover:text-[--color-moss-light] transition-colors"
+              className="text-moss hover:text-moss-light transition-colors"
             >
               Intră în cont
             </Link>

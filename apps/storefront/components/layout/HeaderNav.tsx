@@ -28,7 +28,7 @@ export async function HeaderNav() {
           href={item.url}
           target={item.newTab ? "_blank" : undefined}
           rel={item.newTab ? "noopener noreferrer" : undefined}
-          className="text-[--color-cream] hover:text-[--color-moss] transition-colors"
+          className="text-fog hover:text-[#1c1a15] transition-colors"
         >
           {item.label}
         </Link>

@@ -25,8 +25,8 @@ export function AccountNav() {
             href={item.href}
             className={`whitespace-nowrap px-4 py-2 rounded text-sm transition-colors ${
               pathname === item.href
-                ? "bg-moss text-white"
-                : "text-fog hover:bg-surface-2 hover:text-cream"
+                ? "bg-moss text-[#ffffff]"
+                : "text-fog hover:bg-surface-2 hover:text-[#1c1a15]"
             }`}
           >
             {item.label}

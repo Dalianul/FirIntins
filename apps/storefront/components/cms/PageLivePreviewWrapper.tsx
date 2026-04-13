@@ -14,7 +14,7 @@ export function PageLivePreviewWrapper({ initialPage }: { initialPage: any }) {
 
   return (
     <>
-      <h1 className="font-cormorant text-3xl sm:text-4xl font-semibold text-[--color-white] mb-8">
+      <h1 className="font-cormorant text-3xl sm:text-4xl font-semibold text-[#1c1a15] mb-8">
         {page.title}
       </h1>
       <PostContent content={page.content} />

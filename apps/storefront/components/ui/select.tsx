@@ -80,18 +80,18 @@ function SelectTrigger({
         "inline-flex w-auto items-center justify-between gap-2",
         "[background:rgba(245,241,234,0.92)] border border-[rgba(100,92,80,0.2)]",
         "rounded-md px-3 py-1.5",
-        "text-[13px] text-[--color-fog]",
+        "text-[13px] text-fog",
         "cursor-pointer whitespace-nowrap select-none",
         "transition-all duration-150 focus:outline-none",
-        "hover:border-[rgba(61,86,48,0.5)] hover:text-[--color-white]",
-        open && "border-[--color-moss] text-[--color-white] shadow-[0_0_0_1px_rgba(61,86,48,0.2)]",
+        "hover:border-[rgba(61,86,48,0.5)] hover:text-[#1c1a15]",
+        open && "border-moss text-[#1c1a15] shadow-[0_0_0_1px_rgba(61,86,48,0.2)]",
         className
       )}
     >
       {children}
       <ChevronDown
         className={cn(
-          "h-3.5 w-3.5 shrink-0 text-[--color-fog]/50 transition-transform duration-150",
+          "h-3.5 w-3.5 shrink-0 text-fog/50 transition-transform duration-150",
           open && "rotate-180"
         )}
       />
@@ -164,16 +164,16 @@ function SelectItem({
       }}
       className={cn(
         "relative flex items-center gap-2 pl-7 pr-3 py-[7px]",
-        "text-[13px] text-[--color-fog]",
+        "text-[13px] text-fog",
         "rounded cursor-pointer select-none outline-none",
         "transition-colors duration-100",
-        "hover:bg-[rgba(61,86,48,0.12)] hover:text-[--color-white]",
+        "hover:bg-[rgba(61,86,48,0.12)] hover:text-[#1c1a15]",
         isSelected && "text-[#3d5630]",
         className
       )}
     >
       <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        {isSelected && <Check className="h-3 w-3 text-[--color-moss]" />}
+        {isSelected && <Check className="h-3 w-3 text-moss" />}
       </span>
       {children}
     </div>

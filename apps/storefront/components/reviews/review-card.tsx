@@ -25,7 +25,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
           <RatingStars rating={review.rating} size={14} />
-          <h4 className="font-outfit font-medium text-cream text-sm">{review.title}</h4>
+          <h4 className="font-outfit font-medium text-[#1c1a15] text-sm">{review.title}</h4>
         </div>
         <time className="text-fog text-xs font-outfit whitespace-nowrap">{date}</time>
       </div>

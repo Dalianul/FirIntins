@@ -48,7 +48,7 @@ export function VideoBlock({ block }: { block: VideoBlockData }) {
   const paddingBottom = paddingMap[aspectRatio] ?? "56.25%"
 
   return (
-    <section className="py-16 px-6 sm:px-10 bg-[--color-bg]">
+    <section className="py-16 px-6 sm:px-10 bg-bg">
       <div className="max-w-4xl mx-auto">
         {heading && (
           <motion.div
@@ -58,7 +58,7 @@ export function VideoBlock({ block }: { block: VideoBlockData }) {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <h2 className="font-cormorant text-4xl text-[--color-white]">{heading}</h2>
+            <h2 className="font-cormorant text-4xl text-[#1c1a15]">{heading}</h2>
           </motion.div>
         )}
 
@@ -67,7 +67,7 @@ export function VideoBlock({ block }: { block: VideoBlockData }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="border border-[--color-border]"
+          className="border border-border"
         >
           <div className="relative w-full" style={{ paddingBottom }}>
             <iframe
@@ -81,7 +81,7 @@ export function VideoBlock({ block }: { block: VideoBlockData }) {
         </motion.div>
 
         {caption && (
-          <p className="text-[--color-fog] text-sm font-outfit text-center mt-4">{caption}</p>
+          <p className="text-fog text-sm font-outfit text-center mt-4">{caption}</p>
         )}
       </div>
     </section>

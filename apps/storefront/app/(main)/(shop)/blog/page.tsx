@@ -26,10 +26,10 @@ export default async function BlogPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <header className="mb-10">
-        <h1 className="font-cormorant text-4xl sm:text-5xl font-semibold text-[--color-white] mb-3">
+        <h1 className="font-cormorant text-4xl sm:text-5xl font-semibold text-[#1c1a15] mb-3">
           Blog
         </h1>
-        <p className="text-[--color-fog] text-lg">
+        <p className="text-fog text-lg">
           Ghiduri, noutăți și articole despre pescuitul la crap.
         </p>
       </header>

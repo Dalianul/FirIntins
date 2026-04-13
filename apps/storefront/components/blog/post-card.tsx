@@ -35,7 +35,7 @@ export function PostCard({ post, priority = false }: { post: Post; priority?: bo
     : null
 
   return (
-    <article className="group flex flex-col bg-[--color-surface] border border-[--color-border] rounded-lg overflow-hidden hover:border-[--color-moss] transition-colors duration-200">
+    <article className="group flex flex-col bg-surface border border-border rounded-lg overflow-hidden hover:border-moss transition-colors duration-200">
       {post.coverImage?.url && (
         <div className="relative aspect-[16/9] overflow-hidden">
           <Image
@@ -51,19 +51,19 @@ export function PostCard({ post, priority = false }: { post: Post; priority?: bo
       )}
       <div className="flex flex-col gap-3 p-5 flex-1">
         {post.category && (
-          <span className="text-xs font-medium uppercase tracking-wider text-[--color-moss]">
+          <span className="text-xs font-medium uppercase tracking-wider text-moss">
             {post.category.name}
           </span>
         )}
-        <h3 className="font-cormorant text-xl font-semibold text-[--color-white] leading-snug group-hover:text-[--color-moss] transition-colors">
+        <h3 className="font-cormorant text-xl font-semibold text-[#1c1a15] leading-snug group-hover:text-moss transition-colors">
           <Link href={`/blog/${post.slug}`} className="stretched-link">
             {post.title}
           </Link>
         </h3>
         {post.excerpt && (
-          <p className="text-sm text-[--color-fog] line-clamp-2">{post.excerpt}</p>
+          <p className="text-sm text-fog line-clamp-2">{post.excerpt}</p>
         )}
-        <div className="mt-auto pt-3 border-t border-[--color-border] flex items-center justify-between text-xs text-[--color-fog]">
+        <div className="mt-auto pt-3 border-t border-border flex items-center justify-between text-xs text-fog">
           <span>{post.author ?? "Redacție"}</span>
           <div className="flex gap-3">
             {date && <span>{date}</span>}

@@ -40,9 +40,9 @@ export function LogosBlock({ block }: { block: LogosBlockData }) {
   })
 
   return (
-    <section className="py-14 px-6 sm:px-10 border-y border-[--color-border] bg-[--color-bg-light]">
+    <section className="py-14 px-6 sm:px-10 border-y border-border bg-bg-light">
       {heading && (
-        <p className="text-[--color-fog]/60 text-xs font-outfit text-center uppercase tracking-[0.3em] mb-10">
+        <p className="text-fog/60 text-xs font-outfit text-center uppercase tracking-[0.3em] mb-10">
           {heading}
         </p>
       )}
@@ -50,8 +50,8 @@ export function LogosBlock({ block }: { block: LogosBlockData }) {
       {marquee ? (
         <div className="relative overflow-hidden">
           {/* Fade masks */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-r from-[--color-bg-light] to-transparent" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-l from-[--color-bg-light] to-transparent" />
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-r from-bg-light to-transparent" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-l from-bg-light to-transparent" />
 
           <div className="flex animate-marquee whitespace-nowrap">
             {items}

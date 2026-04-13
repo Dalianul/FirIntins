@@ -66,13 +66,13 @@ function PaymentForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <h2 className="font-outfit font-medium text-cream text-xl">Plată</h2>
+      <h2 className="font-outfit font-medium text-[#1c1a15] text-xl">Plată</h2>
       <PaymentElement />
       <div className="flex gap-4">
-        <Button type="button" variant="outline" className="flex-1 border-border text-cream" onClick={onBack}>
+        <Button type="button" variant="brandOutline" size="heroInline" className="flex-1" onClick={onBack}>
           Înapoi
         </Button>
-        <Button type="submit" disabled={!stripe || loading} className="flex-1 bg-moss hover:bg-moss-light">
+        <Button type="submit" disabled={!stripe || loading} variant="brand" size="heroInline" className="flex-1">
           {loading ? "Se procesează..." : "Finalizează plata"}
         </Button>
       </div>

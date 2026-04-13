@@ -36,7 +36,7 @@ export function TestimonialsBlock({ block }: { block: TestimonialsBlockData }) {
   if (!testimonials.length) return null
 
   return (
-    <section className="py-20 md:py-28 px-6 sm:px-10 bg-[--color-bg-light]">
+    <section className="py-20 md:py-28 px-6 sm:px-10 bg-bg-light">
       <div className="max-w-7xl mx-auto">
         {heading && (
           <motion.div
@@ -46,10 +46,10 @@ export function TestimonialsBlock({ block }: { block: TestimonialsBlockData }) {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <span className="block text-[--color-moss] text-xs font-outfit uppercase tracking-[0.25em] mb-3">
+            <span className="block text-moss text-xs font-outfit uppercase tracking-[0.25em] mb-3">
               Ce spun pescarii
             </span>
-            <h2 className="font-cormorant text-4xl md:text-5xl text-[--color-white]">{heading}</h2>
+            <h2 className="font-cormorant text-4xl md:text-5xl text-[#1c1a15]">{heading}</h2>
           </motion.div>
         )}
 
@@ -66,10 +66,10 @@ export function TestimonialsBlock({ block }: { block: TestimonialsBlockData }) {
               <motion.div
                 key={t.id ?? i}
                 variants={cardVariant}
-                className="group bg-[--color-surface] border border-[--color-border] hover:border-[--color-moss]/30 p-8 flex flex-col transition-colors duration-300"
+                className="group bg-surface border border-border hover:border-moss/30 p-8 flex flex-col transition-colors duration-300"
               >
                 {/* Decorative quote mark */}
-                <span className="font-cormorant text-7xl text-[--color-moss]/20 leading-none mb-2 select-none">
+                <span className="font-cormorant text-7xl text-moss/20 leading-none mb-2 select-none">
                   "
                 </span>
 
@@ -93,12 +93,12 @@ export function TestimonialsBlock({ block }: { block: TestimonialsBlockData }) {
                   </div>
                 )}
 
-                <p className="text-[--color-cream]/85 font-outfit text-sm leading-relaxed flex-1 italic">
+                <p className="text-fog font-outfit text-sm leading-relaxed flex-1 italic">
                   {t.quote}
                 </p>
 
                 {/* Author */}
-                <div className="flex items-center gap-3 mt-7 pt-6 border-t border-[--color-border]">
+                <div className="flex items-center gap-3 mt-7 pt-6 border-t border-border">
                   {avatarSrc ? (
                     <Image
                       src={avatarSrc}
@@ -108,16 +108,16 @@ export function TestimonialsBlock({ block }: { block: TestimonialsBlockData }) {
                       className="rounded-full object-cover flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-[--color-moss-dim] border border-[--color-moss]/20 flex items-center justify-center flex-shrink-0">
-                      <span className="font-cormorant text-lg text-[--color-moss]">
+                    <div className="w-10 h-10 rounded-full bg-moss/8 border border-moss/20 flex items-center justify-center flex-shrink-0">
+                      <span className="font-cormorant text-lg text-moss">
                         {t.author[0]}
                       </span>
                     </div>
                   )}
                   <div>
-                    <p className="font-outfit font-semibold text-[--color-white] text-sm">{t.author}</p>
+                    <p className="font-outfit font-semibold text-[#1c1a15] text-sm">{t.author}</p>
                     {t.role && (
-                      <p className="text-[--color-fog] text-xs mt-0.5">{t.role}</p>
+                      <p className="text-fog text-xs mt-0.5">{t.role}</p>
                     )}
                   </div>
                 </div>

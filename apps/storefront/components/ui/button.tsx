@@ -20,6 +20,12 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
+        brand:
+          "bg-moss text-[#ffffff] hover:bg-moss-light",
+        brandLight:
+          "bg-[#ffffff] text-[#1c1a15] hover:bg-[#ffffff]/90",
+        brandOutline:
+          "border-[#1c1a15] text-[#1c1a15] hover:bg-[#1c1a15] hover:text-[#ffffff]",
       },
       size: {
         default:
@@ -33,6 +39,10 @@ const buttonVariants = cva(
         "icon-sm":
           "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
         "icon-lg": "size-9",
+        hero: "h-auto rounded-none px-8 py-4 gap-3 text-sm font-normal font-outfit uppercase tracking-[0.12em] transition-colors duration-300 active:translate-y-0 [&_svg:not([class*='size-'])]:size-[15px]",
+        heroInline:
+          "h-auto rounded-none px-6 py-3.5 gap-2 text-sm font-normal font-outfit uppercase tracking-[0.1em] transition-colors duration-300 active:translate-y-0 [&_svg:not([class*='size-'])]:size-[14px]",
+        cart: "h-auto rounded-none w-full py-5 gap-3 text-base font-normal font-outfit uppercase tracking-[0.14em] transition-colors duration-300 active:translate-y-0 [&_svg:not([class*='size-'])]:size-[16px]",
       },
     },
     defaultVariants: {

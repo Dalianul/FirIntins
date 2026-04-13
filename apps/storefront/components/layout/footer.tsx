@@ -34,15 +34,15 @@ export default async function Footer() {
   }
 
   return (
-    <footer className="bg-[--color-surface] border-t border-[--color-border] mt-16">
+    <footer className="bg-surface border-t border-border mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <h3 className="text-lg font-semibold font-cormorant text-[--color-white] mb-4">
+            <h3 className="text-lg font-semibold font-cormorant text-[#1c1a15] mb-4">
               FirIntins
             </h3>
-            <p className="text-[--color-fog] text-sm">
+            <p className="text-fog text-sm">
               E-commerce ultra-premium echipamente pescuit la crap în România.
             </p>
             {socialLinks.length > 0 && (
@@ -54,7 +54,7 @@ export default async function Footer() {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[--color-moss] hover:text-[--color-moss-light] text-sm"
+                      className="text-moss hover:text-moss-light text-sm"
                     >
                       {PLATFORM_LABELS[link.platform ?? ""] ?? link.platform}
                     </a>
@@ -67,13 +67,13 @@ export default async function Footer() {
           {/* CMS-driven columns */}
           {columns.map((col, i) => (
             <div key={i}>
-              <h4 className="text-sm font-semibold text-[--color-white] mb-4 uppercase">
+              <h4 className="text-sm font-semibold text-[#1c1a15] mb-4 uppercase">
                 {col.heading}
               </h4>
               <ul className="space-y-2 text-sm">
                 {col.links.map((link, j) => (
                   <li key={j}>
-                    <Link href={link.url} className="text-[--color-fog] hover:text-[--color-moss]">
+                    <Link href={link.url} className="text-fog hover:text-moss">
                       {link.label}
                     </Link>
                   </li>
@@ -85,14 +85,14 @@ export default async function Footer() {
           {/* Contact fallback if no columns */}
           {columns.length === 0 && (
             <div>
-              <h4 className="text-sm font-semibold text-[--color-white] mb-4 uppercase">Contact</h4>
-              <p className="text-[--color-fog] text-sm">
+              <h4 className="text-sm font-semibold text-[#1c1a15] mb-4 uppercase">Contact</h4>
+              <p className="text-fog text-sm">
                 Email:{" "}
-                <a href={`mailto:${email}`} className="text-[--color-moss]">{email}</a>
+                <a href={`mailto:${email}`} className="text-moss">{email}</a>
               </p>
-              <p className="text-[--color-fog] text-sm mt-2">
+              <p className="text-fog text-sm mt-2">
                 Telefon:{" "}
-                <a href={`tel:${phone.replace(/\s/g, "")}`} className="text-[--color-moss]">{phone}</a>
+                <a href={`tel:${phone.replace(/\s/g, "")}`} className="text-moss">{phone}</a>
               </p>
             </div>
           )}
@@ -100,8 +100,8 @@ export default async function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-[--color-border] bg-[--color-bg]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[--color-fog]">
+      <div className="border-t border-border bg-bg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-fog">
           {legalText ? (
             <div className="prose prose-sm">
               <RichText data={legalText as any} />
@@ -110,10 +110,10 @@ export default async function Footer() {
             <p>&copy; {currentYear} FirIntins. Toate drepturile rezervate.</p>
           )}
           <div className="flex gap-4">
-            <Link href="/pagini/gdpr" className="hover:text-[--color-moss]">
+            <Link href="/pagini/gdpr" className="hover:text-moss">
               Politica de Confidențialitate
             </Link>
-            <Link href="/pagini/termeni-si-conditii" className="hover:text-[--color-moss]">
+            <Link href="/pagini/termeni-si-conditii" className="hover:text-moss">
               Termeni și Condiții
             </Link>
           </div>

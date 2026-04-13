@@ -64,7 +64,7 @@ export function ShippingStep({ cartId, onNext, onBack }: ShippingStepProps) {
 
   return (
     <div className="space-y-6">
-      <h2 className="font-outfit font-medium text-cream text-xl">Metodă livrare</h2>
+      <h2 className="font-outfit font-medium text-[#1c1a15] text-xl">Metodă livrare</h2>
       <RadioGroup value={selected} onValueChange={setSelected}>
         {options.map((option) => (
           <div
@@ -76,19 +76,21 @@ export function ShippingStep({ cartId, onNext, onBack }: ShippingStepProps) {
               htmlFor={option.id}
               className="flex-1 cursor-pointer flex justify-between"
             >
-              <span className="text-cream font-outfit font-medium">{option.name}</span>
+              <span className="text-[#1c1a15] font-outfit font-medium">{option.name}</span>
               <span className="text-mud">{formatPrice(option.amount ?? 0)}</span>
             </label>
           </div>
         ))}
       </RadioGroup>
       <div className="flex gap-4">
-        <Button variant="outline" className="flex-1 border-border text-cream" onClick={onBack}>
+        <Button variant="brandOutline" size="heroInline" className="flex-1" onClick={onBack}>
           Înapoi
         </Button>
         <Button
           disabled={!selected || loading}
-          className="flex-1 bg-moss hover:bg-moss-light"
+          variant="brand"
+          size="heroInline"
+          className="flex-1"
           onClick={handleNext}
         >
           {loading ? "Se procesează..." : "Continuă la plată"}

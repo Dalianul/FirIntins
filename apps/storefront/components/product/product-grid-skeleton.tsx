@@ -7,9 +7,9 @@ export default function ProductGridSkeleton() {
           data-testid="skeleton-card"
           className="animate-pulse"
         >
-          <div className="bg-[--color-surface] rounded-lg aspect-square mb-3" />
-          <div className="bg-[--color-surface] rounded h-4 mb-2 w-3/4" />
-          <div className="bg-[--color-surface] rounded h-4 w-1/2" />
+          <div className="bg-surface rounded-lg aspect-square mb-3" />
+          <div className="bg-surface rounded h-4 mb-2 w-3/4" />
+          <div className="bg-surface rounded h-4 w-1/2" />
         </div>
       ))}
     </div>

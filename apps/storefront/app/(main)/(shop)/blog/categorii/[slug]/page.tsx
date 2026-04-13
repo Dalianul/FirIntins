@@ -41,21 +41,21 @@ export default async function BlogCategoryPage({ params }: Props) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <nav className="text-sm text-[--color-fog] mb-6 flex gap-2 items-center">
-        <Link href="/blog" className="hover:text-[--color-moss]">Blog</Link>
+      <nav className="text-sm text-fog mb-6 flex gap-2 items-center">
+        <Link href="/blog" className="hover:text-moss">Blog</Link>
         <span>/</span>
-        <span className="text-[--color-cream]">{category.name}</span>
+        <span className="text-[#1c1a15]">{category.name}</span>
       </nav>
 
       <header className="mb-10">
-        <h1 className="font-cormorant text-4xl sm:text-5xl font-semibold text-[--color-white] mb-3">
+        <h1 className="font-cormorant text-4xl sm:text-5xl font-semibold text-[#1c1a15] mb-3">
           {category.name}
         </h1>
-        <p className="text-[--color-fog]">{posts.length} articole</p>
+        <p className="text-fog">{posts.length} articole</p>
       </header>
 
       {posts.length === 0 ? (
-        <p className="text-[--color-fog] text-center py-16">
+        <p className="text-fog text-center py-16">
           Niciun articol în această categorie.
         </p>
       ) : (

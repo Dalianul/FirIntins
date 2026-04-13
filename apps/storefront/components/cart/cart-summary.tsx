@@ -15,22 +15,22 @@ export function CartSummary() {
   const shippingTotal = cart.shipping_total ?? 0
 
   return (
-    <div className="border-t border-[--color-border] bg-[--color-surface-2] px-5 py-4 flex flex-col gap-3">
+    <div className="border-t border-border bg-surface-2 px-5 py-4 flex flex-col gap-3">
       {/* Totals */}
       <div className="flex flex-col gap-1.5">
         <div className="flex justify-between items-center">
-          <span className="text-[12px] font-outfit text-[--color-fog]/50 tracking-wide">Subtotal</span>
-          <span className="text-[12px] font-outfit text-[--color-fog]/70">{formatPrice(cart.subtotal)}</span>
+          <span className="text-[12px] font-outfit text-fog/50 tracking-wide">Subtotal</span>
+          <span className="text-[12px] font-outfit text-fog/70">{formatPrice(cart.subtotal)}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-[12px] font-outfit text-[--color-fog]/50 tracking-wide">Transport</span>
-          <span className="text-[12px] font-outfit text-[--color-fog]/70">
+          <span className="text-[12px] font-outfit text-fog/50 tracking-wide">Transport</span>
+          <span className="text-[12px] font-outfit text-fog/70">
             {shippingTotal === 0 ? "Gratuit" : formatPrice(shippingTotal)}
           </span>
         </div>
-        <div className="flex justify-between items-center pt-2 mt-0.5 border-t border-[--color-border]">
-          <span className="text-[14px] font-outfit font-medium text-[--color-white]">Total</span>
-          <span className="text-[17px] font-cormorant font-semibold text-[--color-white]">
+        <div className="flex justify-between items-center pt-2 mt-0.5 border-t border-border">
+          <span className="text-[14px] font-outfit font-medium text-[#1c1a15]">Total</span>
+          <span className="text-[17px] font-cormorant font-semibold text-[#1c1a15]">
             {formatPrice(cart.total ?? cart.subtotal)}
           </span>
         </div>
@@ -39,7 +39,7 @@ export function CartSummary() {
       {/* Primary CTA — cart page */}
       <Link
         href="/cos"
-        className="flex items-center justify-center w-full py-3 rounded-md bg-[--color-moss] hover:bg-[--color-moss-light] text-white text-[13px] font-outfit font-medium tracking-widest uppercase transition-colors duration-200"
+        className="flex items-center justify-center w-full py-3 rounded-md bg-moss hover:bg-moss-light text-[#ffffff] text-[13px] font-outfit font-medium tracking-widest uppercase transition-colors duration-200"
       >
         Mergi la coș
       </Link>
@@ -47,7 +47,7 @@ export function CartSummary() {
       {/* Secondary CTA — checkout */}
       <Link
         href="/checkout"
-        className="group flex items-center justify-center gap-1.5 w-full py-2 rounded-md border border-[--color-border] text-[--color-fog]/60 text-[12px] font-outfit tracking-wide hover:border-[rgba(61,86,48,0.3)] hover:text-[--color-fog]/90 hover:bg-[rgba(61,86,48,0.06)] transition-all duration-200"
+        className="group flex items-center justify-center gap-1.5 w-full py-2 rounded-md border border-border text-fog/60 text-[12px] font-outfit tracking-wide hover:border-moss/30 hover:text-fog/90 hover:bg-moss/6 transition-all duration-200"
       >
         Finalizează comanda
         <ArrowRight

@@ -12,7 +12,7 @@ export default function RegisterPage() {
   return (
     <main className="bg-bg min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <h1 className="font-cormorant text-4xl text-cream mb-2 text-center">Înregistrare</h1>
+        <h1 className="font-cormorant text-4xl text-[#1c1a15] mb-2 text-center">Înregistrare</h1>
         <p className="text-fog text-center mb-8">Creează-ți contul FirIntins</p>
         <Suspense fallback={null}>
           <RegisterForm />

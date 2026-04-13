@@ -26,8 +26,8 @@ export function FeaturedProductsCarousel({ products }: { products: any[] }) {
   return (
     <div className="relative">
       {/* Fade edges */}
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-[--color-bg] to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-[--color-bg] to-transparent" />
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-bg to-transparent" />
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-bg to-transparent" />
 
       {/* Scroll track */}
       <motion.div
@@ -55,14 +55,14 @@ export function FeaturedProductsCarousel({ products }: { products: any[] }) {
           <button
             onClick={() => scroll("left")}
             aria-label="Scroll left"
-            className="w-10 h-10 border border-[--color-border] hover:border-[--color-moss]/50 flex items-center justify-center text-[--color-fog] hover:text-[--color-moss] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-moss] active:opacity-70 cursor-pointer"
+            className="w-10 h-10 border border-border hover:border-moss/50 flex items-center justify-center text-fog hover:text-moss transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss active:opacity-70 cursor-pointer"
           >
             <ChevronLeft size={18} />
           </button>
           <button
             onClick={() => scroll("right")}
             aria-label="Scroll right"
-            className="w-10 h-10 border border-[--color-border] hover:border-[--color-moss]/50 flex items-center justify-center text-[--color-fog] hover:text-[--color-moss] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-moss] active:opacity-70 cursor-pointer"
+            className="w-10 h-10 border border-border hover:border-moss/50 flex items-center justify-center text-fog hover:text-moss transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss active:opacity-70 cursor-pointer"
           >
             <ChevronRight size={18} />
           </button>

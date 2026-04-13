@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { RatingStars } from "./rating-stars"
 import { createReviewAction } from "@/actions/review"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 interface ReviewFormProps {
   productId: string
@@ -59,7 +61,7 @@ export function ReviewForm({ productId, isAuthenticated }: ReviewFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="border border-border rounded p-4 bg-surface space-y-4">
-      <h4 className="font-cormorant text-lg text-cream">Lasă o recenzie</h4>
+      <h4 className="font-cormorant text-lg text-[#1c1a15]">Lasă o recenzie</h4>
 
       <div>
         <label className="block text-fog text-xs font-outfit mb-1">Rating *</label>
@@ -75,14 +77,13 @@ export function ReviewForm({ productId, isAuthenticated }: ReviewFormProps) {
         <label htmlFor="review-title" className="block text-fog text-xs font-outfit mb-1">
           Titlu *
         </label>
-        <input
+        <Input
           id="review-title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           maxLength={255}
           required
-          className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm font-outfit focus:outline-none focus:border-moss"
           placeholder="Rezumat scurt..."
         />
       </div>
@@ -98,7 +99,7 @@ export function ReviewForm({ productId, isAuthenticated }: ReviewFormProps) {
           maxLength={2000}
           required
           rows={4}
-          className="w-full bg-bg border border-border rounded px-3 py-2 text-cream text-sm font-outfit focus:outline-none focus:border-moss resize-none"
+          className="w-full bg-bg border border-border rounded px-3 py-2 text-[#1c1a15] text-sm font-outfit focus:outline-none focus:border-moss resize-none"
           placeholder="Descrie experiența ta cu produsul..."
         />
       </div>
@@ -107,13 +108,15 @@ export function ReviewForm({ productId, isAuthenticated }: ReviewFormProps) {
         <p className="text-red-400 text-xs font-outfit">{error}</p>
       )}
 
-      <button
+      <Button
         type="submit"
         disabled={pending}
-        className="w-full bg-moss hover:bg-moss-light disabled:opacity-50 text-white text-sm font-outfit py-2 px-4 rounded transition-colors"
+        variant="brand"
+        size="heroInline"
+        className="w-full"
       >
         {pending ? "Se trimite..." : "Trimite recenzia"}
-      </button>
+      </Button>
     </form>
   )
 }

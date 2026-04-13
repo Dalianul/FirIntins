@@ -43,7 +43,7 @@ export function FeaturesGridBlock({ block }: { block: FeaturesGridBlockData }) {
   if (!items?.length) return null
 
   return (
-    <section className="py-20 md:py-28 px-6 sm:px-10 bg-[--color-bg-light]">
+    <section className="py-20 md:py-28 px-6 sm:px-10 bg-bg-light">
       <div className="max-w-7xl mx-auto">
         {heading && (
           <motion.div
@@ -53,15 +53,15 @@ export function FeaturesGridBlock({ block }: { block: FeaturesGridBlockData }) {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <span className="block text-[--color-moss] text-xs font-outfit uppercase tracking-[0.25em] mb-3">
+            <span className="block text-moss text-xs font-outfit uppercase tracking-[0.25em] mb-3">
               De ce FirIntins
             </span>
-            <h2 className="font-cormorant text-4xl md:text-5xl text-[--color-white]">{heading}</h2>
+            <h2 className="font-cormorant text-4xl md:text-5xl text-[#1c1a15]">{heading}</h2>
           </motion.div>
         )}
 
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[--color-border]"
+          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border"
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
@@ -73,26 +73,26 @@ export function FeaturesGridBlock({ block }: { block: FeaturesGridBlockData }) {
               <motion.div
                 key={i}
                 variants={cardVariant}
-                className="group bg-[--color-bg-light] hover:bg-[--color-surface] px-6 py-10 text-center transition-colors duration-300"
+                className="group bg-bg-light hover:bg-surface px-6 py-10 text-center transition-colors duration-300"
               >
                 <div className="flex justify-center mb-5">
-                  <div className="w-14 h-14 rounded-full border border-[--color-border] group-hover:border-[--color-moss]/40 flex items-center justify-center transition-colors duration-300">
+                  <div className="w-14 h-14 rounded-full border border-border group-hover:border-moss/40 flex items-center justify-center transition-colors duration-300">
                     {Icon ? (
                       <Icon
                         size={22}
-                        className="text-[--color-moss] group-hover:text-[--color-moss-light] transition-colors duration-300"
+                        className="text-moss group-hover:text-moss-light transition-colors duration-300"
                         strokeWidth={1.5}
                       />
                     ) : (
-                      <span className="font-cormorant text-xl text-[--color-moss]">{i + 1}</span>
+                      <span className="font-cormorant text-xl text-moss">{i + 1}</span>
                     )}
                   </div>
                 </div>
-                <h3 className="font-outfit font-semibold text-[--color-white] text-sm uppercase tracking-[0.1em] mb-2">
+                <h3 className="font-outfit font-semibold text-[#1c1a15] text-sm uppercase tracking-[0.1em] mb-2">
                   {item.title}
                 </h3>
                 {item.description && (
-                  <p className="text-[--color-fog] text-sm leading-relaxed">{item.description}</p>
+                  <p className="text-fog text-sm leading-relaxed">{item.description}</p>
                 )}
               </motion.div>
             )

@@ -36,14 +36,14 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <Input {...register("email")} type="email" placeholder="Email" className="bg-surface-2 border-border" />
+        <Input {...register("email")} type="email" placeholder="Email" />
         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
       </div>
       <div>
-        <Input {...register("password")} type="password" placeholder="Parolă" className="bg-surface-2 border-border" />
+        <Input {...register("password")} type="password" placeholder="Parolă" />
         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
       </div>
-      <Button type="submit" disabled={loading} className="w-full bg-moss hover:bg-moss-light">
+      <Button type="submit" disabled={loading} variant="brand" size="heroInline" className="w-full">
         {loading ? "Se conectează..." : "Conectare"}
       </Button>
     </form>

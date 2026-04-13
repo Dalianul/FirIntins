@@ -28,15 +28,15 @@ export default function InStockToggle({ inStock }: Props) {
       aria-pressed={inStock}
       className={`flex items-center gap-2 text-sm transition-colors ${
         inStock
-          ? "text-[--color-moss]"
-          : "text-[--color-fog]/60 hover:text-[--color-fog]"
+          ? "text-moss"
+          : "text-fog/60 hover:text-fog"
       }`}
     >
       <span
         className={`relative inline-flex w-8 h-4 rounded-full border transition-colors ${
           inStock
-            ? "bg-[--color-moss] border-[--color-moss]"
-            : "bg-[--color-surface] border-[--color-fog]/30"
+            ? "bg-moss border-moss"
+            : "bg-surface border-fog/30"
         }`}
       >
         <span

@@ -16,8 +16,8 @@ export function CategoryFilter({ categories, selected, onSelect }: Props) {
         aria-pressed={selected === null}
         className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150 border ${
           selected === null
-            ? "bg-[--color-moss] text-[--color-white] border-[--color-moss]"
-            : "text-[--color-fog] border-[--color-border] hover:text-[--color-cream] hover:border-[--color-moss]"
+            ? "bg-moss text-[#ffffff] border-moss"
+            : "text-fog border-border hover:text-[#1c1a15] hover:border-moss"
         }`}
       >
         Toate
@@ -29,8 +29,8 @@ export function CategoryFilter({ categories, selected, onSelect }: Props) {
           aria-pressed={selected === cat.slug}
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150 border ${
             selected === cat.slug
-              ? "bg-[--color-moss] text-[--color-white] border-[--color-moss]"
-              : "text-[--color-fog] border-[--color-border] hover:text-[--color-cream] hover:border-[--color-moss]"
+              ? "bg-moss text-[#ffffff] border-moss"
+              : "text-fog border-border hover:text-[#1c1a15] hover:border-moss"
           }`}
         >
           {cat.name}

@@ -27,7 +27,7 @@ export default async function AccountPage() {
     return (
       <div className="space-y-8">
         <div className="bg-surface-2 rounded p-6">
-          <h2 className="font-outfit font-medium text-cream text-xl">
+          <h2 className="font-outfit font-medium text-[#1c1a15] text-xl">
             Salut, {customer.first_name}!
           </h2>
           <p className="text-fog mt-2">{customer.email}</p>
@@ -35,7 +35,7 @@ export default async function AccountPage() {
 
         {lastOrder && (
           <div>
-            <h2 className="font-outfit font-medium text-cream text-xl mb-4">
+            <h2 className="font-outfit font-medium text-[#1c1a15] text-xl mb-4">
               Comandă recentă
             </h2>
             <div className="bg-surface-2 rounded p-6">
@@ -46,7 +46,7 @@ export default async function AccountPage() {
                 {formatPrice(lastOrder.total ?? 0)}
               </p>
               <Link href={`/cont/comenzi/${lastOrder.id}`}>
-                <Button className="bg-moss hover:bg-moss-light">
+                <Button variant="brand" size="heroInline">
                   Vezi detalii
                 </Button>
               </Link>
@@ -55,7 +55,7 @@ export default async function AccountPage() {
         )}
 
         <Link href="/cont/comenzi">
-          <Button variant="outline" className="border-border">
+          <Button variant="brandOutline" size="heroInline">
             Comenzile mele
           </Button>
         </Link>

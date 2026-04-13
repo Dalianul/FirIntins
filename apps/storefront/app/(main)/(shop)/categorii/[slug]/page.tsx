@@ -95,7 +95,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         />
 
         <div className="p-6 max-w-7xl mx-auto">
-          <h1 className="font-cormorant text-4xl text-cream mb-8">{category.name}</h1>
+          <h1 className="font-cormorant text-4xl text-[#1c1a15] mb-8">{category.name}</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product: any) => (
               <ProductCard key={product.id} product={product} />

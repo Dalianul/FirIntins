@@ -92,7 +92,7 @@ export function OrderDetail({ order, returnSuccess }: OrderDetailProps) {
 
       <div className="flex justify-between items-start flex-wrap gap-3">
         <div>
-          <h1 className="font-cormorant text-4xl text-cream mb-2">
+          <h1 className="font-cormorant text-4xl text-[#1c1a15] mb-2">
             #{order.id.slice(0, 8)}
           </h1>
           <p className="text-fog">
@@ -110,7 +110,7 @@ export function OrderDetail({ order, returnSuccess }: OrderDetailProps) {
       </div>
 
       <div className="bg-surface-2 rounded p-6">
-        <h2 className="font-outfit font-medium text-cream mb-4">Produse</h2>
+        <h2 className="font-outfit font-medium text-[#1c1a15] mb-4">Produse</h2>
         <div className="space-y-3">
           {items.map((item) => (
             <div key={item.id} className="flex gap-3">
@@ -123,7 +123,7 @@ export function OrderDetail({ order, returnSuccess }: OrderDetailProps) {
                 />
               </div>
               <div className="flex-1">
-                <p className="text-cream font-outfit">{item.title}</p>
+                <p className="text-[#1c1a15] font-outfit">{item.title}</p>
                 <p className="text-fog text-sm">{item.quantity}x</p>
               </div>
               <p className="text-mud">{formatPrice(item.total ?? 0)}</p>
@@ -135,27 +135,27 @@ export function OrderDetail({ order, returnSuccess }: OrderDetailProps) {
       <div className="bg-surface-2 rounded p-6 space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-fog">Subtotal</span>
-          <span className="text-cream">{formatPrice(order.subtotal ?? 0)}</span>
+          <span className="text-[#1c1a15]">{formatPrice(order.subtotal ?? 0)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-fog">Livrare</span>
-          <span className="text-cream">
+          <span className="text-[#1c1a15]">
             {formatPrice(order.shipping_total ?? 0)}
           </span>
         </div>
         <div className="flex justify-between">
           <span className="text-fog">TVA</span>
-          <span className="text-cream">{formatPrice(order.tax_total ?? 0)}</span>
+          <span className="text-[#1c1a15]">{formatPrice(order.tax_total ?? 0)}</span>
         </div>
         <div className="flex justify-between text-lg pt-2 border-t border-border">
-          <span className="font-outfit font-medium text-cream">Total</span>
+          <span className="font-outfit font-medium text-[#1c1a15]">Total</span>
           <span className="text-mud">{formatPrice(order.total ?? 0)}</span>
         </div>
       </div>
 
       {shippingAddress && (
         <div className="bg-surface-2 rounded p-6">
-          <h3 className="font-outfit font-medium text-cream mb-3">
+          <h3 className="font-outfit font-medium text-[#1c1a15] mb-3">
             Adresă livrare
           </h3>
           <p className="text-fog text-sm">
@@ -177,7 +177,7 @@ export function OrderDetail({ order, returnSuccess }: OrderDetailProps) {
 
       {trackingLinks.length > 0 && (
         <div className="bg-surface-2 rounded p-6">
-          <h3 className="font-outfit font-medium text-cream mb-3">
+          <h3 className="font-outfit font-medium text-[#1c1a15] mb-3">
             Urmărire colet
           </h3>
           <div className="space-y-1">

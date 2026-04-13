@@ -11,7 +11,7 @@ export default async function SecurityPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-cormorant text-3xl text-cream mb-1">Securitate</h2>
+        <h2 className="font-cormorant text-3xl text-[#1c1a15] mb-1">Securitate</h2>
         <p className="text-fog text-sm">Actualizează parola contului tău.</p>
       </div>
       <div className="bg-surface-2 rounded p-6">

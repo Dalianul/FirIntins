@@ -46,7 +46,7 @@ export function StepsBlock({ block }: { block: StepsBlockData }) {
   if (!steps?.length) return null
 
   return (
-    <section className="py-20 md:py-28 px-6 sm:px-10 bg-[--color-bg-light]">
+    <section className="py-20 md:py-28 px-6 sm:px-10 bg-bg-light">
       <div className="max-w-7xl mx-auto">
         {(heading || subheading) && (
           <motion.div
@@ -58,16 +58,16 @@ export function StepsBlock({ block }: { block: StepsBlockData }) {
           >
             {heading && (
               <>
-                <span className="block text-[--color-moss] text-xs font-outfit uppercase tracking-[0.25em] mb-3">
+                <span className="block text-moss text-xs font-outfit uppercase tracking-[0.25em] mb-3">
                   Cum funcționează
                 </span>
-                <h2 className="font-cormorant text-4xl md:text-5xl text-[--color-white] mb-4">
+                <h2 className="font-cormorant text-4xl md:text-5xl text-[#1c1a15] mb-4">
                   {heading}
                 </h2>
               </>
             )}
             {subheading && (
-              <p className="text-[--color-fog] font-outfit text-base max-w-xl mx-auto leading-relaxed">
+              <p className="text-fog font-outfit text-base max-w-xl mx-auto leading-relaxed">
                 {subheading}
               </p>
             )}
@@ -97,15 +97,15 @@ export function StepsBlock({ block }: { block: StepsBlockData }) {
               >
                 {/* Step indicator */}
                 <div className="relative flex-shrink-0">
-                  <div className="w-14 h-14 rounded-full bg-[--color-surface] border border-[--color-moss]/30 hover:border-[--color-moss]/60 flex items-center justify-center transition-colors duration-300 group">
+                  <div className="w-14 h-14 rounded-full bg-surface border border-moss/30 hover:border-moss/60 flex items-center justify-center transition-colors duration-300 group">
                     {IconComponent ? (
                       <IconComponent
                         size={22}
-                        className="text-[--color-moss]"
+                        className="text-moss"
                         strokeWidth={1.5}
                       />
                     ) : (
-                      <span className="font-cormorant text-2xl text-[--color-moss] font-medium">
+                      <span className="font-cormorant text-2xl text-moss font-medium">
                         {i + 1}
                       </span>
                     )}
@@ -114,19 +114,19 @@ export function StepsBlock({ block }: { block: StepsBlockData }) {
                   {/* Connector line (horizontal layout) */}
                   {isHorizontal && i < steps.length - 1 && (
                     <div className="hidden lg:block absolute top-7 left-full w-full">
-                      <div className="border-t border-dashed border-[--color-moss]/20 ml-2 mr-2" />
+                      <div className="border-t border-dashed border-moss/20 ml-2 mr-2" />
                     </div>
                   )}
                 </div>
 
                 <div className={isHorizontal ? "mt-5" : "flex-1 pt-1"}>
                   {step.title && (
-                    <h3 className="font-cormorant text-xl text-[--color-white] mb-2 leading-snug">
+                    <h3 className="font-cormorant text-xl text-[#1c1a15] mb-2 leading-snug">
                       {step.title}
                     </h3>
                   )}
                   {step.description && (
-                    <p className="text-[--color-fog] text-sm font-outfit leading-relaxed">
+                    <p className="text-fog text-sm font-outfit leading-relaxed">
                       {step.description}
                     </p>
                   )}

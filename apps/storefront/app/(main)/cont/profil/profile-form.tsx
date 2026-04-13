@@ -3,6 +3,8 @@
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
 import { updateProfileAction } from "@/actions/account"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 type Customer = {
   first_name?: string | null
@@ -19,13 +21,9 @@ type ActionState = {
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="bg-moss hover:bg-moss-light text-white font-outfit text-sm px-6 py-2 rounded transition-colors disabled:opacity-50"
-    >
+    <Button type="submit" disabled={pending} variant="brand" size="heroInline">
       {pending ? "Se salvează..." : "Salvează modificările"}
-    </button>
+    </Button>
   )
 }
 
@@ -58,12 +56,11 @@ export function ProfileForm({ customer }: { customer: Customer }) {
           <label className="block text-fog text-sm mb-1" htmlFor="firstName">
             Prenume
           </label>
-          <input
+          <Input
             id="firstName"
             name="firstName"
             type="text"
             defaultValue={customer.first_name ?? ""}
-            className="w-full bg-surface-2 border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
           />
           <FieldError errors={state?.fieldErrors?.firstName} />
         </div>
@@ -72,12 +69,11 @@ export function ProfileForm({ customer }: { customer: Customer }) {
           <label className="block text-fog text-sm mb-1" htmlFor="lastName">
             Nume
           </label>
-          <input
+          <Input
             id="lastName"
             name="lastName"
             type="text"
             defaultValue={customer.last_name ?? ""}
-            className="w-full bg-surface-2 border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
           />
           <FieldError errors={state?.fieldErrors?.lastName} />
         </div>
@@ -87,12 +83,11 @@ export function ProfileForm({ customer }: { customer: Customer }) {
         <label className="block text-fog text-sm mb-1" htmlFor="email">
           Adresă de email
         </label>
-        <input
+        <Input
           id="email"
           name="email"
           type="email"
           defaultValue={customer.email}
-          className="w-full bg-surface-2 border border-border rounded px-3 py-2 text-cream text-sm focus:outline-none focus:border-moss"
         />
         <FieldError errors={state?.fieldErrors?.email} />
       </div>

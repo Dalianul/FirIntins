@@ -32,7 +32,7 @@ export function CategoriesSectionClient({ categories }: { categories: Category[]
             whileHover={{ scale: 1.05 }}
             className="p-6 bg-surface rounded border border-border hover:border-moss transition-colors cursor-pointer"
           >
-            <h3 className="font-cormorant text-2xl text-white">
+            <h3 className="font-cormorant text-2xl text-[#1c1a15]">
               {cat.name}
             </h3>
             <p className="text-fog text-sm mt-2">Explore</p>

@@ -12,7 +12,7 @@ export async function ReviewList({ productId }: ReviewListProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-cormorant text-xl text-cream">Recenzii clienți</h3>
+        <h3 className="font-cormorant text-xl text-[#1c1a15]">Recenzii clienți</h3>
         <RatingAggregate reviews={reviews} />
       </div>
 

@@ -32,12 +32,12 @@ export function PostLivePreviewWrapper({ initialPost }: { initialPost: any }) {
   return (
     <>
       {/* Breadcrumb */}
-      <nav className="text-sm text-[--color-fog] mb-6 flex gap-2 items-center">
-        <Link href="/blog" className="hover:text-[--color-moss]">Blog</Link>
+      <nav className="text-sm text-fog mb-6 flex gap-2 items-center">
+        <Link href="/blog" className="hover:text-moss">Blog</Link>
         {categoryName && categorySlug && (
           <>
             <span>/</span>
-            <Link href={`/blog/categorii/${categorySlug}`} className="hover:text-[--color-moss]">
+            <Link href={`/blog/categorii/${categorySlug}`} className="hover:text-moss">
               {categoryName}
             </Link>
           </>
@@ -45,12 +45,12 @@ export function PostLivePreviewWrapper({ initialPost }: { initialPost: any }) {
       </nav>
 
       {/* Title */}
-      <h1 className="font-cormorant text-3xl sm:text-4xl font-semibold text-[--color-white] leading-tight mb-4">
+      <h1 className="font-cormorant text-3xl sm:text-4xl font-semibold text-[#1c1a15] leading-tight mb-4">
         {post.title}
       </h1>
 
       {/* Meta */}
-      <div className="flex items-center gap-4 text-sm text-[--color-fog] mb-8">
+      <div className="flex items-center gap-4 text-sm text-fog mb-8">
         <span>{post.author ?? 'Redacție'}</span>
         {date && <span>{date}</span>}
         <span>{readTime} min citire</span>
@@ -58,7 +58,7 @@ export function PostLivePreviewWrapper({ initialPost }: { initialPost: any }) {
 
       {/* Cover image */}
       {typeof post.coverImage === 'object' && post.coverImage?.url && (
-        <div className="relative aspect-[16/9] rounded-lg overflow-hidden mb-8 border border-[--color-border]">
+        <div className="relative aspect-[16/9] rounded-lg overflow-hidden mb-8 border border-border">
           <Image
             src={mediaUrl(post.coverImage.url)}
             alt={post.coverImage.alt ?? post.title}

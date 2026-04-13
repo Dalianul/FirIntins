@@ -33,7 +33,8 @@ export function AddToCartButton({ productId, variant, disabled = false, outOfSto
     <Button
       onClick={handleClick}
       disabled={disabled || outOfStock || loading}
-      className="w-full bg-moss hover:bg-moss-light text-white py-6 text-lg"
+      variant="brand"
+      size="cart"
     >
       {outOfStock ? "Stoc epuizat" : loading ? "Se adaugă..." : "Adaugă în coș"}
     </Button>

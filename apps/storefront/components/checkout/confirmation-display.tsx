@@ -42,10 +42,10 @@ export function ConfirmationDisplay({ order }: ConfirmationDisplayProps) {
       <div className="text-center">
         <div className="mb-4 flex justify-center">
           <div className="h-16 w-16 rounded-full flex items-center justify-center bg-moss">
-            <span className="text-3xl text-white">✓</span>
+            <span className="text-3xl text-[#ffffff]">✓</span>
           </div>
         </div>
-        <h1 className="font-cormorant text-4xl mb-2 text-cream">
+        <h1 className="font-cormorant text-4xl mb-2 text-[#1c1a15]">
           Comandă confirmată
         </h1>
         <p className="text-fog">
@@ -57,12 +57,12 @@ export function ConfirmationDisplay({ order }: ConfirmationDisplayProps) {
       <div className="rounded p-6 space-y-6 bg-surface-2">
         <div>
           <p className="text-sm mb-1 text-fog">ID comandă</p>
-          <p className="font-medium text-cream font-outfit">{order.id}</p>
+          <p className="font-medium text-[#1c1a15] font-outfit">{order.id}</p>
         </div>
 
         {/* Items */}
         <div>
-          <h2 className="font-medium mb-4 text-cream font-outfit">Produse</h2>
+          <h2 className="font-medium mb-4 text-[#1c1a15] font-outfit">Produse</h2>
           <div className="space-y-3">
             {items.map((item) => (
               <div key={item.id} className="flex gap-3">
@@ -76,7 +76,7 @@ export function ConfirmationDisplay({ order }: ConfirmationDisplayProps) {
                   />
                 </div>
                 <div className="flex-1">
-                  <p className="text-cream font-outfit">{item.title}</p>
+                  <p className="text-[#1c1a15] font-outfit">{item.title}</p>
                   <p className="text-sm text-fog">{item.quantity}x</p>
                 </div>
                 <p className="text-mud">{formatPrice(item.total ?? 0)}</p>
@@ -89,18 +89,18 @@ export function ConfirmationDisplay({ order }: ConfirmationDisplayProps) {
         <div className="pt-4 space-y-2 text-sm border-t border-border">
           <div className="flex justify-between">
             <span className="text-fog">Subtotal</span>
-            <span className="text-cream">{formatPrice(order.subtotal ?? 0)}</span>
+            <span className="text-[#1c1a15]">{formatPrice(order.subtotal ?? 0)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-fog">Livrare</span>
-            <span className="text-cream">{formatPrice(order.shipping_total ?? 0)}</span>
+            <span className="text-[#1c1a15]">{formatPrice(order.shipping_total ?? 0)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-fog">TVA</span>
-            <span className="text-cream">{formatPrice(order.tax_total ?? 0)}</span>
+            <span className="text-[#1c1a15]">{formatPrice(order.tax_total ?? 0)}</span>
           </div>
           <div className="flex justify-between text-lg pt-2 border-t border-border">
-            <span className="font-medium text-cream font-outfit">Total</span>
+            <span className="font-medium text-[#1c1a15] font-outfit">Total</span>
             <span className="text-mud">{formatPrice(order.total ?? 0)}</span>
           </div>
         </div>
@@ -108,7 +108,7 @@ export function ConfirmationDisplay({ order }: ConfirmationDisplayProps) {
         {/* Shipping address */}
         {shippingAddress && (
           <div>
-            <h3 className="font-medium mb-2 text-cream font-outfit">
+            <h3 className="font-medium mb-2 text-[#1c1a15] font-outfit">
               Adresă livrare
             </h3>
             <p className="text-sm text-fog">

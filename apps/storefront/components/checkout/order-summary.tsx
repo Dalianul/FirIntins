@@ -19,11 +19,11 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
 
   return (
     <div className="bg-surface-2 rounded p-6 space-y-4">
-      <h3 className="font-outfit font-medium text-cream text-lg">Comandă</h3>
+      <h3 className="font-outfit font-medium text-[#1c1a15] text-lg">Comandă</h3>
       <div className="space-y-3 max-h-64 overflow-y-auto">
         {items.map((item: CartItem) => (
           <div key={item.id} className="flex gap-3 text-sm">
-            <div className="relative h-16 w-16 rounded overflow-hidden bg-[--color-surface] border border-[--color-border] flex-shrink-0">
+            <div className="relative h-16 w-16 rounded overflow-hidden bg-surface border border-border flex-shrink-0">
               <Image
                 src={item.thumbnail ?? `https://picsum.photos/64/64?random=${item.id}`}
                 alt={item.product_title}
@@ -33,7 +33,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
               />
             </div>
             <div className="flex-1">
-              <p className="text-cream font-outfit">{item.product_title}</p>
+              <p className="text-[#1c1a15] font-outfit">{item.product_title}</p>
               <p className="text-fog text-xs">{item.quantity}x</p>
             </div>
             <p className="text-mud">{formatPrice(item.total ?? item.unit_price * item.quantity)}</p>
@@ -43,7 +43,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
       <div className="border-t border-border pt-4 space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-fog">Subtotal</span>
-          <span className="text-cream">{formatPrice(subtotal)}</span>
+          <span className="text-[#1c1a15]">{formatPrice(subtotal)}</span>
         </div>
         {discountTotal > 0 && (
           <div className="flex justify-between">
@@ -53,11 +53,11 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
         )}
         <div className="flex justify-between">
           <span className="text-fog">Livrare</span>
-          <span className="text-cream">{formatPrice(shippingTotal)}</span>
+          <span className="text-[#1c1a15]">{formatPrice(shippingTotal)}</span>
         </div>
       </div>
       <div className="border-t border-border pt-4 flex justify-between text-lg">
-        <span className="font-outfit font-medium text-cream">Total</span>
+        <span className="font-outfit font-medium text-[#1c1a15]">Total</span>
         <span className="text-mud">{formatPrice(total)}</span>
       </div>
       <div className="border-t border-border pt-4">

@@ -29,7 +29,7 @@ export function Hero() {
       >
         <m.h1
           variants={itemVariants}
-          className="font-cormorant text-6xl font-light text-white md:text-8xl"
+          className="font-cormorant text-6xl font-light text-[#ffffff] md:text-8xl"
         >
           FirIntins Premium
         </m.h1>
@@ -42,15 +42,15 @@ export function Hero() {
           className="mt-8 flex gap-4 flex-col sm:flex-row"
         >
           <Link href="/produse">
-            <Button size="lg" className="bg-moss hover:bg-moss-light">
+            <Button variant="brand" size="hero">
               Explorează produsele
             </Button>
           </Link>
           <Link href="/categorii/lansete">
             <Button
-              size="lg"
               variant="outline"
-              className="border-cream text-cream hover:bg-cream hover:text-black"
+              size="hero"
+              className="border-[#ffffff]/80 text-[#ffffff] bg-transparent hover:bg-[#ffffff] hover:text-[#1c1a15]"
             >
               Categorii
             </Button>

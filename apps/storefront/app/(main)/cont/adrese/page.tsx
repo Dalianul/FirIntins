@@ -33,7 +33,7 @@ export default async function AddressesPage() {
       <div className="space-y-6">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="font-cormorant text-3xl text-cream mb-1">Adresele mele</h2>
+            <h2 className="font-cormorant text-3xl text-[#1c1a15] mb-1">Adresele mele</h2>
             <p className="text-fog text-sm">Gestionează adresele de livrare.</p>
           </div>
           <AddAddressSheet />
@@ -54,7 +54,7 @@ export default async function AddressesPage() {
                         Implicită
                       </span>
                     )}
-                    <p className="text-cream text-sm font-medium">
+                    <p className="text-[#1c1a15] text-sm font-medium">
                       {addr.first_name} {addr.last_name}
                     </p>
                     <p className="text-fog text-sm">{addr.address_1}</p>
@@ -76,7 +76,7 @@ export default async function AddressesPage() {
                           <input type="hidden" name="addressId" value={addr.id} />
                           <button
                             type="submit"
-                            className="text-fog hover:text-cream text-xs underline"
+                            className="text-fog hover:text-[#1c1a15] text-xs underline"
                           >
                             Setează ca implicită
                           </button>

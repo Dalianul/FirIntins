@@ -62,14 +62,15 @@ export function PromoCodeInput() {
           value={code}
           onChange={(e) => setCode(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleApply()}
-          className="h-8 text-sm bg-[--color-bg] border-[--color-border] text-[--color-cream] placeholder:text-[--color-fog]/50"
+          className="h-10 text-xs"
           disabled={loading || !isReady}
         />
         <Button
           type="button"
           onClick={handleApply}
           disabled={loading || !code.trim() || !isReady}
-          className="h-8 px-3 text-xs bg-[--color-moss] hover:bg-[--color-moss-light] text-white shrink-0"
+          variant="brand"
+          className="h-10 rounded-none px-4 text-[11px] font-outfit uppercase tracking-[0.14em] shrink-0"
         >
           {loading ? "..." : "Aplică"}
         </Button>
@@ -84,7 +85,7 @@ export function PromoCodeInput() {
           {appliedCodes.map((promo) => (
             <span
               key={promo.code}
-              className="inline-flex items-center gap-1 px-2 py-0.5 bg-[--color-moss]/20 text-[--color-moss] text-xs rounded"
+              className="inline-flex items-center gap-1 px-2 py-0.5 bg-moss/20 text-moss text-xs rounded"
             >
               {promo.code}
               <button
