@@ -9,6 +9,7 @@ import { CategoryFilter } from "@/components/product/category-filter"
 import { PriceFilter } from "@/components/product/price-filter"
 import InStockToggle from "@/components/product/in-stock-toggle"
 import SortSelect from "@/components/product/sort-select"
+import { FilterDrawer } from "@/components/product/filter-drawer"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -84,16 +85,28 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
         {/* Filter bar — wrapped in Suspense because filter components use useSearchParams() */}
         <Suspense fallback={<div className="h-10 animate-pulse bg-surface rounded mb-6" />}>
-          <div className="flex flex-wrap items-center gap-3 mb-4">
+          <div className="hidden md:flex flex-wrap items-center gap-3 mb-4">
             <CategoryFilter categories={categories} category={sp.category ?? ""} />
             <PriceFilter priceMin={sp.price_min ?? ""} priceMax={sp.price_max ?? ""} />
             <InStockToggle inStock={sp.in_stock === "true"} />
             <SortSelect sort={sp.sort ?? ""} />
           </div>
+
+          <div className="mb-4">
+            <FilterDrawer
+              categories={categories}
+              category={sp.category ?? ""}
+              priceMin={sp.price_min ?? ""}
+              priceMax={sp.price_max ?? ""}
+              inStock={sp.in_stock === "true"}
+              sort={sp.sort ?? ""}
+              hasActiveFilters={hasActiveFilters}
+            />
+          </div>
         </Suspense>
 
         {hasActiveFilters && (
-          <div className="mb-4">
+          <div className="hidden md:block mb-4">
             <Link
               href="/produse"
               className="text-sm text-moss hover:text-moss-light transition-colors"

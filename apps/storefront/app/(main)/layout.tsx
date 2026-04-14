@@ -8,6 +8,7 @@ import { WishlistProvider } from "@/context/wishlist-context"
 import { Analytics } from "@/components/analytics/analytics"
 import Header from "@/components/layout/header"
 import { HeaderNav } from "@/components/layout/HeaderNav"
+import { HeaderMobileNav } from "@/components/layout/HeaderMobileNav"
 import Footer from "@/components/layout/Footer"
 import { CookieConsent } from "@/components/cookie-consent/cookie-consent"
 import { PageTransition } from "@/components/layout/page-transition"
@@ -58,13 +59,28 @@ export default function StorefrontLayout({
         <LazyMotion features={domAnimation}>
           <CartProvider>
             <WishlistProvider>
-              <Header nav={<Suspense fallback={
-                <div className="hidden md:flex gap-8">
-                  {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
-                    <span key={label} className="text-fog opacity-50">{label}</span>
-                  ))}
-                </div>
-              }><HeaderNav /></Suspense>} />
+              <Header
+                nav={
+                  <Suspense
+                    fallback={
+                      <div className="hidden md:flex gap-8">
+                        {["Produse", "Categorii", "Blog", "Oferte"].map((label) => (
+                          <span key={label} className="text-fog opacity-50">
+                            {label}
+                          </span>
+                        ))}
+                      </div>
+                    }
+                  >
+                    <HeaderNav />
+                  </Suspense>
+                }
+                mobileNav={
+                  <Suspense fallback={null}>
+                    <HeaderMobileNav />
+                  </Suspense>
+                }
+              />
               <PageTransition>
                 {children}
               </PageTransition>

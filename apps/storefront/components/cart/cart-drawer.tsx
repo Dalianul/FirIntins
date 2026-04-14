@@ -22,7 +22,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent side="right" className="[background:var(--color-bg-light)] border-border max-w-md p-0 flex flex-col">
+      <SheetContent side="right" className="[background:var(--color-bg-light)] border-border w-[92%] sm:max-w-md p-0 flex flex-col">
         <SheetHeader className="px-5 py-4 border-b border-border flex-shrink-0">
           <div className="flex items-baseline gap-1.5">
             <SheetTitle className="text-[16px] font-cormorant font-semibold text-[#1c1a15]">
